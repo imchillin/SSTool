@@ -36,32 +36,10 @@ namespace FFXIVTool
         string exepath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
         public CharacterDetails CharacterDetails { get => (CharacterDetails)BaseViewModel.model; set => BaseViewModel.model = value; }
         Version version = Assembly.GetExecutingAssembly().GetName().Version;
-        void subwc_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            string Newversion = File.ReadAllText(exepath + "\\version.txt").Trim();
-            if (!string.IsNullOrWhiteSpace(Newversion) && version.ToString().Replace(',', '.').CompareTo(Newversion) != 0)
-            {
-                Process p = new Process();
-                p.StartInfo.FileName = exepath + "\\SSToolsUpdater.exe";
-                p.StartInfo.Arguments = "-autolaunch";
-                if (AdminNeeded())
-                    p.StartInfo.Verb = "runas";
-
-                try { p.Start(); Process.GetCurrentProcess().Kill(); }
-                catch { }
-            }
-        }
         public MainWindow()
         {
-			/*
+			
             ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
-            if (File.Exists(exepath + "\\SSToolsUpdater.exe"))
-            {
-                Uri urlv = new Uri("https://raw.githubusercontent.com/imchillin/SSTool/master/version.txt");
-                WebClient wc2 = new WebClient();
-                wc2.DownloadFileAsync(urlv, exepath + "\\version.txt");
-                wc2.DownloadFileCompleted += subwc_DownloadFileCompleted;
-            }
             if (!File.Exists(@"./OffsetSettings.xml"))
             {
                 try
@@ -81,7 +59,7 @@ namespace FFXIVTool
                     Close();
                     return;
                 }
-            }*/
+            }
             List<ProcessLooker.Game> GameList = new  List<ProcessLooker.Game>();
             Process[] processlist = Process.GetProcesses();
             Processcheck = 0;
@@ -1006,13 +984,6 @@ namespace FFXIVTool
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
-            if (File.Exists(exepath + "\\SSToolsUpdater.exe"))
-            {
-                Uri urlv = new Uri("https://raw.githubusercontent.com/imchillin/SSTool/master/version.txt");
-                WebClient wc2 = new WebClient();
-                wc2.DownloadFileAsync(urlv, exepath + "\\version.txt");
-                wc2.DownloadFileCompleted += subwc_DownloadFileCompleted;
-            }
         }
 
         private void GposeButton_Checked(object sender, RoutedEventArgs e)
