@@ -44,9 +44,24 @@ namespace FFXIVTool.Models
 
 
         [JsonIgnore] public bool IsEnabled { get; set; }
-        [JsonIgnore] public Address<float> GposeMode { get; set; }
+        [JsonIgnore] public bool GposeMode { get; set; }
         [JsonIgnore] public Address<float> CharacterRender { get; set; }
-        [JsonIgnore] public Address<float> TargetMode { get; set; }
+
+		// Target Mode
+		[JsonIgnore] private bool TargetMode { get; set; }
+		[JsonIgnore] private bool GPoseTargetMode { get; set; } = true;
+		[JsonIgnore] public bool TargetModeActive
+		{
+			get => GposeMode ? GPoseTargetMode : TargetMode;
+			set
+			{
+				if (GposeMode)
+					GPoseTargetMode = value;
+				else
+					TargetMode = value;
+			}
+		}
+
         public Address<float> TailSize { get; set; }
         [JsonIgnore] public Address<string> Name { get; set; }
         [JsonIgnore] public Address<string> FCTag { get; set; }
@@ -385,9 +400,7 @@ namespace FFXIVTool.Models
             CamY = new Address<float>();
             CamZ = new Address<float>();
             CameraHeight2 = new Address<float>();
-            GposeMode = new Address<float>();
             CharacterRender = new Address<float>();
-            TargetMode = new Address<float>();
             Wetness = new Address<float>();
             SWetness = new Address<float>();
             Height = new Address<float>();
