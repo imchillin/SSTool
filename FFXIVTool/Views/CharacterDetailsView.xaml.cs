@@ -47,7 +47,40 @@ namespace FFXIVTool.Views
 				timer.IsEnabled = false;
 			};
 			timer.Start();
-		}
+            if(SaveSettings.Default.RotationSliders == true)
+            {
+                RotationUpDown.Visibility = Visibility.Hidden;
+                RotationUpDown.IsEnabled = false;
+                RotationUpDown2.Visibility = Visibility.Hidden;
+                RotationUpDown2.IsEnabled = false;
+                RotationUpDown3.Visibility = Visibility.Hidden;
+                RotationUpDown3.IsEnabled = false;
+
+                RotationSlider.Visibility = Visibility.Visible;
+                RotationSlider.IsEnabled = true;
+                RotationSlider2.Visibility = Visibility.Visible;
+                RotationSlider2.IsEnabled = true;
+                RotationSlider3.Visibility = Visibility.Visible;
+                RotationSlider3.IsEnabled = true;
+            }
+            else if (SaveSettings.Default.RotationSliders == false)
+            {
+                RotationUpDown.Visibility = Visibility.Visible;
+                RotationUpDown.IsEnabled = true;
+                RotationUpDown2.Visibility = Visibility.Visible;
+                RotationUpDown2.IsEnabled = true;
+                RotationUpDown3.Visibility = Visibility.Visible;
+                RotationUpDown3.IsEnabled = true;
+
+                RotationSlider.Visibility = Visibility.Hidden;
+                RotationSlider.IsEnabled = false;
+                RotationSlider2.Visibility = Visibility.Hidden;
+                RotationSlider2.IsEnabled = false;
+                RotationSlider3.Visibility = Visibility.Hidden;
+                RotationSlider3.IsEnabled = false;
+            }
+
+        }
 
 		#region Height
 
@@ -185,7 +218,14 @@ namespace FFXIVTool.Views
 
 		private void RotationUpDown_SourceUpdated(object sender, DataTransferEventArgs e)
 		{
-			if (RotationUpDown.IsKeyboardFocusWithin || RotationUpDown.IsMouseOver)
+
+            if (RotationSlider.IsKeyboardFocusWithin || RotationSlider.IsMouseOver)
+            {
+                RotationSlider.ValueChanged -= RotV2;
+                RotationSlider.ValueChanged += RotV2;
+            }
+
+            if (RotationUpDown.IsKeyboardFocusWithin || RotationUpDown.IsMouseOver)
 			{
 				RotationUpDown.ValueChanged -= RotV;
 				RotationUpDown.ValueChanged += RotV;
@@ -193,7 +233,13 @@ namespace FFXIVTool.Views
 		}
 		private void RotationUpDown2_SourceUpdated(object sender, DataTransferEventArgs e)
 		{
-			if (RotationUpDown2.IsKeyboardFocusWithin || RotationUpDown2.IsMouseOver)
+            if (RotationSlider2.IsKeyboardFocusWithin || RotationSlider2.IsMouseOver)
+            {
+                RotationSlider2.ValueChanged -= RotV2;
+                RotationSlider2.ValueChanged += RotV2;
+            }
+
+            if (RotationUpDown2.IsKeyboardFocusWithin || RotationUpDown2.IsMouseOver)
 			{
 				RotationUpDown2.ValueChanged -= RotV;
 				RotationUpDown2.ValueChanged += RotV;
@@ -201,14 +247,19 @@ namespace FFXIVTool.Views
 		}
 		private void RotationUpDown3_SourceUpdated(object sender, DataTransferEventArgs e)
 		{
-			if (RotationUpDown3.IsKeyboardFocusWithin || RotationUpDown3.IsMouseOver)
+            if (RotationSlider3.IsKeyboardFocusWithin || RotationSlider3.IsMouseOver)
+            {
+                RotationSlider3.ValueChanged -= RotV2;
+                RotationSlider3.ValueChanged += RotV2;
+            }
+
+            if (RotationUpDown3.IsKeyboardFocusWithin || RotationUpDown3.IsMouseOver)
 			{
 				RotationUpDown3.ValueChanged -= RotV;
 				RotationUpDown3.ValueChanged += RotV;
 			}
 		}
-
-		private void RotV(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        private void RotV(object sender, RoutedPropertyChangedEventArgs<double?> e)
 		{
 			// Get the euler angles from UI.
 			var quat = GetEulerAngles().ToQuaternion();
@@ -217,14 +268,69 @@ namespace FFXIVTool.Views
 			CharacterDetails.Rotation2.value = (float)quat.Y;
 			CharacterDetails.Rotation3.value = (float)quat.Z;
 			CharacterDetails.Rotation4.value = (float)quat.W;
-
-			// Remove listeners for value changed.
-			RotationUpDown.ValueChanged -= RotV;
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation), "float", quat.X.ToString());
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation2), "float", quat.Y.ToString());
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation3), "float", quat.Z.ToString());
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation4), "float", quat.W.ToString());
+            // Remove listeners for value changed.
+            RotationUpDown.ValueChanged -= RotV;
 			RotationUpDown2.ValueChanged -= RotV;
 			RotationUpDown3.ValueChanged -= RotV;
 		}
+        private void RotV2(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            // Get the euler angles from UI.
+            var quat = GetEulerAngles().ToQuaternion();
 
-		private void Freeze1234_Click(object sender, RoutedEventArgs e)
+            CharacterDetails.Rotation.value = (float)quat.X;
+            CharacterDetails.Rotation2.value = (float)quat.Y;
+            CharacterDetails.Rotation3.value = (float)quat.Z;
+            CharacterDetails.Rotation4.value = (float)quat.W;
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation), "float", quat.X.ToString());
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation2), "float", quat.Y.ToString());
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation3), "float", quat.Z.ToString());
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation4), "float", quat.W.ToString());
+            // Remove listeners for value changed.
+            RotationSlider.ValueChanged -= RotV2;
+            RotationSlider2.ValueChanged -= RotV2;
+            RotationSlider3.ValueChanged -= RotV2;
+          //  Console.WriteLine(CharacterDetails.RotateY);
+        }
+        private void RotSliderButton_Checked(object sender, RoutedEventArgs e)
+        {
+            SaveSettings.Default.RotationSliders = true;
+            RotationUpDown.Visibility = Visibility.Hidden;
+            RotationUpDown.IsEnabled = false;
+            RotationUpDown2.Visibility = Visibility.Hidden;
+            RotationUpDown2.IsEnabled = false;
+            RotationUpDown3.Visibility = Visibility.Hidden;
+            RotationUpDown3.IsEnabled = false;
+
+            RotationSlider.Visibility = Visibility.Visible;
+            RotationSlider.IsEnabled = true;
+            RotationSlider2.Visibility = Visibility.Visible;
+            RotationSlider2.IsEnabled = true;
+            RotationSlider3.Visibility = Visibility.Visible;
+            RotationSlider3.IsEnabled = true;
+        }
+        private void RotSliderButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SaveSettings.Default.RotationSliders = false;
+            RotationUpDown.Visibility = Visibility.Visible;
+            RotationUpDown.IsEnabled = true;
+            RotationUpDown2.Visibility = Visibility.Visible;
+            RotationUpDown2.IsEnabled = true;
+            RotationUpDown3.Visibility = Visibility.Visible;
+            RotationUpDown3.IsEnabled = true;
+
+            RotationSlider.Visibility = Visibility.Hidden;
+            RotationSlider.IsEnabled = false;
+            RotationSlider2.Visibility = Visibility.Hidden;
+            RotationSlider2.IsEnabled = false;
+            RotationSlider3.Visibility = Visibility.Hidden;
+            RotationSlider3.IsEnabled = false;
+        }
+        private void Freeze1234_Click(object sender, RoutedEventArgs e)
 		{
 			numbcheck = !numbcheck;
 			CharacterDetails.RotateFreeze = numbcheck;
@@ -883,5 +989,5 @@ namespace FFXIVTool.Views
 
 			}
 		}
-	}
+    }
 }
