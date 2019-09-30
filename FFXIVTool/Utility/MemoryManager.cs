@@ -45,7 +45,7 @@ namespace FFXIVTool.Utility
         public string GposeFilters { get; set; }
         public string CharacterRenderAddress { get; set; }
         public string CharacterRenderAddress2 { get; set; }
-
+        public string GposeEntityOffset { get; set; }
         /// <summary>
         /// Constructor for the singleton memory manager
         /// </summary>

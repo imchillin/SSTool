@@ -1017,7 +1017,6 @@ namespace FFXIVTool
 
         private void GposeButton_Checked(object sender, RoutedEventArgs e)
         {
-            if (TargetButton.IsChecked == true) TargetButton.IsChecked = false;
             CharacterRefreshButton.IsEnabled = false;
             NPCRefresh.IsEnabled = false;
 
@@ -1054,7 +1053,7 @@ namespace FFXIVTool
             MainViewModel.ViewTime2.EquipmentControl.IsOpen = false;
             MainViewModel.ViewTime2.EquipmentControl.AnimatedTabControl.SelectedIndex = -1;
 
-            CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeAddress;
+            CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeEntityOffset;
         }
 
         private void GposeButton_Unchecked(object sender, RoutedEventArgs e)
@@ -1094,7 +1093,6 @@ namespace FFXIVTool
 
         private void TargetButton_Checked(object sender, RoutedEventArgs e)
         {
-            if (GposeButton.IsChecked == true) GposeButton.IsChecked = false;
             CharacterRefreshButton.IsEnabled = false;
             NPCRefresh.IsEnabled = false;
             CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.TargetAddress;

@@ -57,7 +57,8 @@ namespace FFXIVTool.ViewModel
             try
             {
                 // get the array size
-                CharacterDetails.Size = m.readLong(MemoryManager.Instance.BaseAddress);
+                if (CharacterDetails.GposeMode.Activated) CharacterDetails.Size = m.readLong(MemoryManager.Instance.GposeEntityOffset);
+                else CharacterDetails.Size = m.readLong(MemoryManager.Instance.BaseAddress);
 
                 // clear the entity list
                 CharacterDetails.Names.Clear();
@@ -65,30 +66,58 @@ namespace FFXIVTool.ViewModel
                 float x1 = 0;
                 float y1 = 0;
                 float z1 = 0;
-                for (var i = 0; i < CharacterDetails.Size; i++)
+                if (!CharacterDetails.GposeMode.Activated)
                 {
-                    int Test = 0;
-                    var addr = GAS(MemoryManager.Add(MemoryManager.Instance.BaseAddress, ((i + 1) * 8).ToString("X")), c.Name);
-                    var x2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.BaseAddress, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.X));
-                    var y2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.BaseAddress, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.Y));
-                    var z2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.BaseAddress, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.Z));
-                    if (i == 0)
+                    for (var i = 0; i < CharacterDetails.Size; i++)
                     {
-                        x1 = x2;
-                        y1 = y2;
-                        z1 = z2;
+                        int Test = 0;
+                        var addr = GAS(MemoryManager.Add(MemoryManager.Instance.BaseAddress, ((i + 1) * 8).ToString("X")), c.Name);
+                        var x2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.BaseAddress, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.X));
+                        var y2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.BaseAddress, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.Y));
+                        var z2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.BaseAddress, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.Z));
+                        if (i == 0)
+                        {
+                            x1 = x2;
+                            y1 = y2;
+                            z1 = z2;
+                        }
+                        else
+                        {
+                            Test = (int)Math.Round(Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2) + Math.Pow(z2 - z1, 2)));
+                        }
+                        var name = m.readString(addr);
+                        if (name.IndexOf('\0') != -1)
+                            name = name.Substring(0, name.IndexOf('\0'));
+                        if (i != 0) name += $" ({Test})";
+                        CharacterDetails.Names.Add(name);
                     }
-                    else
-                    {
-                        Test = (int)Math.Round(Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2) + Math.Pow(z2 - z1, 2)));
-                    }
-                    var name = m.readString(addr);
-                    if (name.IndexOf('\0') != -1)
-                        name = name.Substring(0, name.IndexOf('\0'));
-                    if(i!=0) name += $" ({Test})";
-                    CharacterDetails.Names.Add(name);
                 }
-
+                else
+                {
+                    for (var i = 0; i < CharacterDetails.Size; i++)
+                    {
+                        int Test = 0;
+                        var addr = GAS(MemoryManager.Add(MemoryManager.Instance.GposeEntityOffset, ((i + 1) * 8).ToString("X")), c.Name);
+                        var x2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.GposeEntityOffset, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.X));
+                        var y2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.GposeEntityOffset, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.Y));
+                        var z2 = m.readFloat(GAS(MemoryManager.Add(MemoryManager.Instance.GposeEntityOffset, ((i + 1) * 8).ToString("X")), c.Body.Base, c.Body.Position.Z));
+                        if (i == 0)
+                        {
+                            x1 = x2;
+                            y1 = y2;
+                            z1 = z2;
+                        }
+                        else
+                        {
+                            Test = (int)Math.Round(Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2) + Math.Pow(z2 - z1, 2)));
+                        }
+                        var name = m.readString(addr);
+                        if (name.IndexOf('\0') != -1)
+                            name = name.Substring(0, name.IndexOf('\0'));
+                        if (i != 0) name += $" ({Test})";
+                        CharacterDetails.Names.Add(name);
+                    }
+                }
                 // set the enable state
                 CharacterDetails.IsEnabled = true;
                 // set the index if its under 0
@@ -105,9 +134,14 @@ namespace FFXIVTool.ViewModel
 			try
             {
                 CharacterDetails.Territoryxd.value = m.readInt(GAS(MemoryManager.Instance.TerritoryAddress, c.Territory));
-                baseAddr = MemoryManager.Add(MemoryManager.Instance.BaseAddress, eOffset);
-                if (CharacterDetails.GposeMode.Activated) baseAddr = MemoryManager.Instance.GposeAddress;
-                if (CharacterDetails.TargetMode.Activated) baseAddr = MemoryManager.Instance.TargetAddress;
+                if (CharacterDetails.GposeMode.Activated) baseAddr = MemoryManager.Add(MemoryManager.Instance.GposeEntityOffset, eOffset);
+                else baseAddr = MemoryManager.Add(MemoryManager.Instance.BaseAddress, eOffset);
+
+                if (CharacterDetails.TargetMode.Activated)
+                {
+                    if (CharacterDetails.GposeMode.Activated) baseAddr = MemoryManager.Instance.GposeAddress;
+                    else baseAddr = MemoryManager.Instance.TargetAddress;
+                }
                 var nameAddr = GAS(baseAddr, c.Name);
                 var fcnameAddr = GAS(baseAddr, c.FCTag);
                 var xdad = (byte)m.readByte(GAS(baseAddr, c.EntityType));

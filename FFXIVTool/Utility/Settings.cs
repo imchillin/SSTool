@@ -40,6 +40,7 @@ namespace FFXIVTool.Utility
         public string MusicOffset { get; set; }
         public string CharacterRenderOffset { get; set; }
         public string CharacterRenderOffset2 { get; set; }
+        public string GposeEntityOffset { get; set; }
         public CharacterOffsets Character { get; set; }
     }
 
