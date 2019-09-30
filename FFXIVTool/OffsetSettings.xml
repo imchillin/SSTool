@@ -84,14 +84,20 @@
     <FacePaint>17F8</FacePaint>
     <FacePaintColor>17F9</FacePaintColor>
 
-    <CamViewX>134</CamViewX>
-    <CamViewY>138</CamViewY>
+    <CamAngleX>134</CamAngleX>
+    <CamAngleY>138</CamAngleY>
     <CameraYAMin>150</CameraYAMin>
     <CameraYAMax>14C</CameraYAMax>
     <CameraHeight2>164</CameraHeight2>
-    <CamX>170</CamX>
-    <CamY>174</CamY>
-    <CamZ>178</CamZ>
+    
+    <CamViewX>170</CamViewX>
+    <CamViewY>174</CamViewY>
+    <CamViewZ>178</CamViewZ>
+    
+    <CamX>A0</CamX>
+    <CamY>A4</CamY>
+    <CamZ>A8</CamZ>
+    
     <Max>120</Max>
     <Min>11C</Min>
     <CZoom>118</CZoom>
@@ -205,6 +211,7 @@
     <GBlue>340</GBlue>
     <GGreens>33C</GGreens>
     <GRed>338</GRed>
-  </Character>
+  
+</Character>
   
 </Settings>

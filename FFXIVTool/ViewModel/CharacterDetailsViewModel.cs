@@ -386,12 +386,6 @@ namespace FFXIVTool.ViewModel
 
 				if (!CharacterDetails.EmoteSpeed1.freeze) CharacterDetails.EmoteSpeed1.value = (float)m.readFloat((GAS(baseAddr, c.EmoteSpeed1)));
 
-				if (!CharacterDetails.CamZ.freeze) CharacterDetails.CamZ.value = m.readFloat(GAS(baseAddr, c.CamZ));
-
-				if (!CharacterDetails.CamY.freeze) CharacterDetails.CamY.value = m.readFloat(GAS(baseAddr, c.CamY));
-
-				if (!CharacterDetails.CamX.freeze) CharacterDetails.CamX.value = m.readFloat(GAS(baseAddr, c.CamX));
-
 				if (!CharacterDetails.Job.freeze && !CharacterDetails.Job.Activated)
 				{
 					CharacterDetails.Job.value = (int)m.read2Byte(GAS(baseAddr, c.Job));
@@ -568,17 +562,23 @@ namespace FFXIVTool.ViewModel
 
 				if (!CharacterDetails.Max.freeze) CharacterDetails.Max.value = m.readFloat(GAS(MemoryManager.Instance.CameraAddress, c.Max));
 
-				if (!CharacterDetails.CamViewX.freeze) CharacterDetails.CamViewX.value = m.readFloat(GAS(MemoryManager.Instance.CameraAddress, c.CamViewX));
+				if (!CharacterDetails.CamAngleX.freeze) CharacterDetails.CamAngleX.value = m.readFloat(GAS(MemoryManager.Instance.CameraAddress, c.CamAngleX));
 
-				if (!CharacterDetails.CamViewY.freeze) CharacterDetails.CamViewY.value = m.readFloat(GAS(MemoryManager.Instance.CameraAddress, c.CamViewY));
+				if (!CharacterDetails.CamAngleY.freeze) CharacterDetails.CamAngleY.value = m.readFloat(GAS(MemoryManager.Instance.CameraAddress, c.CamAngleY));
 
-				if (!CharacterDetails.CamZ.freeze) CharacterDetails.CamZ.value = m.readFloat(GAS(baseAddr, c.CamZ));
+				if (!CharacterDetails.CamZ.freeze) CharacterDetails.CamZ.value = m.readFloat(GAS(MemoryManager.Instance.GposeAddress, c.CamZ));
 
-				if (!CharacterDetails.CamY.freeze) CharacterDetails.CamY.value = m.readFloat(GAS(baseAddr, c.CamY));
+				if (!CharacterDetails.CamY.freeze) CharacterDetails.CamY.value = m.readFloat(GAS(MemoryManager.Instance.GposeAddress, c.CamY));
 
-				if (!CharacterDetails.CamX.freeze) CharacterDetails.CamX.value = m.readFloat(GAS(baseAddr, c.CamX));
+				if (!CharacterDetails.CamX.freeze) CharacterDetails.CamX.value = m.readFloat(GAS(MemoryManager.Instance.GposeAddress, c.CamX));
 
-				if (!CharacterDetails.Weather.freeze) CharacterDetails.Weather.value = (byte)m.readByte(GAS(MemoryManager.Instance.WeatherAddress, c.Weather));
+                if (!CharacterDetails.CamViewZ.freeze) CharacterDetails.CamViewZ.value = m.readFloat(GAS(baseAddr, c.CamViewZ));
+
+                if (!CharacterDetails.CamViewY.freeze) CharacterDetails.CamViewY.value = m.readFloat(GAS(baseAddr, c.CamViewY));
+
+                if (!CharacterDetails.CamViewX.freeze) CharacterDetails.CamViewX.value = m.readFloat(GAS(baseAddr, c.CamViewX));
+
+                if (!CharacterDetails.Weather.freeze) CharacterDetails.Weather.value = (byte)m.readByte(GAS(MemoryManager.Instance.WeatherAddress, c.Weather));
 				CharacterDetails.TimeControl.value = (int)m.readInt(GAS(MemoryManager.Instance.TimeAddress, c.TimeControl));
 				if (!CharacterDetails.HeadPiece.Activated) CharacterDetails.HeadSlot.value = CharacterDetails.HeadPiece.value + "," + CharacterDetails.HeadV.value + "," + CharacterDetails.HeadDye.value;
 				if (!CharacterDetails.Chest.Activated) CharacterDetails.BodySlot.value = CharacterDetails.Chest.value + "," + CharacterDetails.ChestV.value + "," + CharacterDetails.ChestDye.value;

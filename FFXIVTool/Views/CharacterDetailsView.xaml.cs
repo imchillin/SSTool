@@ -512,11 +512,57 @@ namespace FFXIVTool.Views
 			CharacterDetails.EmoteSpeed2.value = 0;
 		}
 
-		#endregion
+        #endregion
 
-		#region Camera
+        #region Camera
+        private void CamViewX_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            if (CamViewX.IsMouseOver || CamViewX.IsKeyboardFocusWithin)
+            {
+                CamViewX.ValueChanged -= CamViewX_;
+                CamViewX.ValueChanged += CamViewX_;
+            }
+        }
+        private void CamViewX_(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            if (CamViewX.Value.HasValue)
+                if (CamViewX.IsMouseOver || CamViewX.IsKeyboardFocusWithin)
+                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewX), "float", CamViewX.Value.ToString());
+            CamViewX.ValueChanged -= CamViewX_;
+        }
 
-		private void CamX_SourceUpdated(object sender, DataTransferEventArgs e)
+        private void CamViewY_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            if (CamViewY.IsMouseOver || CamViewY.IsKeyboardFocusWithin)
+            {
+                CamViewY.ValueChanged -= CamViewY_;
+                CamViewY.ValueChanged += CamViewY_;
+            }
+        }
+        private void CamViewY_(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            if (CamViewY.Value.HasValue)
+                if (CamViewY.IsMouseOver || CamViewY.IsKeyboardFocusWithin)
+                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewY), "float", CamViewY.Value.ToString());
+            CamViewY.ValueChanged -= CamViewY_;
+        }
+
+        private void CamViewZ_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            if (CamViewZ.IsMouseOver || CamViewZ.IsKeyboardFocusWithin)
+            {
+                CamViewZ.ValueChanged -= CamViewZ_;
+                CamViewZ.ValueChanged += CamViewZ_;
+            }
+        }
+        private void CamViewZ_(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            if (CamViewZ.Value.HasValue)
+                if (CamViewZ.IsMouseOver || CamViewZ.IsKeyboardFocusWithin)
+                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewZ), "float", CamViewZ.Value.ToString());
+            CamViewZ.ValueChanged -= CamViewZ_;
+        }
+        private void CamX_SourceUpdated(object sender, DataTransferEventArgs e)
 		{
 			if (CamX.IsMouseOver || CamX.IsKeyboardFocusWithin)
 			{
@@ -529,7 +575,7 @@ namespace FFXIVTool.Views
 		{
 			if (CamX.Value.HasValue)
 				if (CamX.IsMouseOver || CamX.IsKeyboardFocusWithin)
-					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamX), "float", CamX.Value.ToString());
+					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, Settings.Instance.Character.CamX), "float", CamX.Value.ToString());
 			CamX.ValueChanged -= CamX_;
 		}
 
@@ -546,7 +592,7 @@ namespace FFXIVTool.Views
 		{
 			if (CamY.Value.HasValue)
 				if (CamY.IsMouseOver || CamY.IsKeyboardFocusWithin)
-					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamY), "float", CamY.Value.ToString());
+					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, Settings.Instance.Character.CamY), "float", CamY.Value.ToString());
 			CamY.ValueChanged -= CamY_;
 		}
 
@@ -563,7 +609,7 @@ namespace FFXIVTool.Views
 		{
 			if (CamZ.Value.HasValue)
 				if (CamZ.IsMouseOver || CamZ.IsKeyboardFocusWithin)
-					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamZ), "float", CamZ.Value.ToString());
+					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, Settings.Instance.Character.CamZ), "float", CamZ.Value.ToString());
 			CamZ.ValueChanged -= CamZ_;
 		}
 

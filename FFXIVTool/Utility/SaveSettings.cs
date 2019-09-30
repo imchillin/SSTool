@@ -58,8 +58,8 @@ namespace FFXIVTool.Utility
         public bool KeepDyes { get; set; } = true;
         public bool ReminderTool { get; set; } = false;
         public int ClassIndex { get; set; } = 0;
-        public float CamViewX { get; set; } = 0;
-        public float CamViewY { get; set; } = 0;
+        public float CamAngleX { get; set; } = 0;
+        public float CamAngleY { get; set; } = 0;
         public bool RotationSliders { get; set; } = true;
         public string CharacterAoBBytes { get; set; } = "";
         public string EquipmentBytes { get; set; } = "";

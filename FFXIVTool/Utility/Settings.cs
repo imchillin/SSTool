@@ -128,6 +128,11 @@ namespace FFXIVTool.Utility
         public string CamX { get; set; }
         public string CamY { get; set; }
         public string CamZ { get; set; }
+        public string CamViewX { get; set; }
+        public string CamViewY { get; set; }
+        public string CamViewZ { get; set; }
+        public string CamAngleX { get; set; }
+        public string CamAngleY { get; set; }
         public string Max { get; set; }
         public string Min { get; set; }
         public string CZoom { get; set; }
@@ -204,8 +209,6 @@ namespace FFXIVTool.Utility
         public string LipsG { get; set; }
         public string LipsB { get; set; }
         public string CameraUpDown { get; set; }
-        public string CamViewX { get; set; }
-        public string CamViewY { get; set; }
     }
 
     [Serializable]

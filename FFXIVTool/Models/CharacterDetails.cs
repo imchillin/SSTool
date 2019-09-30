@@ -116,6 +116,9 @@ namespace FFXIVTool.Models
         [JsonIgnore] public Address<float> CamX { get; set; }
         [JsonIgnore] public Address<float> CamY { get; set; }
         [JsonIgnore] public Address<float> CamZ { get; set; }
+        [JsonIgnore] public Address<float> CamViewX { get; set; }
+        [JsonIgnore] public Address<float> CamViewY { get; set; }
+        [JsonIgnore] public Address<float> CamViewZ { get; set; }
         [JsonIgnore] public Address<float> Max { get; set; }
         [JsonIgnore] public Address<float> Min { get; set; }
         [JsonIgnore] public Address<float> CZoom { get; set; }
@@ -245,8 +248,8 @@ namespace FFXIVTool.Models
         [JsonIgnore] public Address<byte> EmoteIsPlayerFrozen { get; set; }
         [JsonIgnore] public Address<float> AltCheckPlayerFrozen { get; set; }
         [JsonIgnore] public Address<int> MusicBGM { get; set; }
-        [JsonIgnore] public Address<float> CamViewX { get; set; }
-        [JsonIgnore] public Address<float> CamViewY { get; set; }
+        [JsonIgnore] public Address<float> CamAngleX { get; set; }
+        [JsonIgnore] public Address<float> CamAngleY { get; set; }
         [JsonIgnore] public Address<byte> DataHead { get; set; }
         [JsonIgnore] public float RotateX { get; set; }
 		[JsonIgnore] public float RotateY { get; set; }
@@ -255,8 +258,8 @@ namespace FFXIVTool.Models
 
 		public CharacterDetails()
         {
-            CamViewX = new Address<float>();
-            CamViewY = new Address<float>();
+            CamAngleX = new Address<float>();
+            CamAngleY = new Address<float>();
             MusicBGM = new Address<int>();
             AltCheckPlayerFrozen = new Address<float>();
             EmoteIsPlayerFrozen = new Address<byte>();
@@ -399,6 +402,9 @@ namespace FFXIVTool.Models
             CamX = new Address<float>();
             CamY = new Address<float>();
             CamZ = new Address<float>();
+            CamViewX = new Address<float>();
+            CamViewY = new Address<float>();
+            CamViewZ = new Address<float>();
             CameraHeight2 = new Address<float>();
             CharacterRender = new Address<float>();
             Wetness = new Address<float>();
