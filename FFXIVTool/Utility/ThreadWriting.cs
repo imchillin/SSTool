@@ -71,7 +71,11 @@ namespace FFXIVTool.Utility
                     if (CharacterDetails.Jaw.freeze && !CharacterDetails.Jaw.Activated) m.writeBytes(GAS(c.Jaw), CharacterDetails.Jaw.GetBytes());
                     if (CharacterDetails.TailorMuscle.freeze && !CharacterDetails.TailorMuscle.Activated) m.writeBytes(GAS(c.TailorMuscle), CharacterDetails.TailorMuscle.GetBytes());
                     if (CharacterDetails.FreezeFacial.Activated) m.writeMemory(GAS(c.FreezeFacial), "float", "0");
-                    if (CharacterDetails.DataPath.freeze && !CharacterDetails.DataPath.Activated) m.writeBytes(GAS(c.DataPath), CharacterDetails.DataPath.GetBytes());
+                    if (CharacterDetails.DataPath.freeze && !CharacterDetails.DataPath.Activated)
+                    {
+                        m.writeBytes(GAS(c.DataPath), CharacterDetails.DataPath.GetBytes());
+                        m.writeMemory(GAS(c.DataHead), "byte", "1");
+                    }
                     if (CharacterDetails.NPCName.freeze && !CharacterDetails.NPCName.Activated) m.writeBytes(GAS(c.NPCName), CharacterDetails.NPCName.GetBytes());
                     if (CharacterDetails.NPCModel.freeze && !CharacterDetails.NPCModel.Activated) m.writeBytes(GAS(c.NPCModel), CharacterDetails.NPCModel.GetBytes());
                     if (CharacterDetails.Name.freeze)
