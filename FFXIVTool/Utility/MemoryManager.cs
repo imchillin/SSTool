@@ -96,6 +96,16 @@ namespace FFXIVTool.Utility
             return (long.Parse(a, NumberStyles.HexNumber) + long.Parse(b, NumberStyles.HexNumber)).ToString("X");
         }
 
+		public static string GetAddressString(string baseAddr, params string[] addr)
+		{
+			var ret = baseAddr + ",";
+
+			foreach (var a in addr)
+				ret += a + ",";
+
+			return ret.TrimEnd(',');
+		}
+
         public static string GetAddressString(params string[] addr)
         {
             var ret = "";

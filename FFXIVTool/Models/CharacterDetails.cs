@@ -232,7 +232,13 @@ namespace FFXIVTool.Models
         [JsonIgnore] public Address<int> MusicBGM { get; set; }
         [JsonIgnore] public Address<float> CamViewX { get; set; }
         [JsonIgnore] public Address<float> CamViewY { get; set; }
-        public CharacterDetails()
+
+		[JsonIgnore] public float RotateX { get; set; }
+		[JsonIgnore] public float RotateY { get; set; }
+		[JsonIgnore] public float RotateZ { get; set; }
+		[JsonIgnore] public bool RotateFreeze { get; set; }
+
+		public CharacterDetails()
         {
             CamViewX = new Address<float>();
             CamViewY = new Address<float>();
