@@ -49,6 +49,7 @@ namespace FFXIVTool.Views
 			timer.Start();
             if(SaveSettings.Default.RotationSliders == true)
             {
+                RotSliderButton.IsChecked = true;
                 RotationUpDown.Visibility = Visibility.Hidden;
                 RotationUpDown.IsEnabled = false;
                 RotationUpDown2.Visibility = Visibility.Hidden;
