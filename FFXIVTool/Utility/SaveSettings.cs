@@ -62,6 +62,8 @@ namespace FFXIVTool.Utility
         public string EquipmentBytes { get; set; } = "";
         public WepTuple MainHandQuads { get; set; }
         public WepTuple OffHandQuads { get; set; }
+        public float CamViewX { get; set; } = 0;
+        public float CamViewY { get; set; } = 0;
         public List<ExdCsvReader.Emote> FavoriteEmotes { get; set; } = new List<ExdCsvReader.Emote>();
     }
 }

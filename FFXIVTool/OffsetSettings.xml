@@ -82,8 +82,9 @@
     <RBust>17F7</RBust>
     <FacePaint>17F8</FacePaint>
     <FacePaintColor>17F9</FacePaintColor>
-    
-    
+
+    <CamViewX>134</CamViewX>
+    <CamViewY>138</CamViewY>
     <CameraYAMin>150</CameraYAMin>
     <CameraYAMax>14C</CameraYAMax>
     <CameraHeight2>164</CameraHeight2>

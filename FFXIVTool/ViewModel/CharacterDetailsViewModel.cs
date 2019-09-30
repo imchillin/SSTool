@@ -520,6 +520,10 @@ namespace FFXIVTool.ViewModel
 
                 if (!CharacterDetails.Max.freeze) CharacterDetails.Max.value = MemoryManager.Instance.MemLib.readFloat(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.Max));
 
+                if (!CharacterDetails.CamViewX.freeze) CharacterDetails.CamViewX.value = MemoryManager.Instance.MemLib.readFloat(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CamViewX));
+
+                if (!CharacterDetails.CamViewY.freeze) CharacterDetails.CamViewY.value = MemoryManager.Instance.MemLib.readFloat(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CamViewY));
+
                 if (!CharacterDetails.CamZ.freeze) CharacterDetails.CamZ.value = MemoryManager.Instance.MemLib.readFloat(MemoryManager.GetAddressString(baseAddr, Settings.Instance.Character.CamZ));
 
                 if (!CharacterDetails.CamY.freeze) CharacterDetails.CamY.value = MemoryManager.Instance.MemLib.readFloat(MemoryManager.GetAddressString(baseAddr, Settings.Instance.Character.CamY));

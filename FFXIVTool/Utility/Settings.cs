@@ -202,6 +202,8 @@ namespace FFXIVTool.Utility
         public string LipsG { get; set; }
         public string LipsB { get; set; }
         public string CameraUpDown { get; set; }
+        public string CamViewX { get; set; }
+        public string CamViewY { get; set; }
     }
 
     [Serializable]

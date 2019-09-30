@@ -1068,5 +1068,49 @@ namespace FFXIVTool.Views
             System.Threading.Tasks.Task.Delay(50).Wait();
             MemoryManager.Instance.MemLib.writeBytes(MemoryManager.Instance.CharacterRenderAddress2, Old);
         }
+        private void CamViewVC(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            if (CamViewY.Value.HasValue)
+            {
+                MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CamViewY), "float", CamViewY.Value.ToString());
+            }
+            CamViewY.ValueChanged -= CamViewVC;
+        }
+        private void CamViewY_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+            if (CamViewY.IsMouseOver || CamViewY.IsKeyboardFocusWithin)
+            {
+                CamViewY.ValueChanged -= CamViewVC;
+                CamViewY.ValueChanged += CamViewVC;
+            }
+        }
+        private void CamViewVC2(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            if (CamViewX.Value.HasValue)
+            {
+                MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CamViewX), "float", CamViewX.Value.ToString());
+            }
+            CamViewX.ValueChanged -= CamViewVC2;
+        }
+        private void CamViewX_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+            if (CamViewX.IsMouseOver || CamViewX.IsKeyboardFocusWithin)
+            {
+                CamViewX.ValueChanged -= CamViewVC2;
+                CamViewX.ValueChanged += CamViewVC2;
+            }
+        }
+
+        private void SaveCamView_Click(object sender, RoutedEventArgs e)
+        {
+            SaveSettings.Default.CamViewX = (float)CamViewX.Value;
+            SaveSettings.Default.CamViewY = (float)CamViewY.Value;
+        }
+
+        private void LoadCamView_Click(object sender, RoutedEventArgs e)
+        {
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CamViewX), "float", SaveSettings.Default.CamViewX.ToString());
+            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CamViewY), "float", SaveSettings.Default.CamViewY.ToString());
+        }
     }
 }

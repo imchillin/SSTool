@@ -155,6 +155,8 @@ namespace FFXIVTool.Utility
                     if (CharacterDetails.Max.freeze) MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.Max), CharacterDetails.Max.GetBytes());
                     if (CharacterDetails.Min.freeze) MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.Min), CharacterDetails.Min.GetBytes());
                     if (CharacterDetails.CZoom.freeze) MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CZoom), CharacterDetails.CZoom.GetBytes());
+                    if (CharacterDetails.CamViewX.freeze) MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CamViewX), CharacterDetails.CamViewX.GetBytes());
+                    if (CharacterDetails.CamViewY.freeze) MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.CameraAddress, Settings.Instance.Character.CamViewY), CharacterDetails.CamViewY.GetBytes());
 
                     if (CharacterDetails.Job.freeze && !CharacterDetails.Job.Activated)
                     {
