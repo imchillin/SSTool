@@ -45,6 +45,11 @@
                 <RotateTransform Angle="-90" />
             </Button.LayoutTransform>
         </Button>
+        <Button x:Name="LoadCamView" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Load" HorizontalAlignment="Left" Margin="318,321,0,0" VerticalAlignment="Top" Width="61" Height="23" FontSize="12" Click="LoadCamView_Click" RenderTransformOrigin="0.5,0.5">
+            <Button.LayoutTransform>
+                <RotateTransform Angle="-90" />
+            </Button.LayoutTransform>
+        </Button>
         <Label Content="Brightness:" HorizontalAlignment="Left" Margin="410,55,0,0" VerticalAlignment="Top" FontSize="13.25" Height="28"/>
         <Slider x:Name="BrightSlider" Value="{Binding Path=CharacterDetails.Brightness.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="488,55,0,0" VerticalAlignment="Top" Width="100" Height="28" Maximum="1" Minimum="-1" LargeChange="0.2" TickFrequency="0.1" IsSnapToTickEnabled="True" SourceUpdated="BrightSlider_SourceUpdated" TickPlacement="BottomRight"/>
         <mah:NumericUpDown x:Name="BrightUpDown" Value="{Binding Path=CharacterDetails.Brightness.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="593,55,0,0" VerticalAlignment="Top" Width="142" Maximum="1" Minimum="-1" Speedup="False" StringFormat="F5" Interval="0.1" SourceUpdated="BrightSlider_SourceUpdated" BorderThickness="0,0,0,1" BorderBrush="#8A000000" Background="{x:Null}" Height="28"/>
@@ -154,10 +159,5 @@
         <Views:WorldFlyOut x:Name="WorldFlyout" Width="667" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" Margin="0" Height="530" Padding="0"/>
         <Button x:Name="SearchBGM" Content="View" materialDesign:ShadowAssist.ShadowDepth="Depth3" HorizontalAlignment="Left" Margin="1025,377,0,0" VerticalAlignment="Top" Width="80" Click="SearchBGM_Click" Height="40"/>
         <CheckBox IsChecked="{Binding Path=CharacterDetails.MusicBGM.freeze}" x:Name="BGMCheckBox" Content="Freeze BGM" HorizontalAlignment="Left" Margin="925,345,0,0" VerticalAlignment="Top" Width="94" Height="28"/>
-        <Button x:Name="LoadCamView" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Load" HorizontalAlignment="Left" Margin="318,321,0,0" VerticalAlignment="Top" Width="61" Height="23" FontSize="12" Click="LoadCamView_Click" RenderTransformOrigin="0.5,0.5">
-            <Button.LayoutTransform>
-                <RotateTransform Angle="-90" />
-            </Button.LayoutTransform>
-        </Button>
     </Grid>
 </UserControl>
