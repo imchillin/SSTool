@@ -38,7 +38,9 @@ namespace FFXIVTool
         Version version = Assembly.GetExecutingAssembly().GetName().Version;
         public MainWindow()
         {
-			
+			// Call the update method.
+			UpdateProgram();
+
             ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
             if (!File.Exists(@"./OffsetSettings.xml"))
             {
@@ -97,6 +99,33 @@ namespace FFXIVTool
             }
 			InitializeComponent();
         }
+
+		private void UpdateProgram()
+		{
+			// Delete hte old updater file.
+			if (File.Exists(".SSTU.old"))
+				File.Delete(".SSTU.old");
+			try
+			{
+				Process.Start("SSToolUpdater.exe");
+			}
+			catch (Exception)
+			{
+				var result = MessageBox.Show(
+					"Couldn't run the updater. Would you like to visit the releases page to check for a new update manually?",
+					"SSTool", 
+					MessageBoxButton.YesNo, 
+					MessageBoxImage.Error
+				);
+
+				// Launch the web browser to the latest release.
+				if (result == MessageBoxResult.Yes)
+				{
+					Process.Start("https://github.com/imchillin/SSTool/releases/latest");
+				}
+			}
+		}
+
         public bool AdminNeeded()
         {
             try

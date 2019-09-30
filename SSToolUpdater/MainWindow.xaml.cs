@@ -4,6 +4,7 @@ using Markdig;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -22,6 +23,8 @@ namespace SSToolUpdater
 		private readonly JObject json;
 		public string ApplicationPath;
 		private readonly string temp = Path.Combine(Path.GetTempPath(), "SSTool");
+		public int ProgressValue { get; set; }
+		private BackgroundWorker bw;
 
 		public MainWindow()
 		{
@@ -30,11 +33,10 @@ namespace SSToolUpdater
 			DataContext = this;
 
 			// Initialize variable for the current PP version.
-			Version CurrentVersion;
-			var forceCheckUpdate = true;
+			bool forceCheckUpdate = false;
 
 			// Get the current version of the application.
-			var result = Version.TryParse(FileVersionInfo.GetVersionInfo(Path.Combine(Environment.CurrentDirectory, "FFXIVTool.exe")).FileVersion, out CurrentVersion);
+			var result = Version.TryParse(FileVersionInfo.GetVersionInfo(Path.Combine(Environment.CurrentDirectory, "FFXIVTool.exe")).FileVersion, out Version CurrentVersion);
 			if (!result)
 			{
 				MessageBox.Show(
@@ -76,13 +78,14 @@ namespace SSToolUpdater
 						}
 						else
 						{
-							MessageBox.Show("You're up to date!", "SSTool Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-							Application.Current.Shutdown();
+							// MessageBox.Show("You're up to date!", "SSTool Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+							Close();
 						}
 					}
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
+					MessageBox.Show(ex.Message);
 					var response = MessageBox.Show(
 						"Failed to fetch the latest version! Would you like to visit the page manually to check for the latest release manually?",
 						"Paisley Park Updater",
@@ -115,69 +118,106 @@ namespace SSToolUpdater
 		/// <param name="e"></param>
 		private void OnInstallClick(object sender, RoutedEventArgs e)
 		{
-			// Use web client to download the update.
-			using (var wc = new WebClient())
+			Dispatcher.BeginInvoke(new Action(() =>
 			{
-				// Ensure the temp path exists.
-				ValidateTempPath();
-
-				// Temporary Paisley Park zip path.
-				var tPPZip = Path.Combine(temp, "SSTool.zip");
-
-				// Delete existing zip file.
-				if (File.Exists(tPPZip))
-					File.Delete(tPPZip);
-
-				// Download the file. 
-				wc.DownloadFile(new Uri(json["assets"][0]["browser_download_url"].Value<string>()), tPPZip);
-
-				try
+				// Use web client to download the update.
+				using (var wc = new WebClient())
 				{
-					// Close Paisley Park if it's running.
-					var pp = Process.GetProcessesByName("FFXIVTool")[0];
-					// Close the mainwindow shutting down the process.
-					pp.CloseMainWindow();
-					// Try to wait for it to shut down gracefully.
-					if (!pp.WaitForExit(10000))
-					{
-						// If the application is still alive.
-						MessageBox.Show(
-							"SSTool can't be shutdown gracefully. You may need to restart FFXIV if it's currently open after the update is completed.",
-							"SSTool Updater",
-							MessageBoxButton.OK,
-							MessageBoxImage.Warning
-						);
-						// Kill the process.
-						pp.Kill();
-					}
+					// Ensure the temp path exists.
+					ValidateTempPath();
+
+					// Temporary Paisley Park zip path.
+					var tPPZip = Path.Combine(temp, "SSTool.zip");
+
+					// Delete existing zip file.
+					if (File.Exists(tPPZip))
+						File.Delete(tPPZip);
+
+					// Download the file. 
+					wc.DownloadFileAsync(new Uri(json["assets"][0]["browser_download_url"].Value<string>()), tPPZip);
+
+					// When the download changes.
+					wc.DownloadProgressChanged += UpdateDownloadProgressChanged;
+					wc.DownloadFileCompleted += DownloadFileCompleted;
 				}
-				catch (Exception) { }
+			}), System.Windows.Threading.DispatcherPriority.ContextIdle);
+		}
 
-				// Temporary name.
-				var tempName = ".SSTU.old";
+		private void DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+		{
+			// Temporary Paisley Park zip path.
+			var tPPZip = Path.Combine(temp, "SSTool.zip");
 
-				// Rename the updater file to allow for overwrite.
-				if (File.Exists(Path.Combine(Environment.CurrentDirectory, tempName)))
-					File.Delete(Path.Combine(Environment.CurrentDirectory, tempName));
-				File.Move(Path.Combine(Environment.CurrentDirectory, "SSToolUpdater.exe"), Path.Combine(Environment.CurrentDirectory, tempName));
+			// Create a background worker.
+			bw = new BackgroundWorker() { WorkerReportsProgress = true };
 
-				// Unzip and overwrite all files.
-				using (var zip = ZipFile.Read(tPPZip))
+			// Reset the download progress.
+			DownloadProgress.Value = 0;
+			// Add the work loop.
+			bw.DoWork += UnzipWorker;
+			// Add the progress changed listener.
+			bw.ProgressChanged += (s, _e) => Dispatcher.Invoke(() => DownloadProgress.Value = _e.ProgressPercentage);
+
+			try
+			{
+				// Close Paisley Park if it's running.
+				var pp = Process.GetProcessesByName("FFXIVTool")[0];
+				// Close the mainwindow shutting down the process.
+				pp.CloseMainWindow();
+				// Try to wait for it to shut down gracefully.
+				if (!pp.WaitForExit(10000))
 				{
-					foreach (var z in zip)
-						z.Extract(Environment.CurrentDirectory, ExtractExistingFileAction.OverwriteSilently);
+					// Kill the process.
+					pp.Kill();
 				}
+			}
+			catch (Exception) { }
 
-				// Inform the user to manually start Paisley Park again.
-				// MessageBox.Show("Update complete! Please start SSTool to use the latest version!", "SSTool Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-				Task.Delay(5000).ContinueWith(_ =>
-				{
-					Process.Start(Path.Combine(Environment.CurrentDirectory, "FFXIVTool.exe"));
-				});
+			// Temporary name.
+			var tempName = ".SSTU.old";
+
+			// Rename the updater file to allow for overwrite.
+			if (File.Exists(Path.Combine(Environment.CurrentDirectory, tempName)))
+				File.Delete(Path.Combine(Environment.CurrentDirectory, tempName));
+			File.Move(Path.Combine(Environment.CurrentDirectory, "SSToolUpdater.exe"), Path.Combine(Environment.CurrentDirectory, tempName));
+
+			// Run the worker.
+			bw.RunWorkerAsync(tPPZip);
+
+			bw.RunWorkerCompleted += (_, __) =>
+			{
+				// Start the tool.
+				Process.Start(Path.Combine(Environment.CurrentDirectory, "FFXIVTool.exe"));
+
+				// Dispose of the worker.
+				bw.Dispose();
 
 				// Shutdown the application we're done here.
-				Application.Current.Shutdown();
+				Close();
+			};
+		}
+
+		private void UnzipWorker(object sender, DoWorkEventArgs e)
+		{
+			// Unzip and overwrite all files.
+			using (var zip = ZipFile.Read(e.Argument as string))
+			{
+				for (var i = 0; i < zip.Count; i++)
+				{
+					zip[i].Extract(Environment.CurrentDirectory, ExtractExistingFileAction.OverwriteSilently);
+					bw.ReportProgress((i + 1) / zip.Count * 100);
+				}
 			}
+		}
+
+		/// <summary>
+		/// Progress from webclient updates.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void UpdateDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+		{
+			DownloadProgress.Value = e.ProgressPercentage;
 		}
 
 		/// <summary>
