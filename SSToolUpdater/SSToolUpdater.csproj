@@ -126,14 +126,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Costura.Fody">
-      <Version>4.1.0</Version>
+      <Version>3.3.3</Version>
     </PackageReference>
     <PackageReference Include="DotNetZip">
       <Version>1.13.4</Version>
     </PackageReference>
     <PackageReference Include="Fody">
-      <Version>6.0.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <Version>4.2.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
