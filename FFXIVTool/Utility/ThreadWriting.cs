@@ -76,7 +76,11 @@ namespace FFXIVTool.Utility
                         m.writeBytes(GAS(c.DataPath), CharacterDetails.DataPath.GetBytes());
                         if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
                         {
-                            m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+                            if (CharacterDetails.DataPath.value != 301)
+                            {
+                                m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+                            }
+                            else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
                         }
                         else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
                     }
