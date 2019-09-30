@@ -53,10 +53,11 @@ namespace FFXIVTool
         }
         public MainWindow()
         {
+			/*
             ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
             if (File.Exists(exepath + "\\SSToolsUpdater.exe"))
             {
-                Uri urlv = new Uri("https://raw.githubusercontent.com/KrisanThyme/CMTool/master/version.txt");
+                Uri urlv = new Uri("https://raw.githubusercontent.com/imchillin/SSTool/master/version.txt");
                 WebClient wc2 = new WebClient();
                 wc2.DownloadFileAsync(urlv, exepath + "\\version.txt");
                 wc2.DownloadFileCompleted += subwc_DownloadFileCompleted;
@@ -68,7 +69,7 @@ namespace FFXIVTool
                     string xmlStr;
                     using (var wc = new WebClient())
                     {
-                        xmlStr = wc.DownloadString(@"https://raw.githubusercontent.com/KrisanThyme/CMTool/master/FFXIVTool/OffsetSettings.xml");
+                        xmlStr = wc.DownloadString(@"https://raw.githubusercontent.com/imchillin/SSTool/master/FFXIVTool/OffsetSettings.xml");
                     }
                     var xmlDoc = new System.Xml.XmlDocument();
                     xmlDoc.LoadXml(xmlStr);
@@ -80,7 +81,7 @@ namespace FFXIVTool
                     Close();
                     return;
                 }
-            }
+            }*/
             List<ProcessLooker.Game> GameList = new  List<ProcessLooker.Game>();
             Process[] processlist = Process.GetProcesses();
             Processcheck = 0;
@@ -140,7 +141,7 @@ namespace FFXIVTool
         }
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Title = "Concept Matrix (CMTool) v" + version;
+            Title = $"SSTool v{version} By: LeonBlade, Johto and Krisan Thyme";
             DataContext = new MainViewModel();
             var settings = SaveSettings.Default;
             var accentColor = settings.Accent;
@@ -152,21 +153,21 @@ namespace FFXIVTool
             this.Topmost = settings.TopApp;
 			// toggle status
 			(DataContext as MainViewModel).ToggleStatus(settings.TopApp);
-//            if (settings.ReminderTool == false)
-//            {
-//                var msgResult = System.Windows.MessageBox.Show("This is reminder to anyone who may not know that we have a discord or isn't in our discord to know that we have one for reports/support/help and general discussion! If you wish to join click Yes, otherwise click No.", "Reminder!", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
-//                if (msgResult == MessageBoxResult.Yes)
-//                {
-//                     
-//                    System.Diagnostics.Process.Start("https://discord.gg/hq3DnBa");
-//                    SaveSettings.Default.ReminderTool = true;
-//                }
-//                else
-//                {
-//                    SaveSettings.Default.ReminderTool = true;
-//                }
-//            }
-            CharacterDetailsView._exdProvider.MakeCharaMakeFeatureList();
+			if (settings.ReminderTool == false)
+			{
+				var msgResult = System.Windows.MessageBox.Show("This is reminder to anyone who may not know that we have a discord or isn't in our discord to know that we have one for reports/support/help and general discussion! If you wish to join click Yes, otherwise click No.", "Reminder!", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+				if (msgResult == MessageBoxResult.Yes)
+				{
+
+					System.Diagnostics.Process.Start("https://discord.gg/hq3DnBa");
+					SaveSettings.Default.ReminderTool = true;
+				}
+				else
+				{
+					SaveSettings.Default.ReminderTool = true;
+				}
+			}
+			CharacterDetailsView._exdProvider.MakeCharaMakeFeatureList();
             CharacterDetailsView._exdProvider.MakeCharaMakeFeatureFacialList();
             CharacterDetailsView._exdProvider.MakeTerritoryTypeList();
         }
@@ -224,9 +225,9 @@ namespace FFXIVTool
             }
         }
 
-        private void DiscordButton_Click(object sender, RoutedEventArgs e)
+        private void TwitterButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://twitter.com/KrisanThyme");
+            Process.Start("https://twitter.com/ffxivsstool");
         }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
@@ -1007,7 +1008,7 @@ namespace FFXIVTool
             ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
             if (File.Exists(exepath + "\\SSToolsUpdater.exe"))
             {
-                Uri urlv = new Uri("https://raw.githubusercontent.com/KrisanThyme/CMTool/master/version.txt");
+                Uri urlv = new Uri("https://raw.githubusercontent.com/imchillin/SSTool/master/version.txt");
                 WebClient wc2 = new WebClient();
                 wc2.DownloadFileAsync(urlv, exepath + "\\version.txt");
                 wc2.DownloadFileCompleted += subwc_DownloadFileCompleted;
@@ -1107,7 +1108,7 @@ namespace FFXIVTool
                 CharacterDetailsViewModel.baseAddr = MemoryManager.Add(MemoryManager.Instance.BaseAddress, CharacterDetailsViewModel.eOffset);
         }
 
-        private void ActualDiscordButton_Click(object sender, RoutedEventArgs e)
+        private void DiscordButton_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("https://discord.gg/hq3DnBa");
         }

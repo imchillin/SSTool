@@ -380,6 +380,10 @@
       <Project>{8a7d65eb-3de3-4631-b286-cc73a3126002}</Project>
       <Name>SaintCoinach</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SSToolsUpdater\SSToolsUpdater.csproj">
+      <Project>{67cf62f2-4ee4-4517-8826-5fd6dc5cea6a}</Project>
+      <Name>SSToolsUpdater</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
