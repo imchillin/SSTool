@@ -1036,5 +1036,27 @@ namespace FFXIVTool.Views
 
 			}
 		}
+
+        private void DataPathBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataPathBox.IsKeyboardFocusWithin || DataPathBox.IsMouseOver)
+            {
+                if (DataPathBox.SelectedIndex >= 0)
+                {
+                    CharacterDetails.DataPath.value = short.Parse(((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
+                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataPath), "int", ((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
+                    if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
+                    {
+                        if (CharacterDetails.DataPath.value != 301)
+                        {
+                            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+                        }
+                        else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+
+                    }
+                    else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+                }
+            }
+        }
     }
 }
