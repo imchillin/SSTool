@@ -101,6 +101,13 @@ namespace FFXIVTool.ViewModel
             {
                 ViewTime.ClanBox.Items.Add(CharacterDetailsView._exdProvider.Tribes[i].Name);
             }
+            var TitleSheet = MainWindow.Realm.GameData.GetSheet<SaintCoinach.Xiv.Title>();
+            foreach (SaintCoinach.Xiv.Title title in TitleSheet)
+            {
+                string Title = title.Feminine;
+                if (Title.Length <= 0) Title = "No Title";
+                ViewTime.TitleBox.Items.Add(Title);
+            }
         }
        private void LoadSettings()
         {
