@@ -1048,11 +1048,26 @@ namespace FFXIVTool.Views
                     if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
                     {
                         if (CharacterDetails.DataPath.value != 301)
+                            if (CharacterDetails.DataPath.value == 301)
+                            {
+                                MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+                                MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+                            }
+                            else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+                        else if (CharacterDetails.DataPath.value == 401)
                         {
-                            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+                            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
                         }
-                        else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
-
+                        else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+                    }
+                    else
+                        if (CharacterDetails.DataPath.value == 101)
+                    {
+                        MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+                    }
+                    else if (CharacterDetails.DataPath.value == 201)
+                    {
+                        MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
                     }
                     else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
                 }
