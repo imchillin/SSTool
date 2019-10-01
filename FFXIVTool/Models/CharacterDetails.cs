@@ -77,9 +77,14 @@ namespace FFXIVTool.Models
         public Address<float> BustX { get; set; }
         public Address<float> BustY { get; set; }
         public Address<float> BustZ { get; set; }
+
+		// Position.
         [JsonIgnore] public Address<float> X { get; set; }
         [JsonIgnore] public Address<float> Y { get; set; }
         [JsonIgnore] public Address<float> Z { get; set; }
+		// Advance move tool.
+		[JsonIgnore] public bool AdvancedMove { get; set; } = false;
+
         [JsonIgnore] public Address<byte> Head { get; set; }
         [JsonIgnore] public Address<byte> Hair { get; set; }
         [JsonIgnore] public Address<byte> TailType { get; set; }

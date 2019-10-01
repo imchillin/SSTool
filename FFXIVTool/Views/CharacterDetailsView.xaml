@@ -170,8 +170,8 @@
         <Slider Name="RotationSlider2" Value="{Binding CharacterDetails.RotateY, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="938,223,0,0" VerticalAlignment="Top" Width="145" Minimum="-360" Maximum="360" TickFrequency="0.5"  Visibility="Hidden" IsEnabled="False" SourceUpdated="RotationUpDown2_SourceUpdated" LargeChange="0.5" IsMoveToPointEnabled="True" Delay="1501" IsSnapToTickEnabled="True"/>
         <Slider Name="RotationSlider3" Value="{Binding CharacterDetails.RotateZ, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="938,254,0,0" VerticalAlignment="Top" Width="145" Minimum="-360" Maximum="360" TickFrequency="0.5"  VerticalContentAlignment="Center" Visibility="Hidden" IsEnabled="False" SourceUpdated="RotationUpDown3_SourceUpdated"/>
 
-        <ToggleButton Name="RotSliderButton" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="1040,278,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" Checked="RotSliderButton_Checked" Unchecked="RotSliderButton_Unchecked" />
-        <Label Content="Enable Sliders:" HorizontalAlignment="Left" Margin="938,278,0,0" VerticalAlignment="Top" Height="28"/>
+        <ToggleButton Name="RotSliderButton" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="1073,284,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" Checked="RotSliderButton_Checked" Unchecked="RotSliderButton_Unchecked" />
+        <Label Content="Rotation Sliders:" HorizontalAlignment="Left" Margin="962,284,0,0" VerticalAlignment="Top" Height="28"/>
 
         <CheckBox IsChecked="{Binding CharacterDetails.X.freeze}" Content="X Position:" HorizontalAlignment="Left" Margin="545,215,0,0" VerticalAlignment="Top" Height="28"/>
         <mah:NumericUpDown x:Name="PosX" Value="{Binding CharacterDetails.X.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="654,215,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Interval="0.01" SourceUpdated="PosX_SourceUpdated" TextAlignment="Right" MinWidth="0" MinHeight="0" Height="28" FontSize="11.35" FontFamily="Segoe UI"/>
@@ -209,10 +209,10 @@
             </Views:RotationView>
         </Border>
         <Label Content="Realtime Rotation:" HorizontalAlignment="Left" Margin="945,-4,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding CharacterDetails.Wetness.Activated}" Margin="921,312,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" BorderThickness="1" />
-        <Label Content="Wet Effect:" HorizontalAlignment="Left" Margin="844,312,0,0" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="0" Height="28"/>
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding CharacterDetails.SWetness.Activated}" Margin="1055,312,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" />
-        <Label Content="Soaked Effect:" HorizontalAlignment="Left" Margin="960,312,0,0" VerticalAlignment="Top" Height="28"/>
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding CharacterDetails.Wetness.Activated}" Margin="928,312,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" BorderThickness="1" />
+        <Label Content="Wet Effect:" HorizontalAlignment="Left" Margin="849,312,0,0" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="0" Height="28"/>
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding CharacterDetails.SWetness.Activated}" Margin="1073,312,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" />
+        <Label Content="Soaked Effect:" HorizontalAlignment="Left" Margin="975,312,0,0" VerticalAlignment="Top" Height="28"/>
         <CheckBox IsChecked="{Binding CharacterDetails.Emote.freeze}" Content="Idle Anim:" HorizontalAlignment="Left" Margin="545,375,0,0" VerticalAlignment="Top" Height="28"/>
         <mah:NumericUpDown x:Name="EmoteBox" Maximum="7736" Minimum="1" Value="{Binding CharacterDetails.Emote.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="654,375,0,0" VerticalAlignment="Top" Width="115" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" TextAlignment="Right" NumericInputMode="Numbers" SourceUpdated="EmoteBox_SourceUpdated" Height="28" FontFamily="Segoe UI" FontSize="11.35"/>
         <Button x:Name="EmoteSearch" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="View" HorizontalAlignment="Left" Margin="773,375,0,0" VerticalAlignment="Top" Width="65" Height="28" Click="EmoteSearch_Click"/>
@@ -271,6 +271,11 @@
         <Border BorderBrush="Black" BorderThickness="1,1,1,0" HorizontalAlignment="Left" Height="93" Margin="844,437,-1,0" VerticalAlignment="Top" Width="272"/>
         <Label Content="Gpose only" HorizontalAlignment="Left" Height="42" Margin="770,468,0,0" VerticalAlignment="Top" Width="80"/>
         <Label Content=" → " HorizontalAlignment="Left" Height="50" Margin="779,465,0,0" VerticalAlignment="Top" Width="80" FontSize="36"/>
-        <Views:SpecialControl x:Name="SpecialControl" Width="582" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" Margin="534,0,0.5,0" Height="530"/>
-    </Grid>
+
+		<!-- Advanced Move Toggle -->
+        <Label Content="Adv. Move:" HorizontalAlignment="Left" Margin="848,284,0,0" VerticalAlignment="Top" Height="28"/>
+		<ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding CharacterDetails.AdvancedMove}" Click="AdvancedMoveToggleClick" Margin="928,284,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" BorderThickness="1" />
+
+		<Views:SpecialControl x:Name="SpecialControl" Width="582" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" Margin="534,0,0.5,0" Height="530"/>
+	</Grid>
 </UserControl>

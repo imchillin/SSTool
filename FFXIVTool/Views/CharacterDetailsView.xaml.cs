@@ -341,49 +341,125 @@ namespace FFXIVTool.Views
 
 		#region Position
 
-		private void PosX_SourceUpdated(object sender, DataTransferEventArgs e)
+		private void PosX_SourceUpdated(object sender, DataTransferEventArgs e) => Pos_SourceUpdated(PosX, XPosUpdate);
+		private void PosY_SourceUpdated(object sender, DataTransferEventArgs e) => Pos_SourceUpdated(PosY, YPosUpdate);
+		private void PosZ_SourceUpdated(object sender, DataTransferEventArgs e) => Pos_SourceUpdated(PosZ, ZPosUpdate);
+
+		/// <summary>
+		/// This thing exists because of the way this broken ass system works, the flag is purely to not trigger multiple source update loops.
+		/// </summary>
+		private bool PosAdvancedWorking = false;
+
+		private void Pos_SourceUpdated(MahApps.Metro.Controls.NumericUpDown control, RoutedPropertyChangedEventHandler<double?> handler)
 		{
-			if (PosX.IsKeyboardFocusWithin || PosX.IsMouseOver)
+			if (CharacterDetails.AdvancedMove && control.Name != PosY.Name)
 			{
-				PosX.ValueChanged -= XPos2_V;
-				PosX.ValueChanged += XPos2_V;
+				// Ensure not in an existing event.
+				if (!PosAdvancedWorking)
+				{
+					control.ValueChanged -= AdvancedPosUpdate;
+					control.ValueChanged += AdvancedPosUpdate;
+				}
+			}
+			else if (control.IsKeyboardFocusWithin || control.IsMouseOver)
+			{
+				control.ValueChanged -= handler;
+				control.ValueChanged += handler;
 			}
 		}
-		private void XPos2_V(object sender, RoutedPropertyChangedEventArgs<double?> e)
+
+		private const double Deg2Rad = (Math.PI * 2) / 360;
+
+		private void AdvancedPosUpdate(object sender, RoutedPropertyChangedEventArgs<double?> e)
+		{
+			// Get the control from sender.
+			var control = (sender as MahApps.Metro.Controls.NumericUpDown);
+
+			// Remove the event handler (?)
+			control.ValueChanged -= AdvancedPosUpdate;
+
+			// Flag that we're working to avoid updates later.
+			PosAdvancedWorking = true;
+
+			// Instantiate x and z floats for the vector.
+			var x = 0.0;
+			var z = 0.0;
+
+			double oldX = 0;
+			double oldZ = 0;
+
+			// Set the appropriate axis based on which control this is.
+			if (control.Name == PosX.Name)
+			{
+				z = (double)(e.NewValue - e.OldValue);
+				oldX = e.OldValue ?? 0;
+				oldZ = PosZ.Value ?? 0;
+			}
+			else
+			{
+				x = (double)(e.NewValue - e.OldValue);
+				oldX = PosX.Value ?? 0;
+				oldZ = e.OldValue ?? 0;
+			}
+
+			// Get the angle of the position.
+			var degrees = GetEulerAngles().Y;
+
+			// Get the cos and sin of radians.
+			var ca = Math.Cos(degrees * Deg2Rad);
+			var sa = Math.Sin(degrees * Deg2Rad);
+
+			// Calculate the new vector.
+			var newX = x * sa - z * ca;
+			var newZ = x * ca + z * sa;
+
+			// Update the values in the text field (yeah I know this is dumb but this whole thing is dumb so i'm gonna leave it like this I should honestly use the databinding but I never know how any of this stuff works because the codebase is all over the place and there's like 5 possible files where something might get read or written to memory and I give up)
+			PosX.Value = oldX + newX;
+			PosZ.Value = oldZ + newZ;
+
+			MemoryManager.Instance.MemLib.writeMemory(
+				MemoryManager.GetAddressString(
+					CharacterDetailsViewModel.baseAddr, 
+					Settings.Instance.Character.Body.Base, 
+					Settings.Instance.Character.Body.Position.X
+				),
+				"float", 
+				PosX.Value.ToString()
+			);
+
+			MemoryManager.Instance.MemLib.writeMemory(
+				MemoryManager.GetAddressString(
+					CharacterDetailsViewModel.baseAddr,
+					Settings.Instance.Character.Body.Base,
+					Settings.Instance.Character.Body.Position.Z
+				),
+				"float",
+				PosZ.Value.ToString()
+			);
+
+			// Work is done, future events can trigger now.
+			PosAdvancedWorking = false;
+		}
+
+		private void XPosUpdate(object sender, RoutedPropertyChangedEventArgs<double?> e)
 		{
 			if (PosX.Value.HasValue)
 				MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.X), "float", PosX.Value.ToString());
-			PosX.ValueChanged -= XPos2_V;
+			PosX.ValueChanged -= XPosUpdate;
 		}
 
-		private void PosY_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			if (PosY.IsKeyboardFocusWithin || PosY.IsMouseOver)
-			{
-				PosY.ValueChanged -= Ypos2_V;
-				PosY.ValueChanged += Ypos2_V;
-			}
-		}
-		private void Ypos2_V(object sender, RoutedPropertyChangedEventArgs<double?> e)
+		private void YPosUpdate(object sender, RoutedPropertyChangedEventArgs<double?> e)
 		{
 			if (PosY.Value.HasValue)
 				MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Y), "float", PosY.Value.ToString());
-			PosY.ValueChanged -= Ypos2_V;
+			PosY.ValueChanged -= YPosUpdate;
 		}
 
-		private void PosZ_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			if (PosZ.IsKeyboardFocusWithin || PosZ.IsMouseOver)
-			{
-				PosZ.ValueChanged -= Zpos2_V;
-				PosZ.ValueChanged += Zpos2_V;
-			}
-		}
-		private void Zpos2_V(object sender, RoutedPropertyChangedEventArgs<double?> e)
+		private void ZPosUpdate(object sender, RoutedPropertyChangedEventArgs<double?> e)
 		{
 			if (PosZ.Value.HasValue)
 				MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Z), "float", PosZ.Value.ToString());
-			PosZ.ValueChanged -= Zpos2_V;
+			PosZ.ValueChanged -= ZPosUpdate;
 		}
 
 		private void FreezeXYZ_Click(object sender, RoutedEventArgs e)
@@ -392,6 +468,11 @@ namespace FFXIVTool.Views
 			CharacterDetails.X.freeze = xyzcheck;
 			CharacterDetails.Y.freeze = xyzcheck;
 			CharacterDetails.Z.freeze = xyzcheck;
+		}
+
+		private void AdvancedMoveToggleClick(object sender, RoutedEventArgs e)
+		{
+			
 		}
 
 		#endregion
@@ -1073,5 +1154,5 @@ namespace FFXIVTool.Views
                 }
             }
         }
-    }
+	}
 }
