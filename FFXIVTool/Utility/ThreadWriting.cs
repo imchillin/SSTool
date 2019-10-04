@@ -3,6 +3,7 @@ using FFXIVTool.ViewModel;
 using System;
 using System.ComponentModel;
 using System.Threading;
+using System.Windows.Media.Media3D;
 
 namespace FFXIVTool.Utility
 {
@@ -117,9 +118,15 @@ namespace FFXIVTool.Utility
                     if (CharacterDetails.BustY.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.Y), CharacterDetails.BustY.GetBytes());
                     if (CharacterDetails.BustX.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.X), CharacterDetails.BustX.GetBytes());
 
-					// Rotation.
 					if (CharacterDetails.RotateFreeze)
 					{
+						var q = new Vector3D(CharacterDetails.RotateX.value, CharacterDetails.RotateY.value, CharacterDetails.RotateZ.value).ToQuaternion();
+
+						CharacterDetails.Rotation.value = (float)q.X;
+						CharacterDetails.Rotation2.value = (float)q.Y;
+						CharacterDetails.Rotation3.value = (float)q.Z;
+						CharacterDetails.Rotation4.value = (float)q.W;
+
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation), CharacterDetails.Rotation.GetBytes());
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation2), CharacterDetails.Rotation2.GetBytes());
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation3), CharacterDetails.Rotation3.GetBytes());

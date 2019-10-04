@@ -9,7 +9,7 @@ namespace FFXIVTool.ViewModel
 	public class CharacterDetailsViewModel : BaseViewModel
 	{
 		public CharacterDetails CharacterDetails { get => (CharacterDetails)model; set => model = value; }
-		private RefreshEntitiesCommand refreshEntitiesCommand;
+
 		public static string eOffset = "8";
 		public static bool FreezeAll = false;
 		public static bool EnabledEditing = false;
@@ -22,17 +22,14 @@ namespace FFXIVTool.ViewModel
 		private CharacterOffsets c = Settings.Instance.Character;
 		private string GAS(params string[] args) => MemoryManager.GetAddressString(args);
 
-		public RefreshEntitiesCommand RefreshEntitiesCommand
-		{
-			get => refreshEntitiesCommand;
-		}
+		public RefreshEntitiesCommand RefreshEntitiesCommand { get; }
 		public CharacterDetailsViewModel(Mediator mediator) : base(mediator)
 		{
 			model = new CharacterDetails();
 			model.PropertyChanged += Model_PropertyChanged;
-			refreshEntitiesCommand = new RefreshEntitiesCommand(this);
+			RefreshEntitiesCommand = new RefreshEntitiesCommand(this);
 			// refresh the list initially
-			this.Refresh();
+			Refresh();
 			mediator.Work += Work;
 
 			mediator.EntitySelection += (offset) => eOffset = offset;
@@ -345,9 +342,9 @@ namespace FFXIVTool.ViewModel
 						CharacterDetails.Rotation4.value
 					).ToEulerAngles();
 
-					CharacterDetails.RotateX = (float)euler.X;
-					CharacterDetails.RotateY = (float)euler.Y;
-					CharacterDetails.RotateZ = (float)euler.Z;
+					CharacterDetails.RotateX.value = (float)euler.X;
+					CharacterDetails.RotateY.value = (float)euler.Y;
+					CharacterDetails.RotateZ.value = (float)euler.Z;
 				}
 
 				if (!CharacterDetails.X.freeze) CharacterDetails.X.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.X));

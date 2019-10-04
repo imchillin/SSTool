@@ -1,6 +1,7 @@
 ﻿using FFXIVTool.Models;
 using FFXIVTool.Utility;
 using FFXIVTool.ViewModel;
+using MahApps.Metro.Controls;
 using System;
 using System.Linq;
 using System.Windows;
@@ -121,7 +122,7 @@ namespace FFXIVTool.Views
 
 		private void NameBox_KeyUp(object sender, KeyEventArgs e)
 		{
-			if (e.Key != System.Windows.Input.Key.Enter) return;
+			if (e.Key != Key.Enter) return;
 			e.Handled = true;
 			CharacterDetails.Name.value = NameBox.Text.Replace("\0", string.Empty);
 			MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Name), "string", NameBox.Text + "\0\0\0\0");
@@ -211,93 +212,7 @@ namespace FFXIVTool.Views
 
 		#region Rotation
 
-		/// <summary>
-		/// Gets the euler angles from the UI elements.
-		/// </summary>
-		/// <returns>Vector3D representing euler angles.</returns>
-		private Vector3D GetEulerAngles() => new Vector3D(CharacterDetails.RotateX, CharacterDetails.RotateY, CharacterDetails.RotateZ);
-
-		private void RotationUpDown_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-
-            if (RotationSlider.IsKeyboardFocusWithin || RotationSlider.IsMouseOver)
-            {
-                RotationSlider.ValueChanged -= RotV2;
-                RotationSlider.ValueChanged += RotV2;
-            }
-
-            if (RotationUpDown.IsKeyboardFocusWithin || RotationUpDown.IsMouseOver)
-			{
-				RotationUpDown.ValueChanged -= RotV;
-				RotationUpDown.ValueChanged += RotV;
-			}
-		}
-		private void RotationUpDown2_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-            if (RotationSlider2.IsKeyboardFocusWithin || RotationSlider2.IsMouseOver)
-            {
-                RotationSlider2.ValueChanged -= RotV2;
-                RotationSlider2.ValueChanged += RotV2;
-            }
-
-            if (RotationUpDown2.IsKeyboardFocusWithin || RotationUpDown2.IsMouseOver)
-			{
-				RotationUpDown2.ValueChanged -= RotV;
-				RotationUpDown2.ValueChanged += RotV;
-			}
-		}
-		private void RotationUpDown3_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-            if (RotationSlider3.IsKeyboardFocusWithin || RotationSlider3.IsMouseOver)
-            {
-                RotationSlider3.ValueChanged -= RotV2;
-                RotationSlider3.ValueChanged += RotV2;
-            }
-
-            if (RotationUpDown3.IsKeyboardFocusWithin || RotationUpDown3.IsMouseOver)
-			{
-				RotationUpDown3.ValueChanged -= RotV;
-				RotationUpDown3.ValueChanged += RotV;
-			}
-		}
-        private void RotV(object sender, RoutedPropertyChangedEventArgs<double?> e)
-		{
-			// Get the euler angles from UI.
-			var quat = GetEulerAngles().ToQuaternion();
-
-			CharacterDetails.Rotation.value = (float)quat.X;
-			CharacterDetails.Rotation2.value = (float)quat.Y;
-			CharacterDetails.Rotation3.value = (float)quat.Z;
-			CharacterDetails.Rotation4.value = (float)quat.W;
-            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation), "float", quat.X.ToString());
-            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation2), "float", quat.Y.ToString());
-            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation3), "float", quat.Z.ToString());
-            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation4), "float", quat.W.ToString());
-            // Remove listeners for value changed.
-            RotationUpDown.ValueChanged -= RotV;
-			RotationUpDown2.ValueChanged -= RotV;
-			RotationUpDown3.ValueChanged -= RotV;
-		}
-        private void RotV2(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            // Get the euler angles from UI.
-            var quat = GetEulerAngles().ToQuaternion();
-
-            CharacterDetails.Rotation.value = (float)quat.X;
-            CharacterDetails.Rotation2.value = (float)quat.Y;
-            CharacterDetails.Rotation3.value = (float)quat.Z;
-            CharacterDetails.Rotation4.value = (float)quat.W;
-            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation), "float", quat.X.ToString());
-            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation2), "float", quat.Y.ToString());
-            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation3), "float", quat.Z.ToString());
-            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.Body.Base, Settings.Instance.Character.Body.Position.Rotation4), "float", quat.W.ToString());
-            // Remove listeners for value changed.
-            RotationSlider.ValueChanged -= RotV2;
-            RotationSlider2.ValueChanged -= RotV2;
-            RotationSlider3.ValueChanged -= RotV2;
-          //  Console.WriteLine(CharacterDetails.RotateY);
-        }
-        private void RotSliderButton_Checked(object sender, RoutedEventArgs e)
+		private void RotSliderButton_Checked(object sender, RoutedEventArgs e)
         {
             SaveSettings.Default.RotationSliders = true;
             RotationUpDown.Visibility = Visibility.Hidden;
@@ -403,7 +318,7 @@ namespace FFXIVTool.Views
 			}
 
 			// Get the angle of the position.
-			var degrees = GetEulerAngles().Y;
+			var degrees = CharacterDetails.RotateY.value;
 
 			// Get the cos and sin of radians.
 			var ca = Math.Cos(degrees * Deg2Rad);
@@ -468,11 +383,6 @@ namespace FFXIVTool.Views
 			CharacterDetails.X.freeze = xyzcheck;
 			CharacterDetails.Y.freeze = xyzcheck;
 			CharacterDetails.Z.freeze = xyzcheck;
-		}
-
-		private void AdvancedMoveToggleClick(object sender, RoutedEventArgs e)
-		{
-			
 		}
 
 		#endregion

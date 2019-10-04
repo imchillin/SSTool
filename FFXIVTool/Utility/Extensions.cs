@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Media3D;
 
 namespace FFXIVTool.Utility
@@ -19,25 +16,30 @@ namespace FFXIVTool.Utility
 		/// <returns>Quaternion from Euler angles.</returns>
 		public static Quaternion ToQuaternion(this Vector3D self)
 		{
-			var yaw = self.Y * Deg2Rad;
-			var pitch = self.X * Deg2Rad;
-			var roll = self.Z * Deg2Rad;
+			var v = self;
+			v.X *= Deg2Rad;
+			v.Y *= Deg2Rad;
+			v.Z *= Deg2Rad;
 
-			var c1 = Math.Cos(yaw / 2);
-			var s1 = Math.Sin(yaw / 2);
-			var c2 = Math.Cos(pitch / 2);
-			var s2 = Math.Sin(pitch / 2);
-			var c3 = Math.Cos(roll / 2);
-			var s3 = Math.Sin(roll / 2);
+			float sr, cr, sp, cp, sy, cy;
 
-			var c1c2 = c1 * c2;
-			var s1s2 = s1 * s2;
+			var halfRoll = (float)v.Z * 0.5f;
+			sr = (float)Math.Sin(halfRoll);
+			cr = (float)Math.Cos(halfRoll);
+
+			var halfPitch = (float)v.X * 0.5f;
+			sp = (float)Math.Sin(halfPitch);
+			cp = (float)Math.Cos(halfPitch);
+
+			var halfYaw = (float)v.Y * 0.5f;
+			sy = (float)Math.Sin(halfYaw);
+			cy = (float)Math.Cos(halfYaw);
 
 			return new Quaternion(
-				c1c2 * s3 + s1s2 * c3,
-				s1 * c2 * c3 + c1 * s2 * s3,
-				c1 * s2 * c3 - s1 * c2 * s3,
-				c1c2 * c3 - s1s2 * s3
+				cy * sp * cr + sy * cp * sr,
+				sy * cp * cr - cy * sp * sr,
+				cy * cp * sr - sy * sp * cr,
+				cy * cp * cr + sy * sp * sr
 			);
 		}
 
@@ -63,37 +65,42 @@ namespace FFXIVTool.Utility
 		/// </summary>
 		/// <param name="q1">Quaternion to convert.</param>
 		/// <returns>Vector3D as euler angles.</returns>
-		public static Vector3D ToEulerAngles(this Quaternion q1)
+		public static Vector3D ToEulerAngles(this Quaternion q)
 		{
 			var v = new Vector3D();
 
-			var test = q1.X * q1.Y + q1.Z * q1.W;
+			var sqw = q.W * q.W;
+			var sqx = q.X * q.X;
+			var sqy = q.Y * q.Y;
+			var sqz = q.Z * q.Z;
 
-			if (test > 0.4995f)
+			var unit = sqx + sqy + sqz + sqw;
+			var test = q.X * q.Y + q.Z * q.W;
+
+			if (test > 0.4999f * unit)
 			{
-				v.Y = 2f * Math.Atan2(q1.X, q1.Y);
-				v.X = Math.PI / 2;
-				v.Z = 0;
-				return NormalizeAngles(v * Rad2Deg);
+				v.Y = 2f * (float)Math.Atan2(q.X, q.W);
+				v.X = Math.PI * 0.5f;
+				v.Z = 0f;
+			}
+			else if (test < -0.4999f * unit)
+			{
+				v.Y = -2f * (float)Math.Atan2(q.X, q.W);
+				v.X = -Math.PI * 0.5f;
+				v.Z = 0f;
+			}
+			else
+			{
+				v.Y = (float)Math.Atan2(2f * q.Y * q.W - 2f * q.X * q.Z, sqw - sqy - sqz + sqw);
+				v.X = (float)Math.Asin(2f * test / unit);
+				v.Z = (float)Math.Atan2(2f * q.X * q.W - 2f * q.Y * q.Z, -sqx + sqy - sqz + sqw);
 			}
 
-			if (test < -0.4995f)
-			{
-				v.Y = -2f * Math.Atan2(q1.X, q1.W);
-				v.X = -Math.PI / 2;
-				v.Z = 0;
-				return NormalizeAngles(v * Rad2Deg);
-			}
+			v.X *= Rad2Deg;
+			v.Y *= Rad2Deg;
+			v.Z *= Rad2Deg;
 
-			var sqx = q1.X * q1.X;
-			var sqy = q1.Y * q1.Y;
-			var sqz = q1.Z * q1.Z;
-
-			v.Y = Math.Atan2(2 * q1.Y * q1.W - 2 * q1.X * q1.Z, 1 - 2 * sqy - 2 * sqz);
-			v.X = Math.Asin(2 * test);
-			v.Z = Math.Atan2(2 * q1.X * q1.W - 2 * q1.Y * q1.Z, 1 - 2 * sqx - 2 * sqz);
-
-			return NormalizeAngles(v * Rad2Deg);
+			return v;
 		}
 	}
 }

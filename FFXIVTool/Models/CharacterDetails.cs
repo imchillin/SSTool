@@ -256,9 +256,9 @@ namespace FFXIVTool.Models
         [JsonIgnore] public Address<float> CamAngleX { get; set; }
         [JsonIgnore] public Address<float> CamAngleY { get; set; }
         [JsonIgnore] public Address<byte> DataHead { get; set; }
-        [JsonIgnore] public float RotateX { get; set; }
-		[JsonIgnore] public float RotateY { get; set; }
-		[JsonIgnore] public float RotateZ { get; set; }
+        [JsonIgnore] public Address<float> RotateX { get; set; }
+		[JsonIgnore] public Address<float> RotateY { get; set; }
+		[JsonIgnore] public Address<float> RotateZ { get; set; }
 		[JsonIgnore] public bool RotateFreeze { get; set; }
 
 		public CharacterDetails()
@@ -458,6 +458,9 @@ namespace FFXIVTool.Models
             Max.Checker = true;
             Min.Checker = true;
             CZoom.Checker = true;
+			RotateX = new Address<float>();
+			RotateY = new Address<float>();
+			RotateZ = new Address<float>();
         }
     }
 }
