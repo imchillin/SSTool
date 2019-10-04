@@ -1030,39 +1030,46 @@ namespace FFXIVTool.Views
 
         private void DataPathBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var m = MemoryManager.Instance.MemLib;
+            var c = Settings.Instance.Character;
+
+            string GAS(params string[] args) => MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, args);
+
             if (DataPathBox.IsKeyboardFocusWithin || DataPathBox.IsMouseOver)
             {
                 if (DataPathBox.SelectedIndex >= 0)
                 {
                     CharacterDetails.DataPath.value = short.Parse(((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
-                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataPath), "int", ((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
+                    m.writeMemory(GAS(c.DataPath), "int", ((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
                     if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
                     {
-                        if (CharacterDetails.DataPath.value != 301)
-                            if (CharacterDetails.DataPath.value == 301)
-                            {
-                                MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
-                                MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
-                            }
-                            else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+                        if (CharacterDetails.DataPath.value == 301)
+                        {
+                            m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                        }
                         else if (CharacterDetails.DataPath.value == 401)
                         {
-                            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+                            m.writeMemory(GAS(c.DataHead), "byte", "0x65");
                         }
-                        else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+                        else m.writeMemory(GAS(c.DataHead), "byte", "0x01");
                     }
                     else
                         if (CharacterDetails.DataPath.value == 101)
                     {
-                        MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+                        m.writeMemory(GAS(c.DataHead), "byte", "0x01");
                     }
                     else if (CharacterDetails.DataPath.value == 201)
                     {
-                        MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+                        m.writeMemory(GAS(c.DataHead), "byte", "0x01");
                     }
-                    else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+                    else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
                 }
             }
         }
-	}
+
+        private void EntityBox_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+
+        }
+    }
 }

@@ -77,20 +77,18 @@ namespace FFXIVTool.Utility
                         m.writeBytes(GAS(c.DataPath), CharacterDetails.DataPath.GetBytes());
                         if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
                         {
-                            if (CharacterDetails.DataPath.value != 301)
-                                if (CharacterDetails.DataPath.value == 301)
-                                {
-                                    m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-                                    m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-                                }
-                                else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                            if (CharacterDetails.DataPath.value == 301)
+                            {
+                                m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                            }
                             else if (CharacterDetails.DataPath.value == 401)
                             {
                                 m.writeMemory(GAS(c.DataHead), "byte", "0x65");
                             }
                             else m.writeMemory(GAS(c.DataHead), "byte", "0x01");
                         }
-                        else if (CharacterDetails.DataPath.value == 101)
+                        else
+                            if (CharacterDetails.DataPath.value == 101)
                         {
                             m.writeMemory(GAS(c.DataHead), "byte", "0x01");
                         }
@@ -100,7 +98,6 @@ namespace FFXIVTool.Utility
                         }
                         else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
                     }
-
                     if (CharacterDetails.NPCName.freeze && !CharacterDetails.NPCName.Activated) m.writeBytes(GAS(c.NPCName), CharacterDetails.NPCName.GetBytes());
                     if (CharacterDetails.NPCModel.freeze && !CharacterDetails.NPCModel.Activated) m.writeBytes(GAS(c.NPCModel), CharacterDetails.NPCModel.GetBytes());
                     if (CharacterDetails.Name.freeze)
