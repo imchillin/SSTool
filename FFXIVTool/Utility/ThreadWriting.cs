@@ -141,9 +141,9 @@ namespace FFXIVTool.Utility
                     if (CharacterDetails.Transparency.freeze) m.writeBytes(GAS(c.Transparency), CharacterDetails.Transparency.GetBytes());
                     if (CharacterDetails.ModelType.freeze) m.writeBytes(GAS(c.ModelType), CharacterDetails.ModelType.GetBytes());
 
-                    if (CharacterDetails.CamX.freeze) m.writeBytes(GAS(MemoryManager.Instance.GposeAddress, c.CamX), CharacterDetails.CamX.GetBytes());
-                    if (CharacterDetails.CamY.freeze) m.writeBytes(GAS(MemoryManager.Instance.GposeAddress, c.CamY), CharacterDetails.CamY.GetBytes());
-                    if (CharacterDetails.CamZ.freeze) m.writeBytes(GAS(MemoryManager.Instance.GposeAddress, c.CamZ), CharacterDetails.CamZ.GetBytes());
+                    if (CharacterDetails.CamX.freeze) m.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamX), CharacterDetails.CamX.GetBytes());
+                    if (CharacterDetails.CamY.freeze) m.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamY), CharacterDetails.CamY.GetBytes());
+                    if (CharacterDetails.CamZ.freeze) m.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamZ), CharacterDetails.CamZ.GetBytes());
 
                     if (CharacterDetails.CamViewX.freeze) m.writeBytes(GAS(c.CamViewX), CharacterDetails.CamViewX.GetBytes());
                     if (CharacterDetails.CamViewY.freeze) m.writeBytes(GAS(c.CamViewY), CharacterDetails.CamViewY.GetBytes());
