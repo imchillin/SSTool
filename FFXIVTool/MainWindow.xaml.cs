@@ -991,6 +991,7 @@ namespace FFXIVTool
             CharacterDetails.EmoteOld.freeze = false;
             CharacterDetails.EntityType.freeze = false;
             CharacterDetails.DataPath.freeze = false;
+			CharacterDetails.RotateFreeze = false;
             CharacterDetailsView.xyzcheck = false;
             CharacterDetailsView.numbcheck = false;
         }

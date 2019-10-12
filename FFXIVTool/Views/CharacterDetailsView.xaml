@@ -251,14 +251,14 @@
 
 			<CheckBox Content="Freeze Rotation" IsChecked="{Binding CharacterDetails.RotateFreeze}" />
 
-			<Separator Height="16" />
+			<Separator Height="16" Background="Black" />
 
-			<Grid>
+			<Grid ToolTip="Rotates around the world axis instead of local axis.">
 				<Label Content="Alternative Rotate:" Height="28" HorizontalAlignment="Left" />
 				<ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding CharacterDetails.AltRotate}" Height="28" HorizontalAlignment="Right" />
 			</Grid>
 
-			<Grid>
+			<Grid ToolTip="Moves Actor relative to where they're facing.">
 				<Label Content="Advanced Move:" Height="28" HorizontalAlignment="Left"/>
 				<ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding CharacterDetails.AdvancedMove}" Height="28" HorizontalAlignment="Right" />
 			</Grid>
