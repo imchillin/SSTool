@@ -167,9 +167,6 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Beta.xaml.cs">
-      <DependentUpon>Beta.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\CharacterDetailsView.xaml.cs">
       <DependentUpon>CharacterDetailsView.xaml</DependentUpon>
     </Compile>
@@ -234,10 +231,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AboutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Beta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

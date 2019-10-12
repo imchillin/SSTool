@@ -65,7 +65,7 @@ namespace FFXIVTool.Views
                 // more intuitive to adjust the roll, pitch, and yaw relative to the original
                 // rotation.
                 var rotationDelta = new Quaternion(axis, angle);
-                var q = RotationQuaternion.Quaternion * rotationDelta;
+                var q = (CharacterDetails.AltRotate) ? rotationDelta * RotationQuaternion.Quaternion : RotationQuaternion.Quaternion * rotationDelta;
                 RotationQuaternion.SetCurrentValue(QuaternionRotation3D.QuaternionProperty, q);
                 dragState.lastPoint = curPoint;
             }

@@ -239,8 +239,15 @@ namespace FFXIVTool.Views
 				oldZ = e.OldValue ?? 0;
 			}
 
+			var q = new System.Windows.Media.Media3D.Quaternion(
+				CharacterDetails.Rotation.value,
+				CharacterDetails.Rotation2.value,
+				CharacterDetails.Rotation3.value,
+				CharacterDetails.Rotation4.value
+			);
+
 			// Get the angle of the position.
-			var degrees = CharacterDetails.RotateY.value;
+			var degrees = q.ToEulerAngles().Y;
 
 			// Get the cos and sin of radians.
 			var ca = Math.Cos(degrees * Deg2Rad);
@@ -987,11 +994,6 @@ namespace FFXIVTool.Views
                     else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
                 }
             }
-        }
-
-        private void EntityBox_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-
         }
     }
 }
