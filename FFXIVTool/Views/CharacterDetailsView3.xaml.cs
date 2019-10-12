@@ -27,7 +27,8 @@ namespace FFXIVTool.Views
         public CharacterDetailsView3()
         {
             InitializeComponent();
-        }
+			MainViewModel.ViewTime3 = this;
+		}
         private void MaxZoomXD(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             if (MaxZoom.Value.HasValue)

@@ -228,7 +228,8 @@ namespace FFXIVTool.Models
         [JsonIgnore] public Address<short> DataPath { get; set; }
         [JsonIgnore] public Address<short> NPCName { get; set; }
         [JsonIgnore] public Address<short> NPCModel { get; set; }
-        [JsonIgnore] public Address<float> FreezeFacial { get; set; }
+		[JsonIgnore] public Address<short> StatusEffect { get; set; }
+		[JsonIgnore] public Address<float> FreezeFacial { get; set; }
         [JsonIgnore] public Address<string> TestArray { get; set; } // Appereance
         [JsonIgnore] public Address<string> TestArray2 { get; set; } // Equipment
         [JsonIgnore] public Address<int> ModelType { get; set; } // Equipment
@@ -294,7 +295,8 @@ namespace FFXIVTool.Models
             DataPath = new Address<short>();
             NPCName = new Address<short>();
             NPCModel = new Address<short>();
-            ScaleX = new Address<float>();
+			StatusEffect = new Address<short>();
+			ScaleX = new Address<float>();
             ScaleY = new Address<float>();
             ScaleZ = new Address<float>();
             TailorMuscle = new Address<byte>();

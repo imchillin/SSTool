@@ -74,7 +74,8 @@ namespace FFXIVTool.Utility
         public string RenderDistance { get; set; }
         public string TimeControl { get; set; }
         public string Weather { get; set; }
-        public string Gender { get; set; }
+		public string StatusEffect { get; set; }
+		public string Gender { get; set; }
         public string EyeBrowType { get; set; }
         public string Clan { get; set; }
         public string BodyType { get; set; }

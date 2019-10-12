@@ -1056,7 +1056,12 @@ namespace FFXIVTool
             MainViewModel.ViewTime2.EquipmentControl.IsOpen = false;
             MainViewModel.ViewTime2.EquipmentControl.AnimatedTabControl.SelectedIndex = -1;
 
-            CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeEntityOffset;
+			MainViewModel.ViewTime4.StatusEffectBox.IsReadOnly = false;
+			MainViewModel.ViewTime4.StatusEffectBox2.IsReadOnly = false;
+			MainViewModel.ViewTime4.StatusEffectZero.IsEnabled = true;
+			MainViewModel.ViewTime4.StatusEffectText.IsEnabled = true;
+
+			CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeEntityOffset;
         }
 
         private void GposeButton_Unchecked(object sender, RoutedEventArgs e)
@@ -1089,7 +1094,13 @@ namespace FFXIVTool
             MainViewModel.ViewTime2.RightSearch.IsEnabled = true;
             MainViewModel.ViewTime2.WristSearch.IsEnabled = true;
             MainViewModel.ViewTime2.NPC_Click.IsEnabled = true;
-            if (GposeButton.IsKeyboardFocusWithin || GposeButton.IsMouseOver)
+
+			MainViewModel.ViewTime4.StatusEffectBox.IsReadOnly = true;
+			MainViewModel.ViewTime4.StatusEffectBox2.IsReadOnly = true;
+			MainViewModel.ViewTime4.StatusEffectZero.IsEnabled = false;
+			MainViewModel.ViewTime4.StatusEffectText.IsEnabled = false;
+
+			if (GposeButton.IsKeyboardFocusWithin || GposeButton.IsMouseOver)
                 CharacterDetailsViewModel.baseAddr = MemoryManager.Add(MemoryManager.Instance.BaseAddress, CharacterDetailsViewModel.eOffset);
         }
 
