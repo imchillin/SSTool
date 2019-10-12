@@ -1061,8 +1061,11 @@ namespace FFXIVTool
 			MainViewModel.ViewTime4.StatusEffectZero.IsEnabled = true;
 			MainViewModel.ViewTime4.StatusEffectText.IsEnabled = true;
 
-			CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeEntityOffset;
-        }
+			if (TargetButton.IsEnabled == true)
+				CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeAddress;
+			if (TargetButton.IsEnabled == false)
+				CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeEntityOffset;
+		}
 
         private void GposeButton_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -1107,15 +1110,23 @@ namespace FFXIVTool
         private void TargetButton_Checked(object sender, RoutedEventArgs e)
         {
             CharacterRefreshButton.IsEnabled = false;
-            CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.TargetAddress;
-        }
+			if (GposeButton.IsEnabled == false)
+				CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.TargetAddress;
+			if (GposeButton.IsEnabled == true)
+				CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeAddress;
+		}
 
         private void TargetButton_Unchecked(object sender, RoutedEventArgs e)
         {
             CharacterRefreshButton.IsEnabled = true;
             if (TargetButton.IsKeyboardFocusWithin || TargetButton.IsMouseOver)
-                CharacterDetailsViewModel.baseAddr = MemoryManager.Add(MemoryManager.Instance.BaseAddress, CharacterDetailsViewModel.eOffset);
-        }
+			{
+				if (GposeButton.IsEnabled == false)
+					CharacterDetailsViewModel.baseAddr = MemoryManager.Add(MemoryManager.Instance.BaseAddress, CharacterDetailsViewModel.eOffset);
+				if (GposeButton.IsEnabled == true)
+					CharacterDetailsViewModel.baseAddr = MemoryManager.Instance.GposeEntityOffset;
+			}
+		}
 
         private void DiscordButton_Click(object sender, RoutedEventArgs e)
         {
