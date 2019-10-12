@@ -1,12 +1,9 @@
-﻿using FFXIVTool.Converters;
-using FFXIVTool.Models;
+﻿using FFXIVTool.Models;
 using FFXIVTool.Utility;
 using FFXIVTool.ViewModel;
 using System;
 using System.ComponentModel;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 
@@ -17,35 +14,9 @@ namespace FFXIVTool.Views
 	/// </summary>
 	public partial class Beta : UserControl, INotifyPropertyChanged
 	{
-		public static readonly DependencyProperty FrozenProperty = DependencyProperty.Register("Frozen", typeof(bool), typeof(Beta), new UIPropertyMetadata(false));
-
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public CharacterDetails CharacterDetails { get => (CharacterDetails)BaseViewModel.model; set => BaseViewModel.model = value; }
-
-		public double X { get; set; }
-		public double Y { get; set; }
-		public double Z { get; set; }
-
-		public double QX { get; set; }
-		public double QY { get; set; }
-		public double QZ { get; set; }
-		public double QW { get; set; }
-
-		public bool Frozen
-		{
-			get => (bool)GetValue(FrozenProperty);
-			set
-			{
-				SetValue(FrozenProperty, value);
-				
-				// Set the rotation freeze values to the Frozen value
-				CharacterDetails.Rotation.freeze = value;
-				CharacterDetails.Rotation2.freeze = value;
-				CharacterDetails.Rotation3.freeze = value;
-				CharacterDetails.Rotation4.freeze = value;
-			}
-		}
 
 		public Beta()
 		{
@@ -65,39 +36,28 @@ namespace FFXIVTool.Views
 							if (CharacterDetails == null)
 								return;
 
-							if (!Frozen)
-							{
-								var q = new Quaternion(
-									CharacterDetails.Rotation.value,
-									CharacterDetails.Rotation2.value,
-									CharacterDetails.Rotation3.value,
-									CharacterDetails.Rotation4.value
-								);
+							var q = new Quaternion(
+								CharacterDetails.Rotation.value,
+								CharacterDetails.Rotation2.value,
+								CharacterDetails.Rotation3.value,
+								CharacterDetails.Rotation4.value
+							);
 
-								var v = GetEulerAngles(q);
+							var rUp = q.GetUpVector();
+							var rRight = q.GetRightVector();
+							var rForward = q.GetForwardVector();
+							rUp.Normalize();
+							rRight.Normalize();
+							rForward.Normalize();
 
-								X = (float)v.X;
-								Y = (float)v.Y;
-								Z = (float)v.Z;
-							}
-							else
-							{
-								var q = GetQuaternion(new Vector3D(X, Y, Z));
+							var v = new Point3D(q.Axis.X, q.Axis.Y, q.Axis.Z);
 
-								CharacterDetails.Rotation.value = (float)q.X;
-								CharacterDetails.Rotation2.value = (float)q.Y;
-								CharacterDetails.Rotation3.value = (float)q.Z;
-								CharacterDetails.Rotation4.value = (float)q.W;
-							}
-
-							var _q = GetQuaternion(new Vector3D(X, Y, Z));
-
-							QX = _q.X;
-							QY = _q.Y;
-							QZ = _q.Z;
-							QW = _q.W;
+							AddSegment(TestU, new Point3D(0, 0, 0), new Point3D(rUp.X, rUp.Y, rUp.Z), new Vector3D(0, 1, 0), true);
+							AddSegment(TestR, new Point3D(0, 0, 0), new Point3D(rRight.X, rRight.Y, rRight.Z), new Vector3D(0, 1, 0), true);
+							AddSegment(TestF, new Point3D(0, 0, 0), new Point3D(rForward.X, rForward.Y, rForward.Z), new Vector3D(0, 1, 0), true);
+							AddSegment(TestV, new Point3D(0, 0, 0), v, new Vector3D(0, 1, 0), true);
 						});
-						
+
 					}
 					catch (Exception ex)
 					{
@@ -111,83 +71,85 @@ namespace FFXIVTool.Views
 			worker.RunWorkerAsync();
 		}
 
-		private Vector3D GetEulerAngles(Quaternion q1)
+		private void AddTriangle(MeshGeometry3D mesh, Point3D point1, Point3D point2, Point3D point3)
 		{
-			var v = new Vector3D();
+			// Create the points.
+			int index1 = mesh.Positions.Count;
+			mesh.Positions.Add(point1);
+			mesh.Positions.Add(point2);
+			mesh.Positions.Add(point3);
 
-			var test = q1.X * q1.Y + q1.Z * q1.W;
+			// Create the triangle.
+			mesh.TriangleIndices.Add(index1++);
+			mesh.TriangleIndices.Add(index1++);
+			mesh.TriangleIndices.Add(index1);
+		}
 
-			if (test > 0.4995f)
+		private Vector3D ScaleVector(Vector3D vector, double length)
+		{
+			double scale = length / vector.Length;
+			return new Vector3D(
+				vector.X * scale,
+				vector.Y * scale,
+				vector.Z * scale);
+		}
+
+		private void AddSegment(MeshGeometry3D mesh, Point3D point1, Point3D point2, Vector3D up, bool extend)
+		{
+			const double thickness = 0.025;
+
+			mesh.Positions = new Point3DCollection();
+
+			// Get the segment's vector.
+			Vector3D v = point2 - point1;
+
+			if (extend)
 			{
-				v.Y = 2f * Math.Atan2(q1.X, q1.Y);
-				v.X = Math.PI / 2;
-				v.Z = 0;
-				return NormalizeAngles(v * Rad2Deg);
+				// Increase the segment's length on both ends
+				// by thickness / 2.
+				Vector3D n = ScaleVector(v, thickness / 2.0);
+				point1 -= n;
+				point2 += n;
 			}
 
-			if (test < -0.4995f)
-			{
-				v.Y = -2f * Math.Atan2(q1.X, q1.W);
-				v.X = -Math.PI / 2;
-				v.Z = 0;
-				return NormalizeAngles(v * Rad2Deg);
-			}
+			// Get the scaled up vector.
+			Vector3D n1 = ScaleVector(up, thickness / 2.0);
 
-			var sqx = q1.X * q1.X;
-			var sqy = q1.Y * q1.Y;
-			var sqz = q1.Z * q1.Z;
+			// Get another scaled perpendicular vector.
+			Vector3D n2 = Vector3D.CrossProduct(v, n1);
+			n2 = ScaleVector(n2, thickness / 2.0);
 
-			v.Y = Math.Atan2(2 * q1.Y * q1.W - 2 * q1.X * q1.Z, 1 - 2 * sqy - 2 * sqz);
-			v.X = Math.Asin(2 * test);
-			v.Z = Math.Atan2(2 * q1.X * q1.W - 2 * q1.Y * q1.Z, 1 - 2 * sqx - 2 * sqz);
+			// Make a skinny box.
+			// p1pm means point1 PLUS n1 MINUS n2.
+			Point3D p1pp = point1 + n1 + n2;
+			Point3D p1mp = point1 - n1 + n2;
+			Point3D p1pm = point1 + n1 - n2;
+			Point3D p1mm = point1 - n1 - n2;
+			Point3D p2pp = point2 + n1 + n2;
+			Point3D p2mp = point2 - n1 + n2;
+			Point3D p2pm = point2 + n1 - n2;
+			Point3D p2mm = point2 - n1 - n2;
 
-			return NormalizeAngles(v * Rad2Deg);
+			// Sides.
+			AddTriangle(mesh, p1pp, p1mp, p2mp);
+			AddTriangle(mesh, p1pp, p2mp, p2pp);
+
+			AddTriangle(mesh, p1pp, p2pp, p2pm);
+			AddTriangle(mesh, p1pp, p2pm, p1pm);
+
+			AddTriangle(mesh, p1pm, p2pm, p2mm);
+			AddTriangle(mesh, p1pm, p2mm, p1mm);
+
+			AddTriangle(mesh, p1mm, p2mm, p2mp);
+			AddTriangle(mesh, p1mm, p2mp, p1mp);
+
+			// Ends.
+			AddTriangle(mesh, p1pp, p1pm, p1mm);
+			AddTriangle(mesh, p1pp, p1mm, p1mp);
+
+			AddTriangle(mesh, p2pp, p2mp, p2mm);
+			AddTriangle(mesh, p2pp, p2mm, p2pm);
 		}
-
-		private Quaternion GetQuaternion(Vector3D v)
-		{
-			var yaw = v.Y * Deg2Rad;
-			var pitch = v.X * Deg2Rad;
-			var roll = v.Z * Deg2Rad;
-
-			var c1 = Math.Cos(yaw / 2);
-			var s1 = Math.Sin(yaw / 2);
-			var c2 = Math.Cos(pitch / 2);
-			var s2 = Math.Sin(pitch / 2);
-			var c3 = Math.Cos(roll / 2);
-			var s3 = Math.Sin(roll / 2);
-
-			var c1c2 = c1 * c2;
-			var s1s2 = s1 * s2;
-
-			return new Quaternion(
-				c1c2 * s3 + s1s2 * c3,
-				s1 * c2 * c3 + c1 * s2 * s3,
-				c1 * s2 * c3 - s1 * c2 * s3,
-				c1c2 * c3 - s1s2 * s3
-			);
-		}
-
-		private Vector3D NormalizeAngles(Vector3D angles)
-		{
-			angles.X = NormalizeAngle(angles.X);
-			angles.Y = NormalizeAngle(angles.Y);
-			angles.Z = NormalizeAngle(angles.Z);
-			return angles;
-		}
-
-		private readonly double Rad2Deg = 360 / (Math.PI * 2);
-		private readonly double Deg2Rad = (Math.PI * 2) / 360;
-
-		private double NormalizeAngle(double angle)
-		{
-			while (angle > 360)
-				angle -= 360;
-			while (angle < 0)
-				angle += 360;
-			return angle;
-		}
-
 	}
 
 }

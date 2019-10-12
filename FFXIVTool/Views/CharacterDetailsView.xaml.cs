@@ -212,6 +212,103 @@ namespace FFXIVTool.Views
 
 		#region Rotation
 
+		private void RotationUpDown_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDown);
+		private void RotationUpDown2_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDown2);
+		private void RotationUpDown3_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDown3);
+
+		private void Rotation_SourceUpdated(NumericUpDown control)
+		{
+			if (!RotationAdvancedWorking)
+			{
+				control.ValueChanged -= Rotation_ValueChanged;
+				control.ValueChanged += Rotation_ValueChanged;
+			}
+		}
+
+		private void Rotation_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+		{
+			// Get the control from sender.
+			var control = (sender as NumericUpDown);
+
+			// Remove the event handler (?)
+			control.ValueChanged -= Rotation_ValueChanged;
+
+			// Flag that we're working to avoid updates later.
+			RotationAdvancedWorking = true;
+
+			var angle = e.OldValue - e.NewValue;
+			control.Value = e.OldValue;
+
+			Vector3D axis;
+			if (control.Name == RotationUpDown.Name)
+			{
+				axis = new Vector3D(1, 0, 0);
+			}
+			else if (control.Name == RotationUpDown2.Name)
+			{
+				axis = new Vector3D(0, 1, 0);
+				angle = -angle;
+			}
+			else if (control.Name == RotationUpDown3.Name)
+			{
+				axis = new Vector3D(0, 0, 1);
+				angle = -angle;
+			}
+			else
+				return;
+
+			var rotationDelta = new Quaternion(axis, angle ?? 0);
+			var q = rotationDelta * RotationView.RotationQuaternion.Quaternion;
+
+			MemoryManager.Instance.MemLib.writeMemory(
+				MemoryManager.GetAddressString(
+					CharacterDetailsViewModel.baseAddr,
+					Settings.Instance.Character.Body.Base,
+					Settings.Instance.Character.Body.Position.Rotation
+				),
+				"float",
+				q.X.ToString()
+			);
+
+			MemoryManager.Instance.MemLib.writeMemory(
+				MemoryManager.GetAddressString(
+					CharacterDetailsViewModel.baseAddr,
+					Settings.Instance.Character.Body.Base,
+					Settings.Instance.Character.Body.Position.Rotation2
+				),
+				"float",
+				q.Y.ToString()
+			);
+
+			MemoryManager.Instance.MemLib.writeMemory(
+				MemoryManager.GetAddressString(
+					CharacterDetailsViewModel.baseAddr,
+					Settings.Instance.Character.Body.Base,
+					Settings.Instance.Character.Body.Position.Rotation3
+				),
+				"float",
+				q.Z.ToString()
+			);
+
+			MemoryManager.Instance.MemLib.writeMemory(
+				MemoryManager.GetAddressString(
+					CharacterDetailsViewModel.baseAddr,
+					Settings.Instance.Character.Body.Base,
+					Settings.Instance.Character.Body.Position.Rotation4
+				),
+				"float",
+				q.W.ToString()
+			);
+
+			// Done working.
+			RotationAdvancedWorking = false;
+		}
+
+		/// <summary>
+		/// This thing exists because of the way this broken ass system works, the flag is purely to not trigger multiple source update loops.
+		/// </summary>
+		private bool RotationAdvancedWorking = false;
+
 		private void RotSliderButton_Checked(object sender, RoutedEventArgs e)
         {
             SaveSettings.Default.RotationSliders = true;
@@ -265,7 +362,7 @@ namespace FFXIVTool.Views
 		/// </summary>
 		private bool PosAdvancedWorking = false;
 
-		private void Pos_SourceUpdated(MahApps.Metro.Controls.NumericUpDown control, RoutedPropertyChangedEventHandler<double?> handler)
+		private void Pos_SourceUpdated(NumericUpDown control, RoutedPropertyChangedEventHandler<double?> handler)
 		{
 			if (CharacterDetails.AdvancedMove && control.Name != PosY.Name)
 			{
@@ -288,7 +385,7 @@ namespace FFXIVTool.Views
 		private void AdvancedPosUpdate(object sender, RoutedPropertyChangedEventArgs<double?> e)
 		{
 			// Get the control from sender.
-			var control = (sender as MahApps.Metro.Controls.NumericUpDown);
+			var control = (sender as NumericUpDown);
 
 			// Remove the event handler (?)
 			control.ValueChanged -= AdvancedPosUpdate;

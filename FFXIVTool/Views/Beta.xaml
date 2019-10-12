@@ -10,33 +10,104 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Medium"
-             TextElement.FontSize="13" Height="350" Width="500">
-    <Grid>
-        <Slider Value="{Binding Path=X}" 
-                HorizontalAlignment="Left" 
-                Margin="10,10,0,0" 
-                VerticalAlignment="Top" 
-                Width="140" 
-                Minimum="-180" 
-                Maximum="180"/>
-        <Slider Value="{Binding Path=Y}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="140" Minimum="-180" Maximum="180"/>
-        <Slider Value="{Binding Path=Z}" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="140" Minimum="-180" Maximum="180" VerticalContentAlignment="Center"/>
-        <CheckBox IsChecked="{Binding Path=Frozen}" Content="Freeze Angles" HorizontalAlignment="Left" Margin="345,43,0,0" VerticalAlignment="Top"/>
-        <StackPanel HorizontalAlignment="Left" Height="237" Margin="10,103,0,0" VerticalAlignment="Top" Width="265">
-            <Label Content="Debug" FontWeight="Bold" />
-            <Label Content="Angles" />
-            <Label Content="{Binding X}" />
-            <Label Content="{Binding Y}" />
-            <Label Content="{Binding Z}" />
-            <Label Content="Quaternion" />
-            <Label Content="{Binding QX}" />
-            <Label Content="{Binding QY}" />
-            <Label Content="{Binding QZ}" />
-            <Label Content="{Binding QW}" />
-        </StackPanel>
-        <TextBox HorizontalAlignment="Left" Height="15" Margin="155,10,0,0" TextWrapping="Wrap" Text="{Binding X, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="185"/>
-        <TextBox HorizontalAlignment="Left" Height="15" Margin="155,41,0,0" TextWrapping="Wrap" Text="{Binding Y, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="185"/>
-        <TextBox HorizontalAlignment="Left" Height="15" Margin="155,72,0,0" TextWrapping="Wrap" Text="{Binding Z, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="185"/>
-        <TextBlock HorizontalAlignment="Left" Margin="223,286,0,0" TextWrapping="Wrap" Text="NOTE: This is a Beta panel.  The UI here is going to be a bit messy, but will serve its purpose." VerticalAlignment="Top" Height="54" Width="267" Foreground="#DDCF1E1E"/>
-    </Grid>
+             TextElement.FontSize="13" Height="456" Width="525">
+	<UserControl.Resources>
+		<Converters:QuaternionConverter x:Key="QuaternionConverter" />
+	</UserControl.Resources>
+	<Grid>
+		<Viewport3D>
+			<Viewport3D.Camera>
+				<PerspectiveCamera x:Name="rotationCamera" Position="3.5,2.5,3.5" LookDirection="-4,-3,-4" FieldOfView="45" />
+			</Viewport3D.Camera>
+
+			<Viewport3D.Children>
+
+				<ModelVisual3D>
+					<ModelVisual3D.Content>
+						<DirectionalLight Color="#FFFFFF" Direction="-1,-1,-1" />
+					</ModelVisual3D.Content>
+				</ModelVisual3D>
+
+				<ModelVisual3D>
+					<ModelVisual3D.Content>
+						<GeometryModel3D>
+							<GeometryModel3D.Geometry>
+								<MeshGeometry3D x:Name="TestF" />
+							</GeometryModel3D.Geometry>
+							<GeometryModel3D.Material>
+								<DiffuseMaterial>
+									<DiffuseMaterial.Brush>
+										<SolidColorBrush Color="Red" Opacity="1"/>
+									</DiffuseMaterial.Brush>
+								</DiffuseMaterial>
+							</GeometryModel3D.Material>
+						</GeometryModel3D>
+					</ModelVisual3D.Content>
+				</ModelVisual3D>
+
+				<ModelVisual3D>
+					<ModelVisual3D.Content>
+						<GeometryModel3D>
+							<GeometryModel3D.Geometry>
+								<MeshGeometry3D x:Name="TestU" />
+							</GeometryModel3D.Geometry>
+							<GeometryModel3D.Material>
+								<DiffuseMaterial>
+									<DiffuseMaterial.Brush>
+										<SolidColorBrush Color="Green" Opacity="1"/>
+									</DiffuseMaterial.Brush>
+								</DiffuseMaterial>
+							</GeometryModel3D.Material>
+						</GeometryModel3D>
+					</ModelVisual3D.Content>
+				</ModelVisual3D>
+
+				<ModelVisual3D>
+					<ModelVisual3D.Content>
+						<GeometryModel3D>
+							<GeometryModel3D.Geometry>
+								<MeshGeometry3D x:Name="TestR" />
+							</GeometryModel3D.Geometry>
+							<GeometryModel3D.Material>
+								<DiffuseMaterial>
+									<DiffuseMaterial.Brush>
+										<SolidColorBrush Color="Blue" Opacity="1"/>
+									</DiffuseMaterial.Brush>
+								</DiffuseMaterial>
+							</GeometryModel3D.Material>
+						</GeometryModel3D>
+					</ModelVisual3D.Content>
+				</ModelVisual3D>
+
+				<ModelVisual3D>
+					<ModelVisual3D.Content>
+						<GeometryModel3D>
+							<GeometryModel3D.Geometry>
+								<MeshGeometry3D x:Name="TestV" />
+							</GeometryModel3D.Geometry>
+							<GeometryModel3D.Material>
+								<DiffuseMaterial>
+									<DiffuseMaterial.Brush>
+										<SolidColorBrush Color="Gold" Opacity="1"/>
+									</DiffuseMaterial.Brush>
+								</DiffuseMaterial>
+							</GeometryModel3D.Material>
+						</GeometryModel3D>
+					</ModelVisual3D.Content>
+				</ModelVisual3D>
+
+			</Viewport3D.Children>
+		</Viewport3D>
+		<local:RotationView HorizontalAlignment="Right" Width="149" Margin="0,0,0,302">
+			<local:RotationView.DataContext>
+				<MultiBinding Converter="{StaticResource ResourceKey=QuaternionConverter}">
+					<Binding Path="CharacterDetails.Rotation.value" NotifyOnSourceUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" />
+					<Binding Path="CharacterDetails.Rotation2.value" NotifyOnSourceUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" />
+					<Binding Path="CharacterDetails.Rotation3.value" NotifyOnSourceUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" />
+					<Binding Path="CharacterDetails.Rotation4.value" NotifyOnSourceUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" />
+				</MultiBinding>
+			</local:RotationView.DataContext>
+		</local:RotationView>
+	</Grid>
+
 </UserControl>

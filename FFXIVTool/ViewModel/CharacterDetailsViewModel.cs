@@ -3,6 +3,7 @@ using FFXIVTool.Models;
 using FFXIVTool.Utility;
 using System;
 using System.ComponentModel;
+using System.Windows.Media.Media3D;
 
 namespace FFXIVTool.ViewModel
 {
@@ -333,18 +334,6 @@ namespace FFXIVTool.ViewModel
 					CharacterDetails.Rotation2.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation2));
 					CharacterDetails.Rotation3.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation3));
 					CharacterDetails.Rotation4.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation4));
-
-					// Create euler angles from the quaternion.
-					var euler = new System.Windows.Media.Media3D.Quaternion(
-						CharacterDetails.Rotation.value,
-						CharacterDetails.Rotation2.value,
-						CharacterDetails.Rotation3.value,
-						CharacterDetails.Rotation4.value
-					).ToEulerAngles();
-
-					CharacterDetails.RotateX.value = (float)euler.X;
-					CharacterDetails.RotateY.value = (float)euler.Y;
-					CharacterDetails.RotateZ.value = (float)euler.Z;
 				}
 
 				if (!CharacterDetails.X.freeze) CharacterDetails.X.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.X));
