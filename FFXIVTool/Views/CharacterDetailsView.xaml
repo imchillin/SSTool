@@ -188,6 +188,7 @@
 				</Views:RotationView.DataContext>
 			</Views:RotationView>
 		</Border>
+		<Border BorderBrush="Black" BorderThickness="1,1,1,0" HorizontalAlignment="Left" Height="93" Margin="844,437,-1,0" VerticalAlignment="Top" Width="272"/>
 		<Label Content="Realtime Rotation:" HorizontalAlignment="Left" Margin="945,-4,0,0" VerticalAlignment="Top" FontSize="16"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.Emote.freeze}" Content="Idle Anim:" HorizontalAlignment="Left" Margin="545,375,0,0" VerticalAlignment="Top" Height="28"/>
 		<mah:NumericUpDown x:Name="EmoteBox" Maximum="7736" Minimum="1" Value="{Binding CharacterDetails.Emote.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="654,375,0,0" VerticalAlignment="Top" Width="115" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" TextAlignment="Right" NumericInputMode="Numbers" SourceUpdated="EmoteBox_SourceUpdated" Height="28" FontFamily="Segoe UI" FontSize="11.35"/>
@@ -202,12 +203,16 @@
 		<mah:NumericUpDown x:Name="CamViewY" Value="{Binding CharacterDetails.CamViewY.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="966,377,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Interval="0.01" TextAlignment="Right" Height="28" FontFamily="Segoe UI" FontSize="11.35" SourceUpdated="CamViewY_SourceUpdated"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.CamViewZ.freeze}" Content="Cam View Z:" HorizontalAlignment="Left" Margin="850,407,0,0" VerticalAlignment="Top" Height="28"/>
 		<mah:NumericUpDown x:Name="CamViewZ" Value="{Binding CharacterDetails.CamViewZ.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="966,407,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Interval="0.01" TextAlignment="Right" Height="28" FontFamily="Segoe UI" FontSize="11.35" SourceUpdated="CamViewZ_SourceUpdated"/>
-		<CheckBox IsChecked="{Binding CharacterDetails.CamX.freeze}" Content="Camera X Pos:" HorizontalAlignment="Left" Margin="850,440,0,0" VerticalAlignment="Top" Height="28"/>
+		
+		<CheckBox Name="CamXCheck" IsChecked="{Binding CharacterDetails.CamX.freeze}" Content="Camera X Pos:" HorizontalAlignment="Left" Margin="850,440,0,0" VerticalAlignment="Top" Height="28" IsEnabled="False"/>
 		<mah:NumericUpDown x:Name="CamX" Value="{Binding CharacterDetails.CamX.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="966,440,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Interval="0.01" TextAlignment="Right" SourceUpdated="CamX_SourceUpdated" Height="28" FontFamily="Segoe UI" FontSize="11.35"/>
-		<CheckBox IsChecked="{Binding CharacterDetails.CamY.freeze}" Content="Camera Y Pos:" HorizontalAlignment="Left" Margin="850,470,0,0" VerticalAlignment="Top" Height="28"/>
+
+		<CheckBox Name="CamYCheck" IsChecked="{Binding CharacterDetails.CamY.freeze}" Content="Camera Y Pos:" HorizontalAlignment="Left" Margin="850,470,0,0" VerticalAlignment="Top" Height="28" IsEnabled="False"/>
 		<mah:NumericUpDown x:Name="CamY" Value="{Binding CharacterDetails.CamY.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="966,470,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Interval="0.01" TextAlignment="Right" SourceUpdated="CamY_SourceUpdated" Height="28" FontFamily="Segoe UI" FontSize="11.35"/>
-		<CheckBox IsChecked="{Binding CharacterDetails.CamZ.freeze}" Content="Camera Z Pos:" HorizontalAlignment="Left" Margin="850,500,0,0" VerticalAlignment="Top" Height="28"/>
+
+		<CheckBox Name="CamZCheck" IsChecked="{Binding CharacterDetails.CamZ.freeze}" Content="Camera Z Pos:" HorizontalAlignment="Left" Margin="850,500,0,0" VerticalAlignment="Top" Height="28" IsEnabled="False"/>
 		<mah:NumericUpDown x:Name="CamZ" Value="{Binding CharacterDetails.CamZ.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="966,500,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Interval="0.01" TextAlignment="Right" SourceUpdated="CamZ_SourceUpdated" Height="28" FontFamily="Segoe UI" FontSize="11.35"/>
+		
 		<Label x:Name="FrozenPlayaLabel" x:FieldModifier="public" Content="Targeted Actor is ???" HorizontalAlignment="Left" Height="28" Margin="540,490,0,0" VerticalAlignment="Top" Width="260" FontWeight="Bold" FontSize="14"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.EntityType.freeze}" Content="Entity Type:" HorizontalAlignment="Left" Margin="545,5,0,0" VerticalAlignment="Top" Height="28"/>
 		<TextBox Text="{Binding CharacterDetails.EntityType.value, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="654,5,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" TextAlignment="Center" Height="28" FontSize="11.35" FontFamily="Segoe UI" MinHeight="0"/>
@@ -243,7 +248,7 @@
 			<ComboBoxItem Content="c9104 - Padjal Male" Tag="9104" Background="{x:Null}"/>
 			<ComboBoxItem Content="c9204 - Padjal Female" Tag="9204" Background="{x:Null}"/>
 		</ComboBox>
-		<Border BorderBrush="Black" BorderThickness="1,1,1,0" HorizontalAlignment="Left" Height="93" Margin="844,437,-1,0" VerticalAlignment="Top" Width="272"/>
+		
 		<Label Content="Gpose only" HorizontalAlignment="Left" Height="42" Margin="770,468,0,0" VerticalAlignment="Top" Width="80"/>
 		<Label Content=" → " HorizontalAlignment="Left" Height="50" Margin="779,465,0,0" VerticalAlignment="Top" Width="80" FontSize="36"/>
 

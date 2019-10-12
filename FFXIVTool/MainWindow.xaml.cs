@@ -1,4 +1,4 @@
-﻿using FFXIVTool.Utility;
+using FFXIVTool.Utility;
 using FFXIVTool.ViewModel;
 using FFXIVTool.Windows;
 using MahApps.Metro.Controls;
@@ -107,7 +107,13 @@ namespace FFXIVTool
 				File.Delete(".SSTU.old");
 			try
 			{
-				Process.Start("SSToolUpdater.exe");
+				var proc = new Process();
+				proc.StartInfo.FileName = Path.Combine(Environment.CurrentDirectory, "SSToolUpdater.exe");
+				proc.StartInfo.UseShellExecute = true;
+				proc.StartInfo.Verb = "runas";
+				proc.Start();
+				proc.WaitForExit();
+				proc.Dispose();
 			}
 			catch (Exception)
 			{
@@ -1017,13 +1023,18 @@ namespace FFXIVTool
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
+			UpdateProgram();
         }
 
         private void GposeButton_Checked(object sender, RoutedEventArgs e)
         {
             CharacterRefreshButton.IsEnabled = false;
 
-            MainViewModel.ViewTime.HairSelectButton.IsEnabled = false;
+			MainViewModel.ViewTime.CamXCheck.IsEnabled = true;
+			MainViewModel.ViewTime.CamYCheck.IsEnabled = true;
+			MainViewModel.ViewTime.CamZCheck.IsEnabled = true;
+
+			MainViewModel.ViewTime.HairSelectButton.IsEnabled = false;
             MainViewModel.ViewTime.ModelTypeButton.IsEnabled = false;
             MainViewModel.ViewTime.HighlightcolorSearch.IsEnabled = false;
             MainViewModel.ViewTime.LeftEyeSearch.IsEnabled = false;
@@ -1070,6 +1081,11 @@ namespace FFXIVTool
         private void GposeButton_Unchecked(object sender, RoutedEventArgs e)
         {
             CharacterRefreshButton.IsEnabled = true;
+
+			MainViewModel.ViewTime.CamXCheck.IsEnabled = false;
+			MainViewModel.ViewTime.CamYCheck.IsEnabled = false;
+			MainViewModel.ViewTime.CamZCheck.IsEnabled = false;
+
             MainViewModel.ViewTime.HairSelectButton.IsEnabled = true;
             MainViewModel.ViewTime.ModelTypeButton.IsEnabled = true;
             MainViewModel.ViewTime.HighlightcolorSearch.IsEnabled = true;
