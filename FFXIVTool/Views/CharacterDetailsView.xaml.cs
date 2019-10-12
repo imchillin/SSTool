@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 
 namespace FFXIVTool.Views
@@ -48,41 +47,8 @@ namespace FFXIVTool.Views
 				timer.IsEnabled = false;
 			};
 			timer.Start();
-            if(SaveSettings.Default.RotationSliders == true)
-            {
-                RotSliderButton.IsChecked = true;
-                RotationUpDown.Visibility = Visibility.Hidden;
-                RotationUpDown.IsEnabled = false;
-                RotationUpDown2.Visibility = Visibility.Hidden;
-                RotationUpDown2.IsEnabled = false;
-                RotationUpDown3.Visibility = Visibility.Hidden;
-                RotationUpDown3.IsEnabled = false;
 
-                RotationSlider.Visibility = Visibility.Visible;
-                RotationSlider.IsEnabled = true;
-                RotationSlider2.Visibility = Visibility.Visible;
-                RotationSlider2.IsEnabled = true;
-                RotationSlider3.Visibility = Visibility.Visible;
-                RotationSlider3.IsEnabled = true;
-            }
-            else if (SaveSettings.Default.RotationSliders == false)
-            {
-                RotationUpDown.Visibility = Visibility.Visible;
-                RotationUpDown.IsEnabled = true;
-                RotationUpDown2.Visibility = Visibility.Visible;
-                RotationUpDown2.IsEnabled = true;
-                RotationUpDown3.Visibility = Visibility.Visible;
-                RotationUpDown3.IsEnabled = true;
-
-                RotationSlider.Visibility = Visibility.Hidden;
-                RotationSlider.IsEnabled = false;
-                RotationSlider2.Visibility = Visibility.Hidden;
-                RotationSlider2.IsEnabled = false;
-                RotationSlider3.Visibility = Visibility.Hidden;
-                RotationSlider3.IsEnabled = false;
-            }
-
-        }
+		}
 
 		#region Height
 
@@ -210,147 +176,6 @@ namespace FFXIVTool.Views
 
 		#endregion
 
-		#region Rotation
-
-		private void RotationUpDown_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDown);
-		private void RotationUpDown2_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDown2);
-		private void RotationUpDown3_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDown3);
-
-		private void Rotation_SourceUpdated(NumericUpDown control)
-		{
-			if (!RotationAdvancedWorking)
-			{
-				control.ValueChanged -= Rotation_ValueChanged;
-				control.ValueChanged += Rotation_ValueChanged;
-			}
-		}
-
-		private void Rotation_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
-		{
-			// Get the control from sender.
-			var control = (sender as NumericUpDown);
-
-			// Remove the event handler (?)
-			control.ValueChanged -= Rotation_ValueChanged;
-
-			// Flag that we're working to avoid updates later.
-			RotationAdvancedWorking = true;
-
-			var angle = e.OldValue - e.NewValue;
-			control.Value = e.OldValue;
-
-			Vector3D axis;
-			if (control.Name == RotationUpDown.Name)
-			{
-				axis = new Vector3D(1, 0, 0);
-			}
-			else if (control.Name == RotationUpDown2.Name)
-			{
-				axis = new Vector3D(0, 1, 0);
-				angle = -angle;
-			}
-			else if (control.Name == RotationUpDown3.Name)
-			{
-				axis = new Vector3D(0, 0, 1);
-				angle = -angle;
-			}
-			else
-				return;
-
-			var rotationDelta = new Quaternion(axis, angle ?? 0);
-			var q = rotationDelta * RotationView.RotationQuaternion.Quaternion;
-
-			MemoryManager.Instance.MemLib.writeMemory(
-				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr,
-					Settings.Instance.Character.Body.Base,
-					Settings.Instance.Character.Body.Position.Rotation
-				),
-				"float",
-				q.X.ToString()
-			);
-
-			MemoryManager.Instance.MemLib.writeMemory(
-				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr,
-					Settings.Instance.Character.Body.Base,
-					Settings.Instance.Character.Body.Position.Rotation2
-				),
-				"float",
-				q.Y.ToString()
-			);
-
-			MemoryManager.Instance.MemLib.writeMemory(
-				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr,
-					Settings.Instance.Character.Body.Base,
-					Settings.Instance.Character.Body.Position.Rotation3
-				),
-				"float",
-				q.Z.ToString()
-			);
-
-			MemoryManager.Instance.MemLib.writeMemory(
-				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr,
-					Settings.Instance.Character.Body.Base,
-					Settings.Instance.Character.Body.Position.Rotation4
-				),
-				"float",
-				q.W.ToString()
-			);
-
-			// Done working.
-			RotationAdvancedWorking = false;
-		}
-
-		/// <summary>
-		/// This thing exists because of the way this broken ass system works, the flag is purely to not trigger multiple source update loops.
-		/// </summary>
-		private bool RotationAdvancedWorking = false;
-
-		private void RotSliderButton_Checked(object sender, RoutedEventArgs e)
-        {
-            SaveSettings.Default.RotationSliders = true;
-            RotationUpDown.Visibility = Visibility.Hidden;
-            RotationUpDown.IsEnabled = false;
-            RotationUpDown2.Visibility = Visibility.Hidden;
-            RotationUpDown2.IsEnabled = false;
-            RotationUpDown3.Visibility = Visibility.Hidden;
-            RotationUpDown3.IsEnabled = false;
-
-            RotationSlider.Visibility = Visibility.Visible;
-            RotationSlider.IsEnabled = true;
-            RotationSlider2.Visibility = Visibility.Visible;
-            RotationSlider2.IsEnabled = true;
-            RotationSlider3.Visibility = Visibility.Visible;
-            RotationSlider3.IsEnabled = true;
-        }
-        private void RotSliderButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            SaveSettings.Default.RotationSliders = false;
-            RotationUpDown.Visibility = Visibility.Visible;
-            RotationUpDown.IsEnabled = true;
-            RotationUpDown2.Visibility = Visibility.Visible;
-            RotationUpDown2.IsEnabled = true;
-            RotationUpDown3.Visibility = Visibility.Visible;
-            RotationUpDown3.IsEnabled = true;
-
-            RotationSlider.Visibility = Visibility.Hidden;
-            RotationSlider.IsEnabled = false;
-            RotationSlider2.Visibility = Visibility.Hidden;
-            RotationSlider2.IsEnabled = false;
-            RotationSlider3.Visibility = Visibility.Hidden;
-            RotationSlider3.IsEnabled = false;
-        }
-        private void Freeze1234_Click(object sender, RoutedEventArgs e)
-		{
-			numbcheck = !numbcheck;
-			CharacterDetails.RotateFreeze = numbcheck;
-		}
-
-		#endregion
-
 		#region Position
 
 		private void PosX_SourceUpdated(object sender, DataTransferEventArgs e) => Pos_SourceUpdated(PosX, XPosUpdate);
@@ -431,11 +256,11 @@ namespace FFXIVTool.Views
 
 			MemoryManager.Instance.MemLib.writeMemory(
 				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr, 
-					Settings.Instance.Character.Body.Base, 
+					CharacterDetailsViewModel.baseAddr,
+					Settings.Instance.Character.Body.Base,
 					Settings.Instance.Character.Body.Position.X
 				),
-				"float", 
+				"float",
 				PosX.Value.ToString()
 			);
 
@@ -600,57 +425,57 @@ namespace FFXIVTool.Views
 			CharacterDetails.EmoteSpeed2.value = 0;
 		}
 
-        #endregion
+		#endregion
 
-        #region Camera
-        private void CamViewX_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            if (CamViewX.IsMouseOver || CamViewX.IsKeyboardFocusWithin)
-            {
-                CamViewX.ValueChanged -= CamViewX_;
-                CamViewX.ValueChanged += CamViewX_;
-            }
-        }
-        private void CamViewX_(object sender, RoutedPropertyChangedEventArgs<double?> e)
-        {
-            if (CamViewX.Value.HasValue)
-                if (CamViewX.IsMouseOver || CamViewX.IsKeyboardFocusWithin)
-                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewX), "float", CamViewX.Value.ToString());
-            CamViewX.ValueChanged -= CamViewX_;
-        }
+		#region Camera
+		private void CamViewX_SourceUpdated(object sender, DataTransferEventArgs e)
+		{
+			if (CamViewX.IsMouseOver || CamViewX.IsKeyboardFocusWithin)
+			{
+				CamViewX.ValueChanged -= CamViewX_;
+				CamViewX.ValueChanged += CamViewX_;
+			}
+		}
+		private void CamViewX_(object sender, RoutedPropertyChangedEventArgs<double?> e)
+		{
+			if (CamViewX.Value.HasValue)
+				if (CamViewX.IsMouseOver || CamViewX.IsKeyboardFocusWithin)
+					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewX), "float", CamViewX.Value.ToString());
+			CamViewX.ValueChanged -= CamViewX_;
+		}
 
-        private void CamViewY_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            if (CamViewY.IsMouseOver || CamViewY.IsKeyboardFocusWithin)
-            {
-                CamViewY.ValueChanged -= CamViewY_;
-                CamViewY.ValueChanged += CamViewY_;
-            }
-        }
-        private void CamViewY_(object sender, RoutedPropertyChangedEventArgs<double?> e)
-        {
-            if (CamViewY.Value.HasValue)
-                if (CamViewY.IsMouseOver || CamViewY.IsKeyboardFocusWithin)
-                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewY), "float", CamViewY.Value.ToString());
-            CamViewY.ValueChanged -= CamViewY_;
-        }
+		private void CamViewY_SourceUpdated(object sender, DataTransferEventArgs e)
+		{
+			if (CamViewY.IsMouseOver || CamViewY.IsKeyboardFocusWithin)
+			{
+				CamViewY.ValueChanged -= CamViewY_;
+				CamViewY.ValueChanged += CamViewY_;
+			}
+		}
+		private void CamViewY_(object sender, RoutedPropertyChangedEventArgs<double?> e)
+		{
+			if (CamViewY.Value.HasValue)
+				if (CamViewY.IsMouseOver || CamViewY.IsKeyboardFocusWithin)
+					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewY), "float", CamViewY.Value.ToString());
+			CamViewY.ValueChanged -= CamViewY_;
+		}
 
-        private void CamViewZ_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            if (CamViewZ.IsMouseOver || CamViewZ.IsKeyboardFocusWithin)
-            {
-                CamViewZ.ValueChanged -= CamViewZ_;
-                CamViewZ.ValueChanged += CamViewZ_;
-            }
-        }
-        private void CamViewZ_(object sender, RoutedPropertyChangedEventArgs<double?> e)
-        {
-            if (CamViewZ.Value.HasValue)
-                if (CamViewZ.IsMouseOver || CamViewZ.IsKeyboardFocusWithin)
-                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewZ), "float", CamViewZ.Value.ToString());
-            CamViewZ.ValueChanged -= CamViewZ_;
-        }
-        private void CamX_SourceUpdated(object sender, DataTransferEventArgs e)
+		private void CamViewZ_SourceUpdated(object sender, DataTransferEventArgs e)
+		{
+			if (CamViewZ.IsMouseOver || CamViewZ.IsKeyboardFocusWithin)
+			{
+				CamViewZ.ValueChanged -= CamViewZ_;
+				CamViewZ.ValueChanged += CamViewZ_;
+			}
+		}
+		private void CamViewZ_(object sender, RoutedPropertyChangedEventArgs<double?> e)
+		{
+			if (CamViewZ.Value.HasValue)
+				if (CamViewZ.IsMouseOver || CamViewZ.IsKeyboardFocusWithin)
+					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.CamViewZ), "float", CamViewZ.Value.ToString());
+			CamViewZ.ValueChanged -= CamViewZ_;
+		}
+		private void CamX_SourceUpdated(object sender, DataTransferEventArgs e)
 		{
 			if (CamX.IsMouseOver || CamX.IsKeyboardFocusWithin)
 			{
@@ -1125,41 +950,41 @@ namespace FFXIVTool.Views
 			}
 		}
 
-        private void DataPathBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (DataPathBox.IsKeyboardFocusWithin || DataPathBox.IsMouseOver)
-            {
-                if (DataPathBox.SelectedIndex >= 0)
-                {
-                    CharacterDetails.DataPath.value = short.Parse(((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
-                    MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataPath), "int", ((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
-                    if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
-                    {
-                        if (CharacterDetails.DataPath.value != 301)
-                            if (CharacterDetails.DataPath.value == 301)
-                            {
-                                MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
-                                MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
-                            }
-                            else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
-                        else if (CharacterDetails.DataPath.value == 401)
-                        {
-                            MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
-                        }
-                        else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
-                    }
-                    else
-                        if (CharacterDetails.DataPath.value == 101)
-                    {
-                        MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
-                    }
-                    else if (CharacterDetails.DataPath.value == 201)
-                    {
-                        MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
-                    }
-                    else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
-                }
-            }
-        }
+		private void DataPathBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (DataPathBox.IsKeyboardFocusWithin || DataPathBox.IsMouseOver)
+			{
+				if (DataPathBox.SelectedIndex >= 0)
+				{
+					CharacterDetails.DataPath.value = short.Parse(((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
+					MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataPath), "int", ((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
+					if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
+					{
+						if (CharacterDetails.DataPath.value != 301)
+							if (CharacterDetails.DataPath.value == 301)
+							{
+								MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+								MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+							}
+							else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+						else if (CharacterDetails.DataPath.value == 401)
+						{
+							MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+						}
+						else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+					}
+					else
+						if (CharacterDetails.DataPath.value == 101)
+					{
+						MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+					}
+					else if (CharacterDetails.DataPath.value == 201)
+					{
+						MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x01");
+					}
+					else MemoryManager.Instance.MemLib.writeMemory(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.DataHead), "byte", "0x65");
+				}
+			}
+		}
 	}
 }

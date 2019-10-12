@@ -11,6 +11,7 @@
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.FontWeight="Medium"
              TextElement.FontSize="13.25"
+			 Visibility="Hidden"
              Header="Character"
              Position="Right"
              mc:Ignorable="d" 
