@@ -552,11 +552,11 @@ namespace FFXIVTool.ViewModel
 
 				if (!CharacterDetails.CamAngleY.freeze) CharacterDetails.CamAngleY.value = m.readFloat(GAS(MemoryManager.Instance.CameraAddress, c.CamAngleY));
 
-				if (!CharacterDetails.CamZ.freeze) CharacterDetails.CamZ.value = m.readFloat(GAS(MemoryManager.Instance.GposeAddress, c.CamZ));
+				if (!CharacterDetails.CamZ.freeze) CharacterDetails.CamZ.value = m.readFloat(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamZ));
 
-				if (!CharacterDetails.CamY.freeze) CharacterDetails.CamY.value = m.readFloat(GAS(MemoryManager.Instance.GposeAddress, c.CamY));
+				if (!CharacterDetails.CamY.freeze) CharacterDetails.CamY.value = m.readFloat(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamY));
 
-				if (!CharacterDetails.CamX.freeze) CharacterDetails.CamX.value = m.readFloat(GAS(MemoryManager.Instance.GposeAddress, c.CamX));
+				if (!CharacterDetails.CamX.freeze) CharacterDetails.CamX.value = m.readFloat(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamX));
 
                 if (!CharacterDetails.CamViewZ.freeze) CharacterDetails.CamViewZ.value = m.readFloat(GAS(baseAddr, c.CamViewZ));
 

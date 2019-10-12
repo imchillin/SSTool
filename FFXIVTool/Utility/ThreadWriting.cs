@@ -29,92 +29,89 @@ namespace FFXIVTool.Utility
 					string GAS(params string[] args) => MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, args);
 
 					if (worker.CancellationPending)
-					{
-						e.Cancel = true;
-					}
-					var xdad = (byte)m.readByte(GAS(c.EntityType));
-					if (CharacterDetails.BodyType.freeze && !CharacterDetails.BodyType.Activated) m.writeBytes(GAS(c.BodyType), CharacterDetails.BodyType.GetBytes());
-					if (CharacterDetails.Title.freeze && !CharacterDetails.Title.Activated) m.writeBytes(GAS(c.Title), CharacterDetails.Title.GetBytes());
-					if (CharacterDetails.JobIco.freeze && !CharacterDetails.JobIco.Activated) m.writeBytes(GAS(c.JobIco), CharacterDetails.JobIco.GetBytes());
-					if (CharacterDetails.Race.freeze && !CharacterDetails.Race.Activated) m.writeBytes(GAS(c.Race), CharacterDetails.Race.GetBytes());
-					if (CharacterDetails.Clan.freeze && !CharacterDetails.Clan.Activated) m.writeBytes(GAS(c.Clan), CharacterDetails.Clan.GetBytes());
-					if (CharacterDetails.Gender.freeze && !CharacterDetails.Gender.Activated) m.writeBytes(GAS(c.Gender), CharacterDetails.Gender.GetBytes());
-					if (CharacterDetails.Head.freeze && !CharacterDetails.Head.Activated) m.writeBytes(GAS(c.Head), CharacterDetails.Head.GetBytes());
-					if (CharacterDetails.Hair.freeze && !CharacterDetails.Hair.Activated) m.writeBytes(GAS(c.Hair), CharacterDetails.Hair.GetBytes());
-					if (CharacterDetails.TailType.freeze && !CharacterDetails.TailType.Activated) m.writeBytes(GAS(c.TailType), CharacterDetails.TailType.GetBytes());
-					if (CharacterDetails.HairTone.freeze && !CharacterDetails.HairTone.Activated) m.writeBytes(GAS(c.HairTone), CharacterDetails.HairTone.GetBytes());
-					if (CharacterDetails.HighlightTone.freeze && !CharacterDetails.HighlightTone.Activated) m.writeBytes(GAS(c.HighlightTone), CharacterDetails.HighlightTone.GetBytes());
-					if (CharacterDetails.Highlights.freeze && !CharacterDetails.Highlights.Activated)
-					{
-						m.writeBytes(GAS(c.Highlights), CharacterDetails.Highlights.GetBytes());
-						if (CharacterDetails.Highlights.value >= 80) CharacterDetails.Highlights.SpecialActivate = true;
-						else CharacterDetails.Highlights.SpecialActivate = false;
-					}
-					if (CharacterDetails.EntityType.freeze && !CharacterDetails.EntityType.Activated) m.writeBytes(GAS(c.EntityType), CharacterDetails.EntityType.GetBytes());
-					if (CharacterDetails.Voices.freeze && !CharacterDetails.Voices.Activated) m.writeBytes(GAS(c.Voices), CharacterDetails.Voices.GetBytes());
-					if (CharacterDetails.Skintone.freeze && !CharacterDetails.Skintone.Activated) m.writeBytes(GAS(c.Skintone), CharacterDetails.Skintone.GetBytes());
-					if (CharacterDetails.Lips.freeze && !CharacterDetails.Lips.Activated) m.writeBytes(GAS(c.Lips), CharacterDetails.Lips.GetBytes());
-					if (CharacterDetails.LipsTone.freeze && !CharacterDetails.LipsTone.Activated) m.writeBytes(GAS(c.LipsTone), CharacterDetails.LipsTone.GetBytes());
-					if (CharacterDetails.Nose.freeze && !CharacterDetails.Nose.Activated) m.writeBytes(GAS(c.Nose), CharacterDetails.Nose.GetBytes());
-					if (CharacterDetails.FacePaintColor.freeze && !CharacterDetails.FacePaintColor.Activated) m.writeBytes(GAS(c.FacePaintColor), CharacterDetails.FacePaintColor.GetBytes());
-					if (CharacterDetails.FacePaint.freeze && !CharacterDetails.FacePaint.Activated) m.writeBytes(GAS(c.FacePaint), CharacterDetails.FacePaint.GetBytes());
-					if (CharacterDetails.LeftEye.freeze && !CharacterDetails.LeftEye.Activated) m.writeBytes(GAS(c.LeftEye), CharacterDetails.LeftEye.GetBytes());
-					if (CharacterDetails.RightEye.freeze && !CharacterDetails.RightEye.Activated) m.writeBytes(GAS(c.RightEye), CharacterDetails.RightEye.GetBytes());
-					if (CharacterDetails.LimbalEyes.freeze && !CharacterDetails.LimbalEyes.Activated) m.writeBytes(GAS(c.LimbalEyes), CharacterDetails.LimbalEyes.GetBytes());
-					if (CharacterDetails.Eye.freeze && !CharacterDetails.Eye.Activated) m.writeBytes(GAS(c.Eye), CharacterDetails.Eye.GetBytes());
-					if (CharacterDetails.EyeBrowType.freeze && !CharacterDetails.EyeBrowType.Activated) m.writeBytes(GAS(c.EyeBrowType), CharacterDetails.EyeBrowType.GetBytes());
-					if (CharacterDetails.FacialFeatures.freeze && !CharacterDetails.FacialFeatures.Activated) m.writeBytes(GAS(c.FacialFeatures), CharacterDetails.FacialFeatures.GetBytes());
-					if (CharacterDetails.RHeight.freeze && !CharacterDetails.RHeight.Activated) m.writeBytes(GAS(c.RHeight), CharacterDetails.RHeight.GetBytes());
-					if (CharacterDetails.Height.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Height), CharacterDetails.Height.GetBytes());
-					if (CharacterDetails.RBust.freeze && !CharacterDetails.RBust.Activated) m.writeBytes(GAS(c.RBust), CharacterDetails.RBust.GetBytes());
-					if (CharacterDetails.Jaw.freeze && !CharacterDetails.Jaw.Activated) m.writeBytes(GAS(c.Jaw), CharacterDetails.Jaw.GetBytes());
-					if (CharacterDetails.TailorMuscle.freeze && !CharacterDetails.TailorMuscle.Activated) m.writeBytes(GAS(c.TailorMuscle), CharacterDetails.TailorMuscle.GetBytes());
-					if (CharacterDetails.FreezeFacial.Activated) m.writeMemory(GAS(c.FreezeFacial), "float", "0");
-					if (CharacterDetails.DataPath.freeze && !CharacterDetails.DataPath.Activated)
-					{
-						m.writeBytes(GAS(c.DataPath), CharacterDetails.DataPath.GetBytes());
-						if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
-						{
-							if (CharacterDetails.DataPath.value != 301)
-								if (CharacterDetails.DataPath.value == 301)
-								{
-									m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-									m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-								}
-								else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-							else if (CharacterDetails.DataPath.value == 401)
-							{
-								m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-							}
-							else m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-						}
-						else if (CharacterDetails.DataPath.value == 101)
-						{
-							m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-						}
-						else if (CharacterDetails.DataPath.value == 201)
-						{
-							m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-						}
-						else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-					}
-
-					if (CharacterDetails.NPCName.freeze && !CharacterDetails.NPCName.Activated) m.writeBytes(GAS(c.NPCName), CharacterDetails.NPCName.GetBytes());
-					if (CharacterDetails.NPCModel.freeze && !CharacterDetails.NPCModel.Activated) m.writeBytes(GAS(c.NPCModel), CharacterDetails.NPCModel.GetBytes());
-					if (CharacterDetails.Name.freeze)
-					{
-						CharacterDetails.Name.value = CharacterDetails.Name.value.Replace("\0", string.Empty);
-						m.writeMemory(GAS(c.Name), "string", CharacterDetails.Name.value + "\0\0\0\0");
-					}
-					if (CharacterDetails.FCTag.freeze)
-					{
-						CharacterDetails.FCTag.value = CharacterDetails.FCTag.value.Replace("\0", string.Empty);
-						if (xdad == 1)
-							m.writeMemory(GAS(c.FCTag), "string", CharacterDetails.FCTag.value + "\0\0\0\0");
-					}
-					if (CharacterDetails.BustZ.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.Z), CharacterDetails.BustZ.GetBytes());
-					if (CharacterDetails.BustY.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.Y), CharacterDetails.BustY.GetBytes());
-					if (CharacterDetails.BustX.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.X), CharacterDetails.BustX.GetBytes());
+                    {
+                        e.Cancel = true;
+                    }
+                    var xdad = (byte)m.readByte(GAS(c.EntityType));
+                    if (CharacterDetails.BodyType.freeze && !CharacterDetails.BodyType.Activated) m.writeBytes(GAS(c.BodyType), CharacterDetails.BodyType.GetBytes());
+                    if (CharacterDetails.Title.freeze && !CharacterDetails.Title.Activated) m.writeBytes(GAS(c.Title), CharacterDetails.Title.GetBytes());
+                    if (CharacterDetails.JobIco.freeze && !CharacterDetails.JobIco.Activated) m.writeBytes(GAS(c.JobIco), CharacterDetails.JobIco.GetBytes());
+                    if (CharacterDetails.Race.freeze && !CharacterDetails.Race.Activated) m.writeBytes(GAS(c.Race), CharacterDetails.Race.GetBytes());
+                    if (CharacterDetails.Clan.freeze && !CharacterDetails.Clan.Activated) m.writeBytes(GAS(c.Clan), CharacterDetails.Clan.GetBytes());
+                    if (CharacterDetails.Gender.freeze && !CharacterDetails.Gender.Activated) m.writeBytes(GAS(c.Gender), CharacterDetails.Gender.GetBytes());
+                    if (CharacterDetails.Head.freeze && !CharacterDetails.Head.Activated) m.writeBytes(GAS(c.Head), CharacterDetails.Head.GetBytes());
+                    if (CharacterDetails.Hair.freeze && !CharacterDetails.Hair.Activated) m.writeBytes(GAS(c.Hair), CharacterDetails.Hair.GetBytes());
+                    if (CharacterDetails.TailType.freeze && !CharacterDetails.TailType.Activated) m.writeBytes(GAS(c.TailType), CharacterDetails.TailType.GetBytes());
+                    if (CharacterDetails.HairTone.freeze && !CharacterDetails.HairTone.Activated) m.writeBytes(GAS(c.HairTone), CharacterDetails.HairTone.GetBytes());
+                    if (CharacterDetails.HighlightTone.freeze && !CharacterDetails.HighlightTone.Activated) m.writeBytes(GAS(c.HighlightTone), CharacterDetails.HighlightTone.GetBytes());
+                    if (CharacterDetails.Highlights.freeze && !CharacterDetails.Highlights.Activated)
+                    {
+                        m.writeBytes(GAS(c.Highlights), CharacterDetails.Highlights.GetBytes());
+                        if (CharacterDetails.Highlights.value >= 80) CharacterDetails.Highlights.SpecialActivate = true;
+                        else CharacterDetails.Highlights.SpecialActivate = false;
+                    }
+                    if (CharacterDetails.EntityType.freeze && !CharacterDetails.EntityType.Activated) m.writeBytes(GAS(c.EntityType), CharacterDetails.EntityType.GetBytes());
+                    if (CharacterDetails.Voices.freeze && !CharacterDetails.Voices.Activated) m.writeBytes(GAS(c.Voices), CharacterDetails.Voices.GetBytes());
+                    if (CharacterDetails.Skintone.freeze && !CharacterDetails.Skintone.Activated) m.writeBytes(GAS(c.Skintone), CharacterDetails.Skintone.GetBytes());
+                    if (CharacterDetails.Lips.freeze && !CharacterDetails.Lips.Activated) m.writeBytes(GAS(c.Lips), CharacterDetails.Lips.GetBytes());
+                    if (CharacterDetails.LipsTone.freeze && !CharacterDetails.LipsTone.Activated) m.writeBytes(GAS(c.LipsTone), CharacterDetails.LipsTone.GetBytes());
+                    if (CharacterDetails.Nose.freeze && !CharacterDetails.Nose.Activated) m.writeBytes(GAS(c.Nose), CharacterDetails.Nose.GetBytes());
+                    if (CharacterDetails.FacePaintColor.freeze && !CharacterDetails.FacePaintColor.Activated) m.writeBytes(GAS(c.FacePaintColor), CharacterDetails.FacePaintColor.GetBytes());
+                    if (CharacterDetails.FacePaint.freeze && !CharacterDetails.FacePaint.Activated) m.writeBytes(GAS(c.FacePaint), CharacterDetails.FacePaint.GetBytes());
+                    if (CharacterDetails.LeftEye.freeze && !CharacterDetails.LeftEye.Activated) m.writeBytes(GAS(c.LeftEye), CharacterDetails.LeftEye.GetBytes());
+                    if (CharacterDetails.RightEye.freeze && !CharacterDetails.RightEye.Activated) m.writeBytes(GAS(c.RightEye), CharacterDetails.RightEye.GetBytes());
+                    if (CharacterDetails.LimbalEyes.freeze && !CharacterDetails.LimbalEyes.Activated) m.writeBytes(GAS(c.LimbalEyes), CharacterDetails.LimbalEyes.GetBytes());
+                    if (CharacterDetails.Eye.freeze && !CharacterDetails.Eye.Activated) m.writeBytes(GAS(c.Eye), CharacterDetails.Eye.GetBytes());
+                    if (CharacterDetails.EyeBrowType.freeze && !CharacterDetails.EyeBrowType.Activated) m.writeBytes(GAS(c.EyeBrowType), CharacterDetails.EyeBrowType.GetBytes());
+                    if (CharacterDetails.FacialFeatures.freeze && !CharacterDetails.FacialFeatures.Activated) m.writeBytes(GAS(c.FacialFeatures), CharacterDetails.FacialFeatures.GetBytes());
+                    if (CharacterDetails.RHeight.freeze && !CharacterDetails.RHeight.Activated) m.writeBytes(GAS(c.RHeight), CharacterDetails.RHeight.GetBytes());
+                    if (CharacterDetails.Height.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Height), CharacterDetails.Height.GetBytes());
+                    if (CharacterDetails.RBust.freeze && !CharacterDetails.RBust.Activated) m.writeBytes(GAS(c.RBust), CharacterDetails.RBust.GetBytes());
+                    if (CharacterDetails.Jaw.freeze && !CharacterDetails.Jaw.Activated) m.writeBytes(GAS(c.Jaw), CharacterDetails.Jaw.GetBytes());
+                    if (CharacterDetails.TailorMuscle.freeze && !CharacterDetails.TailorMuscle.Activated) m.writeBytes(GAS(c.TailorMuscle), CharacterDetails.TailorMuscle.GetBytes());
+                    if (CharacterDetails.FreezeFacial.Activated) m.writeMemory(GAS(c.FreezeFacial), "float", "0");
+                    if (CharacterDetails.DataPath.freeze && !CharacterDetails.DataPath.Activated)
+                    {
+                        m.writeBytes(GAS(c.DataPath), CharacterDetails.DataPath.GetBytes());
+                        if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
+                        {
+                            if (CharacterDetails.DataPath.value == 301)
+                            {
+                                m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                            }
+                            else if (CharacterDetails.DataPath.value == 401)
+                            {
+                                m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                            }
+                            else m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+                        }
+                        else
+                            if (CharacterDetails.DataPath.value == 101)
+                        {
+                            m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+                        }
+                        else if (CharacterDetails.DataPath.value == 201)
+                        {
+                            m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+                        }
+                        else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                    }
+                    if (CharacterDetails.NPCName.freeze && !CharacterDetails.NPCName.Activated) m.writeBytes(GAS(c.NPCName), CharacterDetails.NPCName.GetBytes());
+                    if (CharacterDetails.NPCModel.freeze && !CharacterDetails.NPCModel.Activated) m.writeBytes(GAS(c.NPCModel), CharacterDetails.NPCModel.GetBytes());
+                    if (CharacterDetails.Name.freeze)
+                    {
+                        CharacterDetails.Name.value = CharacterDetails.Name.value.Replace("\0", string.Empty);
+                        m.writeMemory(GAS(c.Name), "string", CharacterDetails.Name.value + "\0\0\0\0");
+                    }
+                    if (CharacterDetails.FCTag.freeze)
+                    {
+                        CharacterDetails.FCTag.value = CharacterDetails.FCTag.value.Replace("\0", string.Empty);
+                        if (xdad == 1)
+                            m.writeMemory(GAS(c.FCTag), "string", CharacterDetails.FCTag.value + "\0\0\0\0");
+                    }
+                    if (CharacterDetails.BustZ.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.Z), CharacterDetails.BustZ.GetBytes());
+                    if (CharacterDetails.BustY.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.Y), CharacterDetails.BustY.GetBytes());
+                    if (CharacterDetails.BustX.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.X), CharacterDetails.BustX.GetBytes());
 
 					if (CharacterDetails.RotateFreeze)
 					{
@@ -132,9 +129,9 @@ namespace FFXIVTool.Utility
 					if (CharacterDetails.Transparency.freeze) m.writeBytes(GAS(c.Transparency), CharacterDetails.Transparency.GetBytes());
 					if (CharacterDetails.ModelType.freeze) m.writeBytes(GAS(c.ModelType), CharacterDetails.ModelType.GetBytes());
 
-					if (CharacterDetails.CamX.freeze) m.writeBytes(GAS(MemoryManager.Instance.GposeAddress, c.CamX), CharacterDetails.CamX.GetBytes());
-					if (CharacterDetails.CamY.freeze) m.writeBytes(GAS(MemoryManager.Instance.GposeAddress, c.CamY), CharacterDetails.CamY.GetBytes());
-					if (CharacterDetails.CamZ.freeze) m.writeBytes(GAS(MemoryManager.Instance.GposeAddress, c.CamZ), CharacterDetails.CamZ.GetBytes());
+                    if (CharacterDetails.CamX.freeze) m.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamX), CharacterDetails.CamX.GetBytes());
+                    if (CharacterDetails.CamY.freeze) m.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamY), CharacterDetails.CamY.GetBytes());
+                    if (CharacterDetails.CamZ.freeze) m.writeBytes(MemoryManager.GetAddressString(MemoryManager.Instance.GposeAddress, c.CamZ), CharacterDetails.CamZ.GetBytes());
 
 					if (CharacterDetails.CamViewX.freeze) m.writeBytes(GAS(c.CamViewX), CharacterDetails.CamViewX.GetBytes());
 					if (CharacterDetails.CamViewY.freeze) m.writeBytes(GAS(c.CamViewY), CharacterDetails.CamViewY.GetBytes());
