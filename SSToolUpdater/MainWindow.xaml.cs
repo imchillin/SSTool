@@ -126,14 +126,14 @@ namespace SSToolUpdater
 					ValidateTempPath();
 
 					// Temporary zip path.
-					var tPPZip = Path.Combine(temp, "SSTool.zip");
+					var tSSZip = Path.Combine(temp, "SSTool.zip");
 
 					// Delete existing zip file.
-					if (File.Exists(tPPZip))
-						File.Delete(tPPZip);
+					if (File.Exists(tSSZip))
+						File.Delete(tSSZip);
 
 					// Download the file. 
-					wc.DownloadFileAsync(new Uri(json["assets"][0]["browser_download_url"].Value<string>()), tPPZip);
+					wc.DownloadFileAsync(new Uri(json["assets"][0]["browser_download_url"].Value<string>()), tSSZip);
 
 					// When the download changes.
 					wc.DownloadProgressChanged += UpdateDownloadProgressChanged;
@@ -145,7 +145,7 @@ namespace SSToolUpdater
 		private void DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
 		{
 			// Temporary zip path.
-			var tPPZip = Path.Combine(temp, "SSTool.zip");
+			var tSSZip = Path.Combine(temp, "SSTool.zip");
 
 			// Create a background worker.
 			bw = new BackgroundWorker() { WorkerReportsProgress = true };
@@ -167,7 +167,7 @@ namespace SSToolUpdater
 				if (!ss.WaitForExit(10000))
 				{
 					// Kill the process.
-					pp.Kill();
+					ss.Kill();
 				}
 			}
 			catch (Exception) { }
@@ -181,7 +181,7 @@ namespace SSToolUpdater
 			File.Move(Path.Combine(Environment.CurrentDirectory, "SSToolUpdater.exe"), Path.Combine(Environment.CurrentDirectory, tempName));
 
 			// Run the worker.
-			bw.RunWorkerAsync(tPPZip);
+			bw.RunWorkerAsync(tSSZip);
 
 			bw.RunWorkerCompleted += (_, __) =>
 			{
