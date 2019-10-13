@@ -48,7 +48,7 @@ namespace SSToolUpdater
 				forceCheckUpdate = true;
 			}
 
-			// Create request for Github REST API for the latest release of Paisley Park.
+			// Create request for Github REST API for the latest release of SSTool
 			if (WebRequest.Create("https://api.github.com/repos/imchillin/SSTool/releases/latest") is HttpWebRequest request)
 			{
 				request.Method = "GET";
@@ -87,13 +87,13 @@ namespace SSToolUpdater
 					MessageBox.Show(ex.Message);
 					var response = MessageBox.Show(
 						"Failed to fetch the latest version! Would you like to visit the page manually to check for the latest release manually?",
-						"Paisley Park Updater",
+						"SSTool Updater",
 						MessageBoxButton.YesNo,
 						MessageBoxImage.Error
 					);
 					if (response == MessageBoxResult.Yes)
 					{
-						// Visit the latest releases page on GitHub to download the latest Paisley Park.
+						// Visit the latest releases page on GitHub to download the latest release.
 						Process.Start("https://github.com/imchillin/SSTool/releases/latest");
 					}
 				}
@@ -125,7 +125,7 @@ namespace SSToolUpdater
 					// Ensure the temp path exists.
 					ValidateTempPath();
 
-					// Temporary Paisley Park zip path.
+					// Temporary zip path.
 					var tPPZip = Path.Combine(temp, "SSTool.zip");
 
 					// Delete existing zip file.
@@ -144,7 +144,7 @@ namespace SSToolUpdater
 
 		private void DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
 		{
-			// Temporary Paisley Park zip path.
+			// Temporary zip path.
 			var tPPZip = Path.Combine(temp, "SSTool.zip");
 
 			// Create a background worker.
@@ -159,12 +159,12 @@ namespace SSToolUpdater
 
 			try
 			{
-				// Close Paisley Park if it's running.
-				var pp = Process.GetProcessesByName("FFXIVTool")[0];
+				// Close if it's running.
+				var ss = Process.GetProcessesByName("FFXIVTool")[0];
 				// Close the mainwindow shutting down the process.
-				pp.CloseMainWindow();
+				ss.CloseMainWindow();
 				// Try to wait for it to shut down gracefully.
-				if (!pp.WaitForExit(10000))
+				if (!ss.WaitForExit(10000))
 				{
 					// Kill the process.
 					pp.Kill();
