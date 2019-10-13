@@ -48,8 +48,10 @@ namespace SSToolUpdater
 				forceCheckUpdate = true;
 			}
 
-			// Create request for Github REST API for the latest release of SSTool
-			if (WebRequest.Create("https://api.github.com/repos/imchillin/SSTool/releases/latest") is HttpWebRequest request)
+            ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
+
+            // Create request for Github REST API for the latest release of SSTool
+            if (WebRequest.Create("https://api.github.com/repos/imchillin/SSTool/releases/latest") is HttpWebRequest request)
 			{
 				request.Method = "GET";
 				request.UserAgent = "SSTool";
@@ -132,8 +134,10 @@ namespace SSToolUpdater
 					if (File.Exists(tSSZip))
 						File.Delete(tSSZip);
 
-					// Download the file. 
-					wc.DownloadFileAsync(new Uri(json["assets"][0]["browser_download_url"].Value<string>()), tSSZip);
+                    ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
+
+                    // Download the file. 
+                    wc.DownloadFileAsync(new Uri(json["assets"][0]["browser_download_url"].Value<string>()), tSSZip);
 
 					// When the download changes.
 					wc.DownloadProgressChanged += UpdateDownloadProgressChanged;
