@@ -62,7 +62,7 @@
 		</Button>
 		<Button x:Name="Save" Style="{StaticResource MaterialDesignRaisedAccentButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Save Appearance" HorizontalAlignment="Left" Margin="755,7,0,0" VerticalAlignment="Top" Width="145" Click="Save_Click" IsTabStop="False"/>
 		<Button x:Name="Load" Style="{StaticResource MaterialDesignRaisedAccentButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Load Appearance" HorizontalAlignment="Left" Margin="605,7,0,0" VerticalAlignment="Top" Width="145" Click="Load_Click" IsTabStop="False"/>
-		<Button x:Name="Uncheck" Style="{StaticResource MaterialDesignRaisedAccentButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Unfreeze All" HorizontalAlignment="Left" Margin="500,7,0,0" VerticalAlignment="Top" Width="100" Click="Uncheck_Click" Padding="15,4,16,4" FontSize="12" IsTabStop="False"/>
+		<Button x:Name="Uncheck" Style="{StaticResource MaterialDesignRaisedAccentButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Unfreeze All" HorizontalAlignment="Left" Margin="500,7,0,0" VerticalAlignment="Top" Width="100" Click="UnfreezeAll" Padding="15,4,16,4" FontSize="12" IsTabStop="False"/>
 		<Button HorizontalAlignment="Left" Style="{DynamicResource MaterialDesignFlatButton}" VerticalAlignment="Top" x:Name="AlwaysOnTop" Margin="626,-45,0,0" Width="153" Click="AlwaysOnTop_Click" Height="45" Foreground="White" BorderBrush="#7F000000" BorderThickness="1,0" Padding="16,20,16,4" IsTabStop="False">
 			<StackPanel Orientation="Horizontal">
 				<materialDesign:PackIcon Kind="{Binding Path=AOTToggleStatus, FallbackValue=ToggleSwitchOffOutline}" Padding="0" Foreground="{Binding ToggleForeground, FallbackValue=#7FFFFFFF}" />

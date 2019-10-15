@@ -10,10 +10,10 @@ namespace FFXIVTool.Windows
     /// </summary>
     public partial class CharacterSaveChooseWindow : Window
     {
-        private List<DatSaves> _dats;
+        private readonly List<DatSaves> _dats;
 
         public byte[] Choice = null;
-        public CharacterSaveChooseWindow(string text)
+        public CharacterSaveChooseWindow()
         {
             InitializeComponent();
             _dats = MakeSaveDatList.Make();
