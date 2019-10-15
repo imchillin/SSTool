@@ -113,13 +113,14 @@ namespace FFXIVTool.Utility
                     if (CharacterDetails.BustY.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.Y), CharacterDetails.BustY.GetBytes());
                     if (CharacterDetails.BustX.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.X), CharacterDetails.BustX.GetBytes());
 
-					if (CharacterDetails.RotateFreeze)
-					{
+					if (CharacterDetails.Rotation.freeze)
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation), CharacterDetails.Rotation.GetBytes());
+					if (CharacterDetails.Rotation2.freeze)
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation2), CharacterDetails.Rotation2.GetBytes());
+					if (CharacterDetails.Rotation3.freeze)
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation3), CharacterDetails.Rotation3.GetBytes());
+					if (CharacterDetails.Rotation4.freeze)
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation4), CharacterDetails.Rotation4.GetBytes());
-					}
 
 					if (CharacterDetails.Z.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Position.Z), CharacterDetails.Z.GetBytes());
 					if (CharacterDetails.Y.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Position.Y), CharacterDetails.Y.GetBytes());

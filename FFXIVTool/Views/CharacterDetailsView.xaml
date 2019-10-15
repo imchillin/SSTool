@@ -108,7 +108,7 @@
 		<TextBox Style="{StaticResource MaterialDesignTextBox}" HorizontalAlignment="Left"  PreviewTextInput="DigitCheckInput" Height="23" Margin="469,317.118,0,0" Text="{Binding CharacterDetails.Lips.value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="55" TextAlignment="Center" FontSize="11.35"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.LipsTone.freeze}" Content="Lips Color:" HorizontalAlignment="Left" Margin="10,287.118,0,0" VerticalAlignment="Top" Height="23"/>
 		<TextBox Style="{StaticResource MaterialDesignTextBox}" HorizontalAlignment="Left"  PreviewTextInput="DigitCheckInput" Height="23" Margin="168,287.118,0,0" Text="{Binding CharacterDetails.LipsTone.value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="55" TextAlignment="Center" FontSize="11.35"/>
-		<Button x:Name="LipColorSearch" Content="View" materialDesign:ShadowAssist.ShadowDepth="Depth3" HorizontalAlignment="Left" Margin="231,287.118,0,0" VerticalAlignment="Top" Width="65" Height="23" Click="Button_Click"/>
+		<Button x:Name="LipColorSearch" Content="View" materialDesign:ShadowAssist.ShadowDepth="Depth3" HorizontalAlignment="Left" Margin="231,287.118,0,0" VerticalAlignment="Top" Width="65" Height="23" Click="LipColor_Click"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.Jaw.freeze}" Content="Jaw Type:" HorizontalAlignment="Left" Margin="311,197.118,0,0" VerticalAlignment="Top" Height="23"/>
 		<TextBox Style="{StaticResource MaterialDesignTextBox}" HorizontalAlignment="Left" PreviewTextInput="DigitCheckInput" Height="23" Margin="469,197.118,0,0" Text="{Binding CharacterDetails.Jaw.value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="55" TextAlignment="Center" FontSize="11.35"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.Nose.freeze}" Content="Nose Type:" HorizontalAlignment="Left" Margin="311,287.118,0,0" VerticalAlignment="Top" Height="23"/>
@@ -144,7 +144,7 @@
 		<CheckBox IsChecked="{Binding CharacterDetails.ModelType.freeze}" Content="Model Type:" HorizontalAlignment="Left" Margin="311,437.118,0,0" VerticalAlignment="Top" Height="23"/>
 		<TextBox Style="{StaticResource MaterialDesignTextBox}" HorizontalAlignment="Left" PreviewTextInput="DigitCheckInput" Height="23" Margin="469,437.118,0,0" Text="{Binding CharacterDetails.ModelType.value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="55" TextAlignment="Center" FontSize="11.35"/>
 		<Button x:Name="ModelTypeButton" Content="Model List" materialDesign:ShadowAssist.ShadowDepth="Depth3" HorizontalAlignment="Left" Margin="311,467.118,0,0" VerticalAlignment="Top" Width="213" Height="23" Click="ModelTypeButton_Click"/>
-		<Button Content="Randomize Appearance" materialDesign:ShadowAssist.ShadowDepth="Depth3" HorizontalAlignment="Left" Margin="10,497.118,0,0" VerticalAlignment="Top" Width="514" Click="Button_Click_1" Height="23"/>
+		<Button Content="Randomize Appearance" materialDesign:ShadowAssist.ShadowDepth="Depth3" HorizontalAlignment="Left" Margin="10,497.118,0,0" VerticalAlignment="Top" Width="514" Click="Random_Click" Height="23"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.Height.freeze}" Content="Model Scale:" HorizontalAlignment="Left" Margin="545,35,0,0" VerticalAlignment="Top" Height="28"/>
 		<mah:NumericUpDown Maximum="99999" x:Name="Height2x" Value="{Binding CharacterDetails.Height.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="654,35,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Minimum="0.0001" SourceUpdated="Height2x_SourceUpdated" Interval="0.01" TextAlignment="Right" Height="28" MinWidth="0" MinHeight="0" FontSize="11.35" FontFamily="Segoe UI"/>
 		<Slider x:Name="HeightSlider" Value="{Binding CharacterDetails.Height.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="798,38,0,0" VerticalAlignment="Top" Width="120" IsMoveToPointEnabled="True" TickFrequency="0.1" Maximum="30" LargeChange="0.1" SourceUpdated="Height2x_SourceUpdated" Height="28" />
@@ -164,7 +164,7 @@
 		<mah:NumericUpDown x:Name="PosY" Value="{Binding CharacterDetails.Y.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="654,245,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Interval="0.01" SourceUpdated="PosY_SourceUpdated" TextAlignment="Right" MinWidth="0" MinHeight="0" Height="28" FontSize="11.35" FontFamily="Segoe UI"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.Z.freeze}" Content="Z Position:" HorizontalAlignment="Left" Margin="545,275,0,0" VerticalAlignment="Top" Height="28"/>
 		<mah:NumericUpDown x:Name="PosZ" Value="{Binding CharacterDetails.Z.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="654,275,0,0" VerticalAlignment="Top" Width="140" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" StringFormat="F10" Interval="0.01" SourceUpdated="PosZ_SourceUpdated" TextAlignment="Right" Height="28" MinWidth="0" MinHeight="0" FontSize="11.35" FontFamily="Segoe UI"/>
-		<Button x:Name="FreezeXYZ" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Freeze" HorizontalAlignment="Left" Margin="800,215,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="12" Click="FreezeXYZ_Click" RenderTransformOrigin="0.5,0.5">
+		<Button x:Name="FreezeXYZ" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Freeze" HorizontalAlignment="Left" Margin="800,215,0,0" VerticalAlignment="Top" Width="88" FontSize="12" Click="FreezeXYZ_Click" RenderTransformOrigin="0.5,0.5">
 			<Button.LayoutTransform>
 				<RotateTransform Angle="-90" />
 			</Button.LayoutTransform>
@@ -219,7 +219,7 @@
 		<CheckBox IsChecked="{Binding CharacterDetails.EmoteOld.freeze}" Content="Force Anim:" HorizontalAlignment="Left" Margin="545,405,0,0" VerticalAlignment="Top" Height="28"/>
 		<mah:NumericUpDown x:Name="EmoteBox_Copy" Maximum="7736" Minimum="1" Value="{Binding CharacterDetails.EmoteOld.value, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="654,405,0,0" VerticalAlignment="Top" Width="115" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#8C000000" TextAlignment="Right" NumericInputMode="Numbers" SourceUpdated="EmoteBox_SourceUpdated" Height="28" FontFamily="Segoe UI" FontSize="11.35"/>
 		<Button x:Name="EmoteSearch_Copy" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="View" HorizontalAlignment="Left" Margin="773,405,0,0" VerticalAlignment="Top" Width="65" Height="28" Click="EmoteOldSearch_Click"/>
-		<Button x:Name="Setto0" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Zero" HorizontalAlignment="Left" Margin="773,435,0,0" VerticalAlignment="Top" Width="65" Height="28" FontSize="14" Click="Setto0_Click"/>
+		<Button x:Name="Setto0" materialDesign:ShadowAssist.ShadowDepth="Depth3" Content="Zero" HorizontalAlignment="Left" Margin="773,435,0,0" VerticalAlignment="Top" Width="65" Height="28" FontSize="14" Click="SetSpeedToZero"/>
 		<CheckBox IsChecked="{Binding CharacterDetails.DataPath.freeze}" Content="Data Path:" HorizontalAlignment="Left" Margin="545,345,0,0" VerticalAlignment="Top" Height="28"/>
 		<ComboBox x:Name="DataPathBox" SelectedValuePath="Tag" SelectedValue="{Binding CharacterDetails.DataPath.value}" HorizontalAlignment="Left" Margin="654,345,0,0" VerticalAlignment="Top" Width="184" Height="28" FontSize="11.35" SelectedIndex="0" SelectionChanged="DataPathBox_SelectionChanged">
 			<ComboBoxItem Visibility="Collapsed" Content="None" Tag="0"/>
@@ -254,9 +254,10 @@
 
 		<StackPanel Height="154" Margin="0,181,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="180">
 
-			<CheckBox Content="Freeze Rotation" IsChecked="{Binding CharacterDetails.RotateFreeze}" />
-
-			<Separator Height="16" Background="Black" />
+			<Grid>
+				<CheckBox Content="Rotation" IsChecked="{Binding CharacterDetails.RotateFreeze}" Checked="RotationFreeze_Checked" Unchecked="RotationFreeze_Unchecked" />
+				<Button Content="Options" HorizontalAlignment="Right" Click="RotationOptions_Click" />
+			</Grid>
 
 			<Grid ToolTip="Rotates around the world axis instead of local axis.">
 				<Label Content="Alternative Rotate:" Height="28" HorizontalAlignment="Left" />
@@ -280,7 +281,8 @@
 
 		</StackPanel>
 
-		<Views:SpecialControl x:Name="SpecialControl" Width="582" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" Margin="534,0,0.5,0" Height="530" />
-		<Views:EmoteFlyOut x:Name="EmoteFlyouts" Width="535" HorizontalAlignment="Left" VerticalAlignment="Top" Height="530" Visibility="Hidden" Margin="0"/>
+		<Views:SpecialControl x:Name="SpecialControl" Width="582" HorizontalAlignment="Left" VerticalAlignment="Top" Height="530" IsOpen="False" Visibility="Hidden" />
+		<Views:EmoteFlyOut x:Name="EmoteFlyouts" Width="535" HorizontalAlignment="Left" VerticalAlignment="Top" Height="530" IsOpen="False" Visibility="Hidden" />
+		<Views:RotationFlyOut x:Name="RotationFlyout" />
 	</Grid>
 </UserControl>

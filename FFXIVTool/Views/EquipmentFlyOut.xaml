@@ -114,7 +114,7 @@
                     </TabItem>
                     <TabItem Header="NPC Selector" Name="NPCTab">
                         <Grid>
-                            <DataGrid x:Name="residentlist" HorizontalAlignment="Left" Height="325" Margin="-6,42,0,0" VerticalAlignment="Top" Width="478" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"  IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserResizeRows="False"  HorizontalScrollBarVisibility="Hidden" SelectionChanged="residentlist_SelectionChanged">
+                            <DataGrid x:Name="residentlist" HorizontalAlignment="Left" Height="325" Margin="-6,42,0,0" VerticalAlignment="Top" Width="478" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"  IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserResizeRows="False"  HorizontalScrollBarVisibility="Hidden" SelectionChanged="Residentlist_SelectionChanged">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="*"/>
                                 </DataGrid.Columns>

@@ -33,14 +33,14 @@ namespace FFXIVTool.Views
 			DispatcherTimer timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(40) };
 			timer.Tick += delegate
 			{
-				foreach (ExdCsvReader.Monster xD in ExdCsvReader.MonsterX)
+				foreach (var monster in ExdCsvReader.MonsterX)
 				{
-					if (xD.Real == true)
+					if (monster.Real == true)
 					{
 						SpecialControl.ModelBox.Items.Add(new ExdCsvReader.Monster
 						{
-							Index = Convert.ToInt32(xD.Index),
-							Name = xD.Name.ToString()
+							Index = Convert.ToInt32(monster.Index),
+							Name = monster.Name.ToString()
 						});
 					}
 				}
@@ -316,6 +316,26 @@ namespace FFXIVTool.Views
 
 		#endregion
 
+		#region Rotation
+
+		private void RotationOptions_Click(object sender, RoutedEventArgs e)
+		{
+			RotationFlyout.IsOpen = !RotationFlyout.IsOpen;
+		}
+
+		private void RotationFreeze_Checked(object sender, RoutedEventArgs e) => RotationFreeze(true);
+		private void RotationFreeze_Unchecked(object sender, RoutedEventArgs e) => RotationFreeze(false);
+
+		private void RotationFreeze(bool value)
+		{
+			CharacterDetails.Rotation.freeze = value;
+			CharacterDetails.Rotation2.freeze = value;
+			CharacterDetails.Rotation3.freeze = value;
+			CharacterDetails.Rotation4.freeze = value;
+		}
+
+		#endregion
+
 		#region Tail
 
 		private void TailSz(object sender, RoutedPropertyChangedEventArgs<double?> e)
@@ -426,7 +446,7 @@ namespace FFXIVTool.Views
 			EmoteBox.ValueChanged -= Emotexd;
 		}
 
-		private void Setto0_Click(object sender, RoutedEventArgs e)
+		private void SetSpeedToZero(object sender, RoutedEventArgs e)
 		{
 			CharacterDetails.EmoteSpeed1.value = 0;
 			CharacterDetails.EmoteSpeed2.value = 0;
@@ -633,7 +653,7 @@ namespace FFXIVTool.Views
 
 		#endregion
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void LipColor_Click(object sender, RoutedEventArgs e)
 		{
 			if (SpecialControl.IsOpen)
 			{
@@ -802,7 +822,7 @@ namespace FFXIVTool.Views
 			}
 		}
 
-		private void Button_Click_1(object sender, RoutedEventArgs e)
+		private void Random_Click(object sender, RoutedEventArgs e)
 		{
 			try
 			{
@@ -995,5 +1015,5 @@ namespace FFXIVTool.Views
                 }
             }
         }
-    }
+	}
 }

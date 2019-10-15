@@ -188,6 +188,9 @@
     <Compile Include="Views\PaletteView.xaml.cs">
       <DependentUpon>PaletteView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RotationFlyOut.xaml.cs">
+      <DependentUpon>RotationFlyOut.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RotationView.xaml.cs">
       <DependentUpon>RotationView.xaml</DependentUpon>
     </Compile>
@@ -259,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PaletteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RotationFlyOut.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

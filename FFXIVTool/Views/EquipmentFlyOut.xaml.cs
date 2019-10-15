@@ -632,11 +632,7 @@ namespace FFXIVTool.Views
             _residents = residents;
         }
 
-        private void FillCustoms2()
-        {
-            CharacterDetails.TestArray.value = MemoryManager.ByteArrayToString(_cGearSet.Customize);
-        }
-        private void WriteCurrentCustomize()
+		private void WriteCurrentCustomize()
         {
             if (_cGearSet.Customize == null)
             {
@@ -724,7 +720,7 @@ namespace FFXIVTool.Views
             CharacterDetails.WeaponSlot.value = WepTupleToComma(_cGearSet.MainWep);
             CharacterDetails.OffhandSlot.value = WepTupleToComma(_cGearSet.OffWep);
         }
-        private void residentlist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Residentlist_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (residentlist.SelectedCells.Count > 0)
             {
