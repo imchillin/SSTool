@@ -1,10 +1,30 @@
 configuration: Release
 
+skip_non_tags: true
+
 image:
   - Visual Studio 2017
   
 cache:
   - packages -> **\packages.config
+
+init:
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq "true")
+      {
+          Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_TAG_NAME.TrimStart("v"))"
+      }
+      else
+      {
+          Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.Substring(0, 7))"
+      }
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
 
 before_build:
   - git submodule update --init --recursive --remote
