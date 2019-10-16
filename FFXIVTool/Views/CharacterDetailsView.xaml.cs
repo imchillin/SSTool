@@ -1,4 +1,4 @@
-﻿using FFXIVTool.Models;
+using FFXIVTool.Models;
 using FFXIVTool.Utility;
 using FFXIVTool.ViewModel;
 using MahApps.Metro.Controls;
