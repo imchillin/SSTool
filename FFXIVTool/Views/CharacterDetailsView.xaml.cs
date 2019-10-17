@@ -21,7 +21,6 @@ namespace FFXIVTool.Views
 		public static CmpReader _colorMap = new CmpReader(Properties.Resources.human);
 		public static ExdCsvReader _exdProvider = new ExdCsvReader();
 		public static bool xyzcheck = false;
-		public static bool numbcheck = false;
 
 		public CharacterDetails CharacterDetails { get => (CharacterDetails)BaseViewModel.model; set => BaseViewModel.model = value; }
 		public CharacterDetailsView()
@@ -51,35 +50,35 @@ namespace FFXIVTool.Views
 			if (SaveSettings.Default.RotationSliders == true)
 			{
 				RotSliderButton.IsChecked = true;
-				RotationUpDown.Visibility = Visibility.Hidden;
-				RotationUpDown.IsEnabled = false;
-				RotationUpDown2.Visibility = Visibility.Hidden;
-				RotationUpDown2.IsEnabled = false;
-				RotationUpDown3.Visibility = Visibility.Hidden;
-				RotationUpDown3.IsEnabled = false;
+				RotationUpDownX.Visibility = Visibility.Hidden;
+				RotationUpDownX.IsEnabled = false;
+				RotationUpDownY.Visibility = Visibility.Hidden;
+				RotationUpDownY.IsEnabled = false;
+				RotationUpDownZ.Visibility = Visibility.Hidden;
+				RotationUpDownZ.IsEnabled = false;
 
-				RotationSlider.Visibility = Visibility.Visible;
-				RotationSlider.IsEnabled = true;
-				RotationSlider2.Visibility = Visibility.Visible;
-				RotationSlider2.IsEnabled = true;
-				RotationSlider3.Visibility = Visibility.Visible;
-				RotationSlider3.IsEnabled = true;
+				RotationSliderX.Visibility = Visibility.Visible;
+				RotationSliderX.IsEnabled = true;
+				RotationSliderY.Visibility = Visibility.Visible;
+				RotationSliderY.IsEnabled = true;
+				RotationSliderZ.Visibility = Visibility.Visible;
+				RotationSliderZ.IsEnabled = true;
 			}
 			else if (SaveSettings.Default.RotationSliders == false)
 			{
-				RotationUpDown.Visibility = Visibility.Visible;
-				RotationUpDown.IsEnabled = true;
-				RotationUpDown2.Visibility = Visibility.Visible;
-				RotationUpDown2.IsEnabled = true;
-				RotationUpDown3.Visibility = Visibility.Visible;
-				RotationUpDown3.IsEnabled = true;
+				RotationUpDownX.Visibility = Visibility.Visible;
+				RotationUpDownX.IsEnabled = true;
+				RotationUpDownY.Visibility = Visibility.Visible;
+				RotationUpDownY.IsEnabled = true;
+				RotationUpDownZ.Visibility = Visibility.Visible;
+				RotationUpDownZ.IsEnabled = true;
 
-				RotationSlider.Visibility = Visibility.Hidden;
-				RotationSlider.IsEnabled = false;
-				RotationSlider2.Visibility = Visibility.Hidden;
-				RotationSlider2.IsEnabled = false;
-				RotationSlider3.Visibility = Visibility.Hidden;
-				RotationSlider3.IsEnabled = false;
+				RotationSliderX.Visibility = Visibility.Hidden;
+				RotationSliderX.IsEnabled = false;
+				RotationSliderY.Visibility = Visibility.Hidden;
+				RotationSliderY.IsEnabled = false;
+				RotationSliderZ.Visibility = Visibility.Hidden;
+				RotationSliderZ.IsEnabled = false;
 			}
 			if (SaveSettings.Default.AdvancedMove == true)
 			{
@@ -87,7 +86,7 @@ namespace FFXIVTool.Views
 			}
 			if (SaveSettings.Default.AltRotate == true)
 			{
-				RotRelButton.IsChecked = true;
+				// CharacterDetails.AltRotate = true;
 			}
 		}
 
@@ -280,7 +279,7 @@ namespace FFXIVTool.Views
 				oldZ = e.OldValue ?? 0;
 			}
 
-			var q = new System.Windows.Media.Media3D.Quaternion(
+			var q = new Quaternion(
 				CharacterDetails.Rotation.value,
 				CharacterDetails.Rotation2.value,
 				CharacterDetails.Rotation3.value,
@@ -359,114 +358,137 @@ namespace FFXIVTool.Views
 
 		#region Rotation
 
-		private Vector3D GetEulerAngles() => new Vector3D(CharacterDetails.RotateX, CharacterDetails.RotateY, CharacterDetails.RotateZ);
-
-		private void RotationUpDown_SourceUpdated(object sender, DataTransferEventArgs e)
+		private void RotationPanel_Click(object sender, RoutedEventArgs e)
 		{
+			RotationFlyout.IsOpen = !RotationFlyout.IsOpen;
+		}
 
-			if (RotationSlider.IsKeyboardFocusWithin || RotationSlider.IsMouseOver)
-			{
-				RotationSlider.ValueChanged -= RotV2;
-				RotationSlider.ValueChanged += RotV2;
-			}
+		private void RotationUpDown_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDownX);
+		private void RotationUpDown2_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDownY);
+		private void RotationUpDown3_SourceUpdated(object sender, DataTransferEventArgs e) => Rotation_SourceUpdated(RotationUpDownZ);
 
-			if (RotationUpDown.IsKeyboardFocusWithin || RotationUpDown.IsMouseOver)
+		private void Rotation_SourceUpdated(NumericUpDown control)
+		{
+			if (!RotationAdvancedWorking)
 			{
-				RotationUpDown.ValueChanged -= RotV;
-				RotationUpDown.ValueChanged += RotV;
+				control.ValueChanged -= Rotation_ValueChanged;
+				control.ValueChanged += Rotation_ValueChanged;
 			}
 		}
-		private void RotationUpDown2_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			if (RotationSlider2.IsKeyboardFocusWithin || RotationSlider2.IsMouseOver)
-			{
-				RotationSlider2.ValueChanged -= RotV2;
-				RotationSlider2.ValueChanged += RotV2;
-			}
 
-			if (RotationUpDown2.IsKeyboardFocusWithin || RotationUpDown2.IsMouseOver)
-			{
-				RotationUpDown2.ValueChanged -= RotV;
-				RotationUpDown2.ValueChanged += RotV;
-			}
-		}
-		private void RotationUpDown3_SourceUpdated(object sender, DataTransferEventArgs e)
+		private void Rotation_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			if (RotationSlider3.IsKeyboardFocusWithin || RotationSlider3.IsMouseOver)
-			{
-				RotationSlider3.ValueChanged -= RotV2;
-				RotationSlider3.ValueChanged += RotV2;
-			}
+			// Flag that we're working to avoid updates later.
+			RotationAdvancedWorking = true;
 
-			if (RotationUpDown3.IsKeyboardFocusWithin || RotationUpDown3.IsMouseOver)
-			{
-				RotationUpDown3.ValueChanged -= RotV;
-				RotationUpDown3.ValueChanged += RotV;
-			}
+			// Get the control from sender.
+			var control = sender as Slider;
+
+			// Remove the event handler.
+			control.ValueChanged -= Rotation_ValueChanged;
+			// Ignore the value entered.
+			control.Value = e.OldValue;
+
+			// Rotate the shit.
+			RotateWithEuler(control, e.NewValue, e.OldValue);
 		}
-		private void RotV(object sender, RoutedPropertyChangedEventArgs<double?> e)
+
+		private void Rotation_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
 		{
-			// Get the euler angles from UI.	
-			var quat = GetEulerAngles().ToQuaternion();
+			// Flag that we're working to avoid updates later.
+			RotationAdvancedWorking = true;
 
-			CharacterDetails.Rotation.value = (float)quat.X;
-			CharacterDetails.Rotation2.value = (float)quat.Y;
-			CharacterDetails.Rotation3.value = (float)quat.Z;
-			CharacterDetails.Rotation4.value = (float)quat.W;
-			// Remove listeners for value changed.	
-			RotationUpDown.ValueChanged -= RotV;
-			RotationUpDown2.ValueChanged -= RotV;
-			RotationUpDown3.ValueChanged -= RotV;
+			// Get the control from sender.
+			var control = sender as NumericUpDown;
+
+			// Remove the event handler.
+			control.ValueChanged -= Rotation_ValueChanged;
+			// Ignore the value entered.
+			control.Value = e.OldValue;
+
+			// Rotate the shit.
+			RotateWithEuler(control, e.NewValue??0, e.OldValue ?? 0);
 		}
-		private void RotV2(object sender, RoutedPropertyChangedEventArgs<double> e)
+
+		private void RotateWithEuler(Control control, double newValue, double oldValue)
 		{
-			// Get the euler angles from UI.	
-			var quat = GetEulerAngles().ToQuaternion();
+			var angle = oldValue - newValue;
 
-			CharacterDetails.Rotation.value = (float)quat.X;
-			CharacterDetails.Rotation2.value = (float)quat.Y;
-			CharacterDetails.Rotation3.value = (float)quat.Z;
-			CharacterDetails.Rotation4.value = (float)quat.W;
-			// Remove listeners for value changed.	
-			RotationSlider.ValueChanged -= RotV2;
-			RotationSlider2.ValueChanged -= RotV2;
-			RotationSlider3.ValueChanged -= RotV2;
-			//  Console.WriteLine(CharacterDetails.RotateY);	
+			Vector3D axis;
+			if (control.Name.EndsWith("X"))
+			{
+				axis = new Vector3D(1, 0, 0);
+			}
+			else if (control.Name.EndsWith("Y"))
+			{
+				axis = new Vector3D(0, 1, 0);
+				angle = -angle;
+			}
+			else if (control.Name.EndsWith("Z"))
+			{
+				axis = new Vector3D(0, 0, 1);
+				angle = -angle;
+			}
+			else
+				return;
+
+			var rotationDelta = new Quaternion(axis, angle);
+			var q = CharacterDetails.AltRotate ? rotationDelta * RotationView.RotationQuaternion.Quaternion : RotationView.RotationQuaternion.Quaternion * rotationDelta;
+
+			CharacterDetails.Rotation.value = (float)q.X;
+			CharacterDetails.Rotation2.value = (float)q.Y;
+			CharacterDetails.Rotation3.value = (float)q.Z;
+			CharacterDetails.Rotation4.value = (float)q.W;
+
+			var euler = q.ToEulerAngles();
+
+			CharacterDetails.RotateX = (float)euler.X;
+			CharacterDetails.RotateY = (float)euler.Y;
+			CharacterDetails.RotateZ = (float)euler.Z;
+
+			// Done working.
+			RotationAdvancedWorking = false;
 		}
+
+		/// <summary>
+		/// This thing exists because of the way this broken ass system works, the flag is purely to not trigger multiple source update loops.
+		/// </summary>
+		private bool RotationAdvancedWorking = false;
+
 
 		private void RotSliderButton_Checked(object sender, RoutedEventArgs e)
 		{
 			SaveSettings.Default.RotationSliders = true;
-			RotationUpDown.Visibility = Visibility.Hidden;
-			RotationUpDown.IsEnabled = false;
-			RotationUpDown2.Visibility = Visibility.Hidden;
-			RotationUpDown2.IsEnabled = false;
-			RotationUpDown3.Visibility = Visibility.Hidden;
-			RotationUpDown3.IsEnabled = false;
+			RotationUpDownX.Visibility = Visibility.Hidden;
+			RotationUpDownX.IsEnabled = false;
+			RotationUpDownY.Visibility = Visibility.Hidden;
+			RotationUpDownY.IsEnabled = false;
+			RotationUpDownZ.Visibility = Visibility.Hidden;
+			RotationUpDownZ.IsEnabled = false;
 
-			RotationSlider.Visibility = Visibility.Visible;
-			RotationSlider.IsEnabled = true;
-			RotationSlider2.Visibility = Visibility.Visible;
-			RotationSlider2.IsEnabled = true;
-			RotationSlider3.Visibility = Visibility.Visible;
-			RotationSlider3.IsEnabled = true;
+			RotationSliderX.Visibility = Visibility.Visible;
+			RotationSliderX.IsEnabled = true;
+			RotationSliderY.Visibility = Visibility.Visible;
+			RotationSliderY.IsEnabled = true;
+			RotationSliderZ.Visibility = Visibility.Visible;
+			RotationSliderZ.IsEnabled = true;
 		}
 		private void RotSliderButton_Unchecked(object sender, RoutedEventArgs e)
 		{
 			SaveSettings.Default.RotationSliders = false;
-			RotationUpDown.Visibility = Visibility.Visible;
-			RotationUpDown.IsEnabled = true;
-			RotationUpDown2.Visibility = Visibility.Visible;
-			RotationUpDown2.IsEnabled = true;
-			RotationUpDown3.Visibility = Visibility.Visible;
-			RotationUpDown3.IsEnabled = true;
+			RotationUpDownX.Visibility = Visibility.Visible;
+			RotationUpDownX.IsEnabled = true;
+			RotationUpDownY.Visibility = Visibility.Visible;
+			RotationUpDownY.IsEnabled = true;
+			RotationUpDownZ.Visibility = Visibility.Visible;
+			RotationUpDownZ.IsEnabled = true;
 
-			RotationSlider.Visibility = Visibility.Hidden;
-			RotationSlider.IsEnabled = false;
-			RotationSlider2.Visibility = Visibility.Hidden;
-			RotationSlider2.IsEnabled = false;
-			RotationSlider3.Visibility = Visibility.Hidden;
-			RotationSlider3.IsEnabled = false;
+			RotationSliderX.Visibility = Visibility.Hidden;
+			RotationSliderX.IsEnabled = false;
+			RotationSliderY.Visibility = Visibility.Hidden;
+			RotationSliderY.IsEnabled = false;
+			RotationSliderZ.Visibility = Visibility.Hidden;
+			RotationSliderZ.IsEnabled = false;
 		}
 
 		private void RotRelButton_Checked(object sender, RoutedEventArgs e)
@@ -480,13 +502,9 @@ namespace FFXIVTool.Views
 			CharacterDetails.AltRotate = false;
 		}
 
-		private void Freeze1234_Click(object sender, RoutedEventArgs e)
+		private void RotateFreeze_Click(object sender, RoutedEventArgs e)
 		{
-			numbcheck = !numbcheck;
-			CharacterDetails.Rotation.freeze = numbcheck;
-			CharacterDetails.Rotation2.freeze = numbcheck;
-			CharacterDetails.Rotation3.freeze = numbcheck;
-			CharacterDetails.Rotation4.freeze = numbcheck;
+			CharacterDetails.RotateFreeze = !CharacterDetails.RotateFreeze;
 		}
 
 		#endregion

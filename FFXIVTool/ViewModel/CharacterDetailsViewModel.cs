@@ -334,6 +334,18 @@ namespace FFXIVTool.ViewModel
 					CharacterDetails.Rotation2.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation2));
 					CharacterDetails.Rotation3.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation3));
 					CharacterDetails.Rotation4.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation4));
+
+					// Create euler angles from the quaternion.
+					var euler = new Quaternion(
+						CharacterDetails.Rotation.value,
+						CharacterDetails.Rotation2.value,
+						CharacterDetails.Rotation3.value,
+						CharacterDetails.Rotation4.value
+					).ToEulerAngles();
+
+					CharacterDetails.RotateX = (float)euler.X;
+					CharacterDetails.RotateY = (float)euler.Y;
+					CharacterDetails.RotateZ = (float)euler.Z;
 				}
 				else
 				{

@@ -70,59 +70,33 @@ namespace FFXIVTool.Utility
                     if (CharacterDetails.Jaw.freeze && !CharacterDetails.Jaw.Activated) m.writeBytes(GAS(c.Jaw), CharacterDetails.Jaw.GetBytes());
                     if (CharacterDetails.TailorMuscle.freeze && !CharacterDetails.TailorMuscle.Activated) m.writeBytes(GAS(c.TailorMuscle), CharacterDetails.TailorMuscle.GetBytes());
                     if (CharacterDetails.FreezeFacial.Activated) m.writeMemory(GAS(c.FreezeFacial), "float", "0");
-					if (CharacterDetails.DataPath.freeze && !CharacterDetails.DataPath.Activated)
-					{
-						m.writeBytes(GAS(c.DataPath), CharacterDetails.DataPath.GetBytes());
-						if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
-						{
-							if (CharacterDetails.DataPath.value == 301)
-							{
-								m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-							}
-							else if (CharacterDetails.DataPath.value == 401)
-							{
-								m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-							}
-							else m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-						}
-						else
-						{
-							if (CharacterDetails.Clan.value == 2 || CharacterDetails.Clan.value == 4 || CharacterDetails.Clan.value == 6 || CharacterDetails.Clan.value == 8 || CharacterDetails.Clan.value == 10)
-							{
-								if (CharacterDetails.DataPath.value == 101)
-								{
-									m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-								}
-								else if (CharacterDetails.DataPath.value == 201)
-								{
-									m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-								}
-								else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-							}
-							else
-							{
-								if (CharacterDetails.DataPath.value == 101)
-								{
-									m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-								}
-								else if (CharacterDetails.DataPath.value == 201)
-								{
-									m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-								}
-								if (CharacterDetails.DataPath.value == 301)
-								{
-									m.writeMemory(GAS(c.DataHead), "byte", "0xC9");
-								}
-								else if (CharacterDetails.DataPath.value == 401)
-								{
-									m.writeMemory(GAS(c.DataHead), "byte", "0xC9");
-								}
-								else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-							}
-						}
-					}
-
-					if (CharacterDetails.NPCName.freeze && !CharacterDetails.NPCName.Activated) m.writeBytes(GAS(c.NPCName), CharacterDetails.NPCName.GetBytes());
+                    if (CharacterDetails.DataPath.freeze && !CharacterDetails.DataPath.Activated)
+                    {
+                        m.writeBytes(GAS(c.DataPath), CharacterDetails.DataPath.GetBytes());
+                        if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
+                        {
+                            if (CharacterDetails.DataPath.value == 301)
+                            {
+                                m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                            }
+                            else if (CharacterDetails.DataPath.value == 401)
+                            {
+                                m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                            }
+                            else m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+                        }
+                        else
+                            if (CharacterDetails.DataPath.value == 101)
+                        {
+                            m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+                        }
+                        else if (CharacterDetails.DataPath.value == 201)
+                        {
+                            m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+                        }
+                        else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+                    }
+                    if (CharacterDetails.NPCName.freeze && !CharacterDetails.NPCName.Activated) m.writeBytes(GAS(c.NPCName), CharacterDetails.NPCName.GetBytes());
                     if (CharacterDetails.NPCModel.freeze && !CharacterDetails.NPCModel.Activated) m.writeBytes(GAS(c.NPCModel), CharacterDetails.NPCModel.GetBytes());
                     if (CharacterDetails.Name.freeze)
                     {
@@ -139,14 +113,13 @@ namespace FFXIVTool.Utility
                     if (CharacterDetails.BustY.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.Y), CharacterDetails.BustY.GetBytes());
                     if (CharacterDetails.BustX.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Bust.Base, c.Body.Bust.X), CharacterDetails.BustX.GetBytes());
 
-					if (CharacterDetails.Rotation.freeze)
+					if (CharacterDetails.RotateFreeze)
+					{
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation), CharacterDetails.Rotation.GetBytes());
-					if (CharacterDetails.Rotation2.freeze)
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation2), CharacterDetails.Rotation2.GetBytes());
-					if (CharacterDetails.Rotation3.freeze)
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation3), CharacterDetails.Rotation3.GetBytes());
-					if (CharacterDetails.Rotation4.freeze)
 						m.writeBytes(GAS(c.Body.Base, c.Body.Position.Rotation4), CharacterDetails.Rotation4.GetBytes());
+					}
 
 					if (CharacterDetails.Z.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Position.Z), CharacterDetails.Z.GetBytes());
 					if (CharacterDetails.Y.freeze) m.writeBytes(GAS(c.Body.Base, c.Body.Position.Y), CharacterDetails.Y.GetBytes());

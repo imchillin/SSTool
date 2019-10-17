@@ -46,47 +46,17 @@ namespace FFXIVTool.Views
 			// Resulting quaternion.
 			var newRotation = (CharacterDetails.AltRotate) ? rotationDelta * currentRotation : currentRotation * rotationDelta;
 
-			// Write the rotation to memory.
-			MemoryManager.Instance.MemLib.writeMemory(
-				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr,
-					Settings.Instance.Character.Body.Base,
-					Settings.Instance.Character.Body.Position.Rotation
-				), 
-				"float", 
-				newRotation.X.ToString()
-			);
+			CharacterDetails.Rotation.value = (float)newRotation.X;
+			CharacterDetails.Rotation2.value = (float)newRotation.Y;
+			CharacterDetails.Rotation3.value = (float)newRotation.Z;
+			CharacterDetails.Rotation4.value = (float)newRotation.W;
 
-			MemoryManager.Instance.MemLib.writeMemory(
-				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr,
-					Settings.Instance.Character.Body.Base,
-					Settings.Instance.Character.Body.Position.Rotation2
-				),
-				"float",
-				newRotation.Y.ToString()
-			);
+			var c = Settings.Instance.Character;
 
-			MemoryManager.Instance.MemLib.writeMemory(
-				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr,
-					Settings.Instance.Character.Body.Base,
-					Settings.Instance.Character.Body.Position.Rotation3
-				),
-				"float",
-				newRotation.Z.ToString()
-			);
-
-			MemoryManager.Instance.MemLib.writeMemory(
-				MemoryManager.GetAddressString(
-					CharacterDetailsViewModel.baseAddr,
-					Settings.Instance.Character.Body.Base,
-					Settings.Instance.Character.Body.Position.Rotation4
-				),
-				"float",
-				newRotation.W.ToString()
-			);
-
+			MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, c.Body.Base, c.Body.Position.Rotation), CharacterDetails.Rotation.GetBytes());
+			MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, c.Body.Base, c.Body.Position.Rotation2), CharacterDetails.Rotation2.GetBytes());
+			MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, c.Body.Base, c.Body.Position.Rotation3), CharacterDetails.Rotation3.GetBytes());
+			MemoryManager.Instance.MemLib.writeBytes(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, c.Body.Base, c.Body.Position.Rotation4), CharacterDetails.Rotation4.GetBytes());
 		}
 
 		private void Rotation_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)

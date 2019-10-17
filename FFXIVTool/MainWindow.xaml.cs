@@ -1034,7 +1034,6 @@ namespace FFXIVTool
 			CharacterDetails.DataPath.freeze = false;
 			CharacterDetails.RotateFreeze = false;
 			CharacterDetailsView.xyzcheck = false;
-			CharacterDetailsView.numbcheck = false;
 		}
 
 		private void AlwaysOnTop_Click(object sender, RoutedEventArgs e)

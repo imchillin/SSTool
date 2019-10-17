@@ -102,7 +102,7 @@
 		</StackPanel>
 
 		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,8">
-			<CheckBox IsChecked="{Binding Path=CharacterDetails.Rotation.freeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="X" />
+			<CheckBox IsChecked="{Binding Path=CharacterDetails.RotateFreeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="X" />
 			<mah:NumericUpDown
 				Name="Rotation"
 				Value="{Binding CharacterDetails.Rotation.value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
@@ -115,7 +115,7 @@
 		</StackPanel>
 
 		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,8">
-			<CheckBox IsChecked="{Binding Path=CharacterDetails.Rotation2.freeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="Y" />
+			<CheckBox IsChecked="{Binding Path=CharacterDetails.RotateFreeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="Y" />
 			<mah:NumericUpDown
 				Name="Rotation2"
 				Value="{Binding CharacterDetails.Rotation2.value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
@@ -128,7 +128,7 @@
 		</StackPanel>
 
 		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,8">
-			<CheckBox IsChecked="{Binding Path=CharacterDetails.Rotation3.freeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="Z" />
+			<CheckBox IsChecked="{Binding Path=CharacterDetails.RotateFreeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="Z" />
 			<mah:NumericUpDown
 				Name="Rotation3"
 				Value="{Binding CharacterDetails.Rotation3.value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
@@ -141,7 +141,7 @@
 		</StackPanel>
 
 		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,8">
-			<CheckBox IsChecked="{Binding Path=CharacterDetails.Rotation4.freeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="W" />
+			<CheckBox IsChecked="{Binding Path=CharacterDetails.RotateFreeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="W" />
 			<mah:NumericUpDown
 				Name="Rotation4"
 				Value="{Binding CharacterDetails.Rotation4.value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
