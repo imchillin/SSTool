@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 
 namespace FFXIVTool.Views
@@ -47,7 +48,47 @@ namespace FFXIVTool.Views
 				timer.IsEnabled = false;
 			};
 			timer.Start();
+			if (SaveSettings.Default.RotationSliders == true)
+			{
+				RotSliderButton.IsChecked = true;
+				RotationUpDown.Visibility = Visibility.Hidden;
+				RotationUpDown.IsEnabled = false;
+				RotationUpDown2.Visibility = Visibility.Hidden;
+				RotationUpDown2.IsEnabled = false;
+				RotationUpDown3.Visibility = Visibility.Hidden;
+				RotationUpDown3.IsEnabled = false;
 
+				RotationSlider.Visibility = Visibility.Visible;
+				RotationSlider.IsEnabled = true;
+				RotationSlider2.Visibility = Visibility.Visible;
+				RotationSlider2.IsEnabled = true;
+				RotationSlider3.Visibility = Visibility.Visible;
+				RotationSlider3.IsEnabled = true;
+			}
+			else if (SaveSettings.Default.RotationSliders == false)
+			{
+				RotationUpDown.Visibility = Visibility.Visible;
+				RotationUpDown.IsEnabled = true;
+				RotationUpDown2.Visibility = Visibility.Visible;
+				RotationUpDown2.IsEnabled = true;
+				RotationUpDown3.Visibility = Visibility.Visible;
+				RotationUpDown3.IsEnabled = true;
+
+				RotationSlider.Visibility = Visibility.Hidden;
+				RotationSlider.IsEnabled = false;
+				RotationSlider2.Visibility = Visibility.Hidden;
+				RotationSlider2.IsEnabled = false;
+				RotationSlider3.Visibility = Visibility.Hidden;
+				RotationSlider3.IsEnabled = false;
+			}
+			if (SaveSettings.Default.AdvancedMove == true)
+			{
+				PosRelButton.IsChecked = true;
+			}
+			if (SaveSettings.Default.AltRotate == true)
+			{
+				RotRelButton.IsChecked = true;
+			}
 		}
 
 		#region Height
@@ -318,20 +359,134 @@ namespace FFXIVTool.Views
 
 		#region Rotation
 
-		private void RotationOptions_Click(object sender, RoutedEventArgs e)
+		private Vector3D GetEulerAngles() => new Vector3D(CharacterDetails.RotateX, CharacterDetails.RotateY, CharacterDetails.RotateZ);
+
+		private void RotationUpDown_SourceUpdated(object sender, DataTransferEventArgs e)
 		{
-			RotationFlyout.IsOpen = !RotationFlyout.IsOpen;
+
+			if (RotationSlider.IsKeyboardFocusWithin || RotationSlider.IsMouseOver)
+			{
+				RotationSlider.ValueChanged -= RotV2;
+				RotationSlider.ValueChanged += RotV2;
+			}
+
+			if (RotationUpDown.IsKeyboardFocusWithin || RotationUpDown.IsMouseOver)
+			{
+				RotationUpDown.ValueChanged -= RotV;
+				RotationUpDown.ValueChanged += RotV;
+			}
+		}
+		private void RotationUpDown2_SourceUpdated(object sender, DataTransferEventArgs e)
+		{
+			if (RotationSlider2.IsKeyboardFocusWithin || RotationSlider2.IsMouseOver)
+			{
+				RotationSlider2.ValueChanged -= RotV2;
+				RotationSlider2.ValueChanged += RotV2;
+			}
+
+			if (RotationUpDown2.IsKeyboardFocusWithin || RotationUpDown2.IsMouseOver)
+			{
+				RotationUpDown2.ValueChanged -= RotV;
+				RotationUpDown2.ValueChanged += RotV;
+			}
+		}
+		private void RotationUpDown3_SourceUpdated(object sender, DataTransferEventArgs e)
+		{
+			if (RotationSlider3.IsKeyboardFocusWithin || RotationSlider3.IsMouseOver)
+			{
+				RotationSlider3.ValueChanged -= RotV2;
+				RotationSlider3.ValueChanged += RotV2;
+			}
+
+			if (RotationUpDown3.IsKeyboardFocusWithin || RotationUpDown3.IsMouseOver)
+			{
+				RotationUpDown3.ValueChanged -= RotV;
+				RotationUpDown3.ValueChanged += RotV;
+			}
+		}
+		private void RotV(object sender, RoutedPropertyChangedEventArgs<double?> e)
+		{
+			// Get the euler angles from UI.	
+			var quat = GetEulerAngles().ToQuaternion();
+
+			CharacterDetails.Rotation.value = (float)quat.X;
+			CharacterDetails.Rotation2.value = (float)quat.Y;
+			CharacterDetails.Rotation3.value = (float)quat.Z;
+			CharacterDetails.Rotation4.value = (float)quat.W;
+			// Remove listeners for value changed.	
+			RotationUpDown.ValueChanged -= RotV;
+			RotationUpDown2.ValueChanged -= RotV;
+			RotationUpDown3.ValueChanged -= RotV;
+		}
+		private void RotV2(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			// Get the euler angles from UI.	
+			var quat = GetEulerAngles().ToQuaternion();
+
+			CharacterDetails.Rotation.value = (float)quat.X;
+			CharacterDetails.Rotation2.value = (float)quat.Y;
+			CharacterDetails.Rotation3.value = (float)quat.Z;
+			CharacterDetails.Rotation4.value = (float)quat.W;
+			// Remove listeners for value changed.	
+			RotationSlider.ValueChanged -= RotV2;
+			RotationSlider2.ValueChanged -= RotV2;
+			RotationSlider3.ValueChanged -= RotV2;
+			//  Console.WriteLine(CharacterDetails.RotateY);	
 		}
 
-		private void RotationFreeze_Checked(object sender, RoutedEventArgs e) => RotationFreeze(true);
-		private void RotationFreeze_Unchecked(object sender, RoutedEventArgs e) => RotationFreeze(false);
-
-		private void RotationFreeze(bool value)
+		private void RotSliderButton_Checked(object sender, RoutedEventArgs e)
 		{
-			CharacterDetails.Rotation.freeze = value;
-			CharacterDetails.Rotation2.freeze = value;
-			CharacterDetails.Rotation3.freeze = value;
-			CharacterDetails.Rotation4.freeze = value;
+			SaveSettings.Default.RotationSliders = true;
+			RotationUpDown.Visibility = Visibility.Hidden;
+			RotationUpDown.IsEnabled = false;
+			RotationUpDown2.Visibility = Visibility.Hidden;
+			RotationUpDown2.IsEnabled = false;
+			RotationUpDown3.Visibility = Visibility.Hidden;
+			RotationUpDown3.IsEnabled = false;
+
+			RotationSlider.Visibility = Visibility.Visible;
+			RotationSlider.IsEnabled = true;
+			RotationSlider2.Visibility = Visibility.Visible;
+			RotationSlider2.IsEnabled = true;
+			RotationSlider3.Visibility = Visibility.Visible;
+			RotationSlider3.IsEnabled = true;
+		}
+		private void RotSliderButton_Unchecked(object sender, RoutedEventArgs e)
+		{
+			SaveSettings.Default.RotationSliders = false;
+			RotationUpDown.Visibility = Visibility.Visible;
+			RotationUpDown.IsEnabled = true;
+			RotationUpDown2.Visibility = Visibility.Visible;
+			RotationUpDown2.IsEnabled = true;
+			RotationUpDown3.Visibility = Visibility.Visible;
+			RotationUpDown3.IsEnabled = true;
+
+			RotationSlider.Visibility = Visibility.Hidden;
+			RotationSlider.IsEnabled = false;
+			RotationSlider2.Visibility = Visibility.Hidden;
+			RotationSlider2.IsEnabled = false;
+			RotationSlider3.Visibility = Visibility.Hidden;
+			RotationSlider3.IsEnabled = false;
+		}
+
+		private void RotRelButton_Checked(object sender, RoutedEventArgs e)
+		{
+			SaveSettings.Default.AltRotate = true;
+			CharacterDetails.AltRotate = true;
+		}
+		private void RotRelButton_Unchecked(object sender, RoutedEventArgs e)
+		{
+			SaveSettings.Default.AltRotate = false;
+			CharacterDetails.AltRotate = false;
+		}
+
+		private void Freeze1234_Click(object sender, RoutedEventArgs e)
+		{
+			numbcheck = !numbcheck;
+			CharacterDetails.Rotation.freeze = numbcheck;
+			CharacterDetails.Rotation2.freeze = numbcheck;
+			CharacterDetails.Rotation3.freeze = numbcheck;
+			CharacterDetails.Rotation4.freeze = numbcheck;
 		}
 
 		#endregion
@@ -979,66 +1134,66 @@ namespace FFXIVTool.Views
 
 		private void DataPathBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-		    var m = MemoryManager.Instance.MemLib;
-		    var c = Settings.Instance.Character;
+			var m = MemoryManager.Instance.MemLib;
+			var c = Settings.Instance.Character;
 
-		    string GAS(params string[] args) => MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, args);
+			string GAS(params string[] args) => MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, args);
 
-		    if (DataPathBox.IsKeyboardFocusWithin || DataPathBox.IsMouseOver)
-		    {
-			if (DataPathBox.SelectedIndex >= 0)
+			if (DataPathBox.IsKeyboardFocusWithin || DataPathBox.IsMouseOver)
 			{
-			    CharacterDetails.DataPath.value = short.Parse(((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
-			    m.writeMemory(GAS(c.DataPath), "int", ((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
-			    if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
-			    {
-				if (CharacterDetails.DataPath.value == 301)
+				if (DataPathBox.SelectedIndex >= 0)
 				{
-				    m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+					CharacterDetails.DataPath.value = short.Parse(((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
+					m.writeMemory(GAS(c.DataPath), "int", ((ComboBoxItem)DataPathBox.SelectedItem).Tag.ToString());
+					if (CharacterDetails.Clan.value == 1 || CharacterDetails.Clan.value == 3 || CharacterDetails.Clan.value == 5 || CharacterDetails.Clan.value == 7 || CharacterDetails.Clan.value == 9 || CharacterDetails.Clan.value == 11 || CharacterDetails.Clan.value == 13 || CharacterDetails.Clan.value == 15)
+					{
+						if (CharacterDetails.DataPath.value == 301)
+						{
+							m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+						}
+						else if (CharacterDetails.DataPath.value == 401)
+						{
+							m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+						}
+						else m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+					}
+					else
+					{
+						if (CharacterDetails.Clan.value == 2 || CharacterDetails.Clan.value == 4 || CharacterDetails.Clan.value == 6 || CharacterDetails.Clan.value == 8 || CharacterDetails.Clan.value == 10)
+						{
+							if (CharacterDetails.DataPath.value == 101)
+							{
+								m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+							}
+							else if (CharacterDetails.DataPath.value == 201)
+							{
+								m.writeMemory(GAS(c.DataHead), "byte", "0x01");
+							}
+							else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+						}
+						else
+						{
+							if (CharacterDetails.DataPath.value == 101)
+							{
+								m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+							}
+							else if (CharacterDetails.DataPath.value == 201)
+							{
+								m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+							}
+							if (CharacterDetails.DataPath.value == 301)
+							{
+								m.writeMemory(GAS(c.DataHead), "byte", "0xC9");
+							}
+							else if (CharacterDetails.DataPath.value == 401)
+							{
+								m.writeMemory(GAS(c.DataHead), "byte", "0xC9");
+							}
+							else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
+						}
+					}
 				}
-				else if (CharacterDetails.DataPath.value == 401)
-				{
-				    m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-				}
-				else m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-			    }
-			    else
-			    {
-				if (CharacterDetails.Clan.value == 2 || CharacterDetails.Clan.value == 4 || CharacterDetails.Clan.value == 6 || CharacterDetails.Clan.value == 8 || CharacterDetails.Clan.value == 10)
-				{
-				    if (CharacterDetails.DataPath.value == 101)
-				    {
-					m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-				    }
-				    else if (CharacterDetails.DataPath.value == 201)
-				    {
-					m.writeMemory(GAS(c.DataHead), "byte", "0x01");
-				    }
-				    else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-				}
-				else
-				{
-				    if (CharacterDetails.DataPath.value == 101)
-				    {
-					m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-				    }
-				    else if (CharacterDetails.DataPath.value == 201)
-				    {
-					m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-				    }
-				    if (CharacterDetails.DataPath.value == 301)
-				    {
-					m.writeMemory(GAS(c.DataHead), "byte", "0xC9");
-				    }
-				    else if (CharacterDetails.DataPath.value == 401)
-				    {
-					m.writeMemory(GAS(c.DataHead), "byte", "0xC9");
-				    }
-				    else m.writeMemory(GAS(c.DataHead), "byte", "0x65");
-				}
-			    }
 			}
-		    }
 		}
 	}
 }

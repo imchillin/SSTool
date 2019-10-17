@@ -242,7 +242,7 @@ namespace FFXIVTool.Utility
                     CharaMakeFeatures2.Add(test.Key, feature);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }
@@ -256,11 +256,13 @@ namespace FFXIVTool.Utility
                 foreach (var test in sheet)
                 {
                     rowCount++;
-                    CharaMakeCustomizeFeature feature = new CharaMakeCustomizeFeature();
-                 //   Console.WriteLine($"{test.Key},{test.FeatureID}");
-                    feature.Index = test.Key;
-                    feature.FeatureID = test.FeatureID;
-                    try
+					CharaMakeCustomizeFeature feature = new CharaMakeCustomizeFeature
+					{
+						//   Console.WriteLine($"{test.Key},{test.FeatureID}");
+						Index = test.Key,
+						FeatureID = test.FeatureID
+					};
+					try
                     {
                         if (test.Icon == null) feature.Icon = SpecialControl.GetImageStream((System.Drawing.Image)Properties.Resources.ResourceManager.GetObject("Corrupted"));
                         else feature.Icon = CreateSource(test.Icon);
@@ -277,7 +279,7 @@ namespace FFXIVTool.Utility
                     CharaMakeFeatures.Add(rowCount, feature);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }
@@ -289,16 +291,18 @@ namespace FFXIVTool.Utility
                 var TribeSheet = MainWindow.Realm.GameData.GetSheet<SaintCoinach.Xiv.Tribe>();
                 foreach (var Parse in TribeSheet)
                 {
-                    Tribe tribe = new Tribe();
-                    tribe.Index = Parse.Key;
-                    tribe.Name = Parse.Feminine;
-                    if (Parse.Key == 0) { tribe.Name = "None"; }
+					Tribe tribe = new Tribe
+					{
+						Index = Parse.Key,
+						Name = Parse.Feminine
+					};
+					if (Parse.Key == 0) { tribe.Name = "None"; }
                     Tribes.Add(Parse.Key, tribe);
                     //    Console.WriteLine($"{Parse.Key} {Parse.Feminine}");
                 }
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
                 Tribes = null;
 
@@ -314,14 +318,16 @@ namespace FFXIVTool.Utility
                 var RaceSheet = MainWindow.Realm.GameData.GetSheet<SaintCoinach.Xiv.Race>();
                 foreach (var Parse in RaceSheet)
                 {
-                    Race race = new Race();
-                    race.Index = Parse.Key;
-                    race.Name = Parse.Feminine;
-                    if (Parse.Key == 0) { race.Name = "None"; }
+					Race race = new Race
+					{
+						Index = Parse.Key,
+						Name = Parse.Feminine
+					};
+					if (Parse.Key == 0) { race.Name = "None"; }
                     Races.Add(Parse.Key, race);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Races = null;
 
@@ -369,7 +375,7 @@ namespace FFXIVTool.Utility
                     }
                 }
 
-                catch (Exception e)
+                catch (Exception)
                 {
                     Emotes = null;
 
@@ -415,7 +421,7 @@ namespace FFXIVTool.Utility
                     }
                 }
 
-                catch (Exception e)
+                catch (Exception)
                 {
                     Monsters = null;
 
@@ -433,15 +439,17 @@ namespace FFXIVTool.Utility
                     var sheet = MainWindow.Realm.GameData.GetSheet<SaintCoinach.Xiv.Stain>();
                     foreach (var Parse in sheet)
                     {
-                        Dye dye = new Dye();
-                        dye.Index = Parse.Key;
-                        dye.Name = Parse.Name;
-                        if (Parse.Key == 0) { dye.Name = "None"; }
+						Dye dye = new Dye
+						{
+							Index = Parse.Key,
+							Name = Parse.Name
+						};
+						if (Parse.Key == 0) { dye.Name = "None"; }
                         Dyes.Add(Parse.Key, dye);
                         //     Console.WriteLine($"{Parse.Key} {Parse.Name}");
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Dyes = null;
 
@@ -490,13 +498,15 @@ namespace FFXIVTool.Utility
                     foreach (var Parse in sheet)
                     {
                         if (Parse.EquipSlotCategory.Key <= 0) continue;
-                        var item = new Item();
-                        item.Index = Parse.Key;
-                        item.Name = Parse.Name;
-                    //    item.ClassJobCategory = new List<ClassJobCategory>();
-                        item.ClassJobListStringName = Parse.ClassJobCategory.ToString();
-                        item.Type = Heh(Parse.ItemUICategory.Key);
-                        if (Parse.ItemUICategory.Key == 11)
+						var item = new Item
+						{
+							Index = Parse.Key,
+							Name = Parse.Name,
+							//    item.ClassJobCategory = new List<ClassJobCategory>();
+							ClassJobListStringName = Parse.ClassJobCategory.ToString(),
+							Type = Heh(Parse.ItemUICategory.Key)
+						};
+						if (Parse.ItemUICategory.Key == 11)
                         {
                             item.ModelMain = Parse.ModelMain.ToString();
                             item.ModelOff = Parse.ModelMain.ToString();
@@ -525,7 +535,7 @@ namespace FFXIVTool.Utility
                         Items.Add(Parse.Key, item);
                     }
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                 }
             }
@@ -600,7 +610,7 @@ namespace FFXIVTool.Utility
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Residents = null;
 
@@ -618,10 +628,12 @@ namespace FFXIVTool.Utility
                 var sheet = MainWindow.Realm.GameData.GetSheet<SaintCoinach.Xiv.TerritoryType>();
                 foreach (var Parse in sheet)
                 {
-                    TerritoryType territory = new TerritoryType();
-                    territory.Index = Parse.Key;
-                    territory.WeatherRate = new WeatherRate();
-                    territory.WeatherRate.AllowedWeathers = new List<Weather>();
+					TerritoryType territory = new TerritoryType
+					{
+						Index = Parse.Key,
+						WeatherRate = new WeatherRate()
+					};
+					territory.WeatherRate.AllowedWeathers = new List<Weather>();
                     foreach (var Test in Parse.WeatherRate.PossibleWeathers)
                     {
                         territory.WeatherRate.Index = Test.Key;
@@ -745,7 +757,7 @@ namespace FFXIVTool.Utility
                     }
                 }
 
-                catch (Exception e)
+                catch (Exception)
                 {
                     BGMs = null;
 

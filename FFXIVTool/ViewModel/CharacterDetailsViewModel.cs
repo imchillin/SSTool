@@ -335,6 +335,17 @@ namespace FFXIVTool.ViewModel
 					CharacterDetails.Rotation3.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation3));
 					CharacterDetails.Rotation4.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation4));
 				}
+				else
+				{
+					if (!CharacterDetails.Rotation.freeze)
+						CharacterDetails.Rotation.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation));
+					if (!CharacterDetails.Rotation2.freeze)
+						CharacterDetails.Rotation2.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation2));
+					if (!CharacterDetails.Rotation3.freeze)
+						CharacterDetails.Rotation3.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation3));
+					if (!CharacterDetails.Rotation4.freeze)
+						CharacterDetails.Rotation4.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.Rotation4));
+				}
 
 				if (!CharacterDetails.X.freeze) CharacterDetails.X.value = m.readFloat(GAS(baseAddr, c.Body.Base, c.Body.Position.X));
 

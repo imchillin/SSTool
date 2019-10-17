@@ -257,6 +257,9 @@ namespace FFXIVTool.Models
         [JsonIgnore] public Address<float> CamAngleX { get; set; }
         [JsonIgnore] public Address<float> CamAngleY { get; set; }
         [JsonIgnore] public Address<byte> DataHead { get; set; }
+		[JsonIgnore] public float RotateX { get; set; }
+		[JsonIgnore] public float RotateY { get; set; }
+		[JsonIgnore] public float RotateZ { get; set; }
 		[JsonIgnore] public bool RotateFreeze { get; set; }
 		[JsonIgnore] public bool AltRotate { get; set; }
 

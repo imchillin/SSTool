@@ -219,9 +219,8 @@
             <ComboBoxItem Content="" Tag="2107" Background="{x:Null}"/>
             <ComboBoxItem Content="Prey" Tag="2112" Background="{x:Null}"/>
         </ComboBox>
-        <StackPanel HorizontalAlignment="Left" Height="22" Margin="414,479,0,0" VerticalAlignment="Top" Width="266" Orientation="Horizontal">
-            <materialDesign:PackIcon Kind="ArrowLeft" />
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="GPose mode must be enabled to use" VerticalAlignment="Top"/>
+		<StackPanel HorizontalAlignment="Left" Height="22" Margin="414,479,0,0" VerticalAlignment="Top" Width="266" Orientation="Horizontal">
+			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="GPose mode must be enabled to use" VerticalAlignment="Top"/>
             <materialDesign:PackIcon Kind="ArrowRight"/>
         </StackPanel>
     </Grid>

@@ -105,7 +105,7 @@
 			<CheckBox IsChecked="{Binding Path=CharacterDetails.Rotation.freeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="X" />
 			<mah:NumericUpDown
 				Name="Rotation"
-				Value="{Binding CharacterDetails.Rotation.UIValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+				Value="{Binding CharacterDetails.Rotation.value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
 				SourceUpdated="Rotation_SourceUpdated"
 				Width="180" 
 				Minimum="0" 
@@ -118,7 +118,7 @@
 			<CheckBox IsChecked="{Binding Path=CharacterDetails.Rotation2.freeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="Y" />
 			<mah:NumericUpDown
 				Name="Rotation2"
-				Value="{Binding CharacterDetails.Rotation2.UIValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+				Value="{Binding CharacterDetails.Rotation2.value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
 				SourceUpdated="Rotation2_SourceUpdated"
 				Width="180"
 				Minimum="0"
@@ -131,7 +131,7 @@
 			<CheckBox IsChecked="{Binding Path=CharacterDetails.Rotation3.freeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="Z" />
 			<mah:NumericUpDown
 				Name="Rotation3"
-				Value="{Binding CharacterDetails.Rotation3.UIValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+				Value="{Binding CharacterDetails.Rotation3.value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
 				SourceUpdated="Rotation3_SourceUpdated"
 				Width="180"
 				Minimum="0"
@@ -144,7 +144,7 @@
 			<CheckBox IsChecked="{Binding Path=CharacterDetails.Rotation4.freeze, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,8,0" Content="W" />
 			<mah:NumericUpDown
 				Name="Rotation4"
-				Value="{Binding CharacterDetails.Rotation4.UIValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+				Value="{Binding CharacterDetails.Rotation4.value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"
 				SourceUpdated="Rotation4_SourceUpdated"
 				Width="180"
 				Minimum="0"
