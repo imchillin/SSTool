@@ -196,7 +196,7 @@ namespace FFXIVTool
 
 			string GAS(params string[] args) => MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, args);
 			var xdad = (byte)MemoryManager.Instance.MemLib.readByte(MemoryManager.GetAddressString(CharacterDetailsViewModel.baseAddr, Settings.Instance.Character.EntityType));
-			if (xdad == 1)
+			if (xdad == 1 && CharacterDetails.Race.value!=7)
 			{
 				m.writeMemory(GAS(c.EntityType), "byte", "2");
 				m.writeMemory(GAS(c.RenderToggle), "int", "2");
