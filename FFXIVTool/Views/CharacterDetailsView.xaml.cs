@@ -387,7 +387,7 @@ namespace FFXIVTool.Views
 			// Remove the event handler.
 			control.ValueChanged -= Rotation_ValueChanged;
 			// Ignore the value entered.
-			control.Value = e.OldValue;
+			//control.Value = e.OldValue;
 
 			// Rotate the shit.
 			RotateWithEuler(control, e.NewValue, e.OldValue);
@@ -404,10 +404,10 @@ namespace FFXIVTool.Views
 			// Remove the event handler.
 			control.ValueChanged -= Rotation_ValueChanged;
 			// Ignore the value entered.
-			control.Value = e.OldValue;
+			//control.Value = e.OldValue;
 
 			// Rotate the shit.
-			RotateWithEuler(control, e.NewValue??0, e.OldValue ?? 0);
+			RotateWithEuler(control, e.NewValue ?? 0, e.OldValue ?? 0);
 		}
 
 		private void RotateWithEuler(Control control, double newValue, double oldValue)
@@ -432,19 +432,22 @@ namespace FFXIVTool.Views
 			else
 				return;
 
-			var rotationDelta = new Quaternion(axis, angle);
-			var q = CharacterDetails.AltRotate ? rotationDelta * RotationView.RotationQuaternion.Quaternion : RotationView.RotationQuaternion.Quaternion * rotationDelta;
+			//var rotationDelta = new Quaternion(axis, angle);
+			//var q = CharacterDetails.AltRotate ? rotationDelta * RotationView.RotationQuaternion.Quaternion : RotationView.RotationQuaternion.Quaternion * rotationDelta;
+			//q.Normalize();
+
+			var q = new Vector3D(CharacterDetails.RotateX, CharacterDetails.RotateY, CharacterDetails.RotateZ).ToQuaternion();
 
 			CharacterDetails.Rotation.value = (float)q.X;
 			CharacterDetails.Rotation2.value = (float)q.Y;
 			CharacterDetails.Rotation3.value = (float)q.Z;
 			CharacterDetails.Rotation4.value = (float)q.W;
 
-			var euler = q.ToEulerAngles();
+			//var euler = q.ToEulerAngles();
 
-			CharacterDetails.RotateX = (float)euler.X;
-			CharacterDetails.RotateY = (float)euler.Y;
-			CharacterDetails.RotateZ = (float)euler.Z;
+			//CharacterDetails.RotateX = (float)euler.X;
+			//CharacterDetails.RotateY = (float)euler.Y;
+			//CharacterDetails.RotateZ = (float)euler.Z;
 
 			// Done working.
 			RotationAdvancedWorking = false;

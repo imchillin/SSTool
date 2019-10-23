@@ -130,10 +130,12 @@ namespace FFXIVTool.ViewModel
                     Console.WriteLine(ex);
                 }
             }
-            if (CheckUpdate()==true)
+#if !DEBUG
+			if (CheckUpdate()==true)
             {
                 System.Windows.MessageBox.Show("We successfully updated offsets automatically for you! Please Restart the program or Press Find New Process on the top right of the application if this doesn't work!", "Oh wow!");
             }
+#endif
         }
         private bool CheckUpdate()
         {

@@ -104,6 +104,10 @@ namespace FFXIVTool
 
 		private void UpdateProgram()
 		{
+#if DEBUG
+			return;
+#endif
+
 			ServicePointManager.SecurityProtocol = (ServicePointManager.SecurityProtocol & SecurityProtocolType.Ssl3) | (SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12);
 
 			// Delete the old updater file.
