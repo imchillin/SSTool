@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Settings>
-  <LastUpdated>5.08</LastUpdated>
-  <CameraOffset>1B28530</CameraOffset>
-  <GposeOffset>1B28728</GposeOffset>
+  <LastUpdated>5.1</LastUpdated>
+  <CameraOffset>1C007A0</CameraOffset>
+  <GposeOffset>1C00988</GposeOffset>
   <GposeEntityOffset>1B2B5D0</GposeEntityOffset>
-  <AoBOffset>1B29B40</AoBOffset>
+  <AoBOffset>1C01D90</AoBOffset>
   <TargetOffset>1B28738</TargetOffset>
   <TimeOffset>1B0D6F0</TimeOffset>
   <WeatherOffset>1AE4728</WeatherOffset>
   <TerritoryOffset>1B66808</TerritoryOffset>
-  <GposeFilters>1B0B5A8</GposeFilters>
+  <GposeFilters>1BDF728</GposeFilters>
   <MusicOffset>1B49448</MusicOffset>
-  <CharacterRenderOffset>4293D0</CharacterRenderOffset>
-  <CharacterRenderOffset2>4293C6</CharacterRenderOffset2>
+  <CharacterRenderOffset>455290</CharacterRenderOffset>
+  <CharacterRenderOffset2>455286</CharacterRenderOffset2>
   <Character>
     <Name>30</Name>
     <FCTag>17FA</FCTag>
